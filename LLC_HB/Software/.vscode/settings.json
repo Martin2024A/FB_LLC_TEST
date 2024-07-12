@@ -1,0 +1,29 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#2da00f",
+        "activityBar.background": "#2da00f",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#1642e9",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#2da00f",
+        "statusBar.background": "#20720b",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#2da00f",
+        "statusBarItem.remoteBackground": "#20720b",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#20720b",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#20720b99",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#20720b",
+    "files.associations": {
+        "*.markdown": "markdown",
+        "cyclone_device.h": "c",
+        "device.h": "c",
+        "init_dpp.h": "c",
+        "pmbus_common.h": "c"
+    }
+}

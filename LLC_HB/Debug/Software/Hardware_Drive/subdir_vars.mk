@@ -1,0 +1,32 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+SHELL = cmd.exe
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../Software/Hardware_Drive/constants.c \
+../Software/Hardware_Drive/cyclone_global_variables_defs.c \
+../Software/Hardware_Drive/gpio.c \
+../Software/Hardware_Drive/init_watchdog.c 
+
+OBJS += \
+./Software/Hardware_Drive/constants.obj \
+./Software/Hardware_Drive/cyclone_global_variables_defs.obj \
+./Software/Hardware_Drive/gpio.obj \
+./Software/Hardware_Drive/init_watchdog.obj 
+
+OBJS__QUOTED += \
+"Software\Hardware_Drive\constants.obj" \
+"Software\Hardware_Drive\cyclone_global_variables_defs.obj" \
+"Software\Hardware_Drive\gpio.obj" \
+"Software\Hardware_Drive\init_watchdog.obj" 
+
+C_SRCS__QUOTED += \
+"../Software/Hardware_Drive/constants.c" \
+"../Software/Hardware_Drive/cyclone_global_variables_defs.c" \
+"../Software/Hardware_Drive/gpio.c" \
+"../Software/Hardware_Drive/init_watchdog.c" 
+
+

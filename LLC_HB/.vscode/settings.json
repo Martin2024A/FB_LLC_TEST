@@ -1,0 +1,28 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#3accc1",
+        "activityBar.background": "#3accc1",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#bf34cb",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#15202b99",
+        "sash.hoverBorder": "#3accc1",
+        "statusBar.background": "#2ba89e",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#217f78",
+        "statusBarItem.remoteBackground": "#2ba89e",
+        "statusBarItem.remoteForeground": "#15202b",
+        "titleBar.activeBackground": "#2ba89e",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#2ba89e99",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#2ba89e",
+    "files.associations": {
+        "software_interrupts.h": "c",
+        "system_defines.h": "c",
+        "cyclone_device.h": "c",
+        "init_hal_drive.h": "c"
+    }
+}

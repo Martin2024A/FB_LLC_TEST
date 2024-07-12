@@ -1,0 +1,33 @@
+
+**** Build of configuration Debug for project LLC_HB ****
+
+"D:\\APP\\CCS\\ccs\\utils\\bin\\gmake" -k -j 12 all -O 
+ 
+Building file: "../Software/Device/Source/load_UCD3138A.asm"
+Invoking: Arm Compiler
+"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/bin/armcl" -mv4 --code_state=16 --abi=ti_arm9_abi -O2 --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Device/Header" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Hardware_Drive/Interrupt" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Hardware_Drive/Pmbus" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB" --include_path="D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/include" -g --preproc_with_comment --preproc_with_compile --define=UCD3138A --diag_warning=225 --diag_wrap=off --display_error_number --pp_directory="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Debug/UCD3138A" --obj_directory="Software/Device/Source"  "../Software/Device/Source/load_UCD3138A.asm"
+Finished building: "../Software/Device/Source/load_UCD3138A.asm"
+ 
+Building file: "../Software/APP/main.c"
+Invoking: Arm Compiler
+"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/bin/armcl" -mv4 --code_state=16 --abi=ti_arm9_abi -O2 --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Device/Header" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Hardware_Drive/Interrupt" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Hardware_Drive/Pmbus" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB" --include_path="D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/include" -g --preproc_with_comment --preproc_with_compile --define=UCD3138A --diag_warning=225 --diag_wrap=off --display_error_number --pp_directory="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Debug/UCD3138A" --obj_directory="Software/APP"  "../Software/APP/main.c"
+Finished building: "../Software/APP/main.c"
+ 
+Building file: "../Software/Hardware_Drive/Interrupt/interrupt.c"
+Invoking: Arm Compiler
+"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/bin/armcl" -mv4 --code_state=32 --abi=ti_arm9_abi -O2 --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Device/Header" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Hardware_Drive/Interrupt" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Software/Hardware_Drive/Pmbus" --include_path="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB" --include_path="D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/include" -g --preproc_with_comment --preproc_with_compile --define=UCD3138A --diag_warning=225 --diag_wrap=off --display_error_number --pp_directory="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Debug/UCD3138A" --obj_directory="Software/Hardware_Drive/Interrupt"  "../Software/Hardware_Drive/Interrupt/interrupt.c"
+Finished building: "../Software/Hardware_Drive/Interrupt/interrupt.c"
+ 
+Building target: "LLC_HB.out"
+Invoking: Arm Linker
+"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/bin/armcl" -mv4 --code_state=32 --abi=ti_arm9_abi -O2 -g --preproc_with_comment --preproc_with_compile --define=UCD3138A --diag_warning=225 --diag_wrap=off --display_error_number --pp_directory="D:/Workspace/Power/5.Code/FB_LLC/FB_LLC_Test/LLC_HB/Debug/UCD3138A" -z -m"LLC_HB.map" --stack_size=0x800 --heap_size=0x800 -i"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/lib" -i"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="LLC_HB_linkInfo.xml" --rom_model -o "LLC_HB.out" "./Software/APP/main.obj" "./Software/Device/Source/load_UCD3138A.obj" "./Software/Hardware_Drive/Interrupt/interrupt.obj"  -llibc.a -l"D:/Workspace/Power/5.Code/FB_LLC/LLC_Refactoring/LLC_HB/Software/Device/Linker/cyclone_A.cmd" -l"D:/Workspace/Power/5.Code/FB_LLC/LLC_Refactoring/LLC_HB/Software/Device/Linker/cyclone_A_headers.cmd" 
+<Linking>
+Finished building target: "LLC_HB.out"
+ 
+"D:/APP/CCS/ccs/tools/compiler/ti-cgt-arm_5.2.9/bin/armhex.exe" -x "LLC_HB.out" -o "LLC_HB.x0" -memwidth 8
+Translating to Extended Tektronix format...
+   "LLC_HB.out" .vectors ==> .vectors
+   "LLC_HB.out" .text ==> .text
+ 
+
+**** Build Finished ****
