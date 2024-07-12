@@ -20,7 +20,7 @@ void init_filter0(void)
     Filter0Regs.FILTERCTRL.bit.OUTPUT_SCALE = -1;
     Filter0Regs.FILTERCTRL.bit.USE_CPU_SAMPLE = 0; //default
 
-    //filter ????
+    //config filter 
 }
 void init_filter0_states(void)
 {
