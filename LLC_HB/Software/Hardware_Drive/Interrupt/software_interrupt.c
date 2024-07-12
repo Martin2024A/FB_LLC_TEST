@@ -1,8 +1,9 @@
 
 /*----------------------------------include-----------------------------------*/
 #include "cyclone_device.h"
+#include "device_parm_define.h"
+#include "system_define.h"
 #include "interrupt.h"
-#include "device.h"
 #include "global_variables.h"
 /*-----------------------------------macro------------------------------------*/
 

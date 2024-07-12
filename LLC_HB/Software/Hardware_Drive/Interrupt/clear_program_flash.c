@@ -2,6 +2,11 @@
 /*----------------------------------include-----------------------------------*/
 #include "interrupt.h"
 #include "global_variables.h"
+
+#include "system_define.h"
+#include "cyclone_device.h"
+
+#include "interrupt.h"
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/

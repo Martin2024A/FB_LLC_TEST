@@ -8,6 +8,7 @@ extern "C"{
 
 /*----------------------------------include-----------------------------------*/
 #include "cyclone_device.h"
+
 /*------------------------------Device macro----------------------------------*/
 #define DEVICE           	 UCD3100ISO1  				//Device Name
 
@@ -23,7 +24,7 @@ extern "C"{
 #define MFR_IC_DEVICE		"UCD3138RGC"				//TI device part number
 #define MFR_IC_DEVICE_REV	"0"							//TI device revision
 
-#define DEVICE_ID           	 "UCD3100ISO1|0.0.11.0106|141031"  				//Device id
+#define DEVICE_ID           "UCD3100ISO1|0.0.11.0106|141031"  //Device id
 
 #define MFR_ID_LENGTH 				sizeof(MFR_ID)
 #define SETUP_ID_LENGTH 			sizeof(SETUP_ID)
@@ -35,6 +36,21 @@ extern "C"{
 #define MFR_IC_DEVICE_LENGTH		sizeof(MFR_IC_DEVICE)
 #define MFR_IC_DEVICE_REV_LENGTH	sizeof(MFR_IC_DEVICE_REV)
 #define DEVICE_ID_LENGTH			sizeof(DEVICE_ID)
+
+extern const Uint8 setup_id[];
+extern const Uint8 mfr_model[];
+extern const Uint8 mfr_revision[];
+extern const Uint8 mfr_date[];
+extern const Uint8 mfr_location[];
+extern const Uint8 mfr_serial[];
+extern const Uint8 mfr_ic_device[];
+extern const Uint8 mfr_ic_device_rev[];
+extern const Uint8 mfr_id[];
+
+extern const Uint8  device_id_string[];
+//=============================================================================
+// Start of MFR message 
+//=============================================================================
 
 /*--------------------------------Flash macro---------------------------------*/
 //=============================================================================
@@ -112,24 +128,22 @@ extern "C"{
 #define SYSTEM_REGS_LENGTH        0x2d0
 
 #define	NUM_MEMORY_SEGMENTS	19	// 19 memory segments for Cyclone 2
+
+//==========================================================================================
+// Memory allocation constants
+//==========================================================================================
+#define DATA_FLASH_START_ADDRESS 	(0x18800)
+#define DATA_FLASH_END_ADDRESS 		(0x18fff)
+
+#define DATA_FLASH_LENGTH			(DATA_FLASH_END_ADDRESS - DATA_FLASH_START_ADDRESS + 1)
+#define	DATA_FLASH_SEGMENT_SIZE		(32)
+#define	DATA_FLASH_NUM_SEGMENTS		(DATA_FLASH_LENGTH / DATA_FLASH_SEGMENT_SIZE)
 /*----------------------------------typedef-----------------------------------*/
-
+#if (DATA_FLASH_SEGMENT_SIZE & (DATA_FLASH_SEGMENT_SIZE - 1)) != 0
+#error "DATA_FLASH_SEGMENT_SIZE must be defined as an integral power of two"
+#endif
 /*----------------------------------variable----------------------------------*/
-//=============================================================================
-// Start of MFR message 
-//=============================================================================
-const Uint8 setup_id[]          = SETUP_ID;
-const Uint8 mfr_model[]			= MFR_MODEL;
-const Uint8 mfr_revision[]		= MFR_REVISION;
-const Uint8 mfr_date[]			= MFR_DATE;
-const Uint8 mfr_location[]		= MFR_LOCATION;
-const Uint8 mfr_serial[]		= MFR_SERIAL;
-const Uint8 mfr_ic_device[]		= MFR_IC_DEVICE;
-const Uint8 mfr_ic_device_rev[]	= MFR_IC_DEVICE_REV;
-const Uint8 mfr_id[]			= MFR_ID;
 
-#pragma DATA_SECTION (device_id_string, "FixedDeviceID");
-const Uint8  device_id_string[] = DEVICE_ID;
 /*-------------------------------------os-------------------------------------*/
 
 /*----------------------------------function----------------------------------*/

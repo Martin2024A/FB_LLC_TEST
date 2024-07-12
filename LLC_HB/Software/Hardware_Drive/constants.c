@@ -1,7 +1,10 @@
 
 /*----------------------------------include-----------------------------------*/
 #include "cyclone_device.h"
-#include "pmbus.h"
+#include "pmbus_dcdc_parm.h"
+#include "pmbus_filter_parm.h"
+#include "system_define.h"
+
 /*-----------------------------------macro------------------------------------*/
 #pragma DATA_SECTION(filter0_pmbus_regs_constants, ".CONFIG")
 volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants = DEFAULT_FILTER_0_PMBUS_REGS;

@@ -1,6 +1,9 @@
 
 /*----------------------------------include-----------------------------------*/
-#include "init_dpp.h"
+#include "pmbus_dcdc_parm.h"
+#include "pmbus_filter_parm.h"
+#include "system_define.h"
+#include "function_definitions.h"
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/

@@ -1,11 +1,22 @@
 
 /*----------------------------------include-----------------------------------*/
+#include "device_parm_define.h"
 #include "pmbus_common.h"
 /*-----------------------------------macro------------------------------------*/
-#define PMBCTRL2_HALF0_PEC_ENA			0x8000	// 15     Enable PEC processing
-//any bits cleared in slave address mask make that bit a don't care
-#define PMBCTRL2_HALF0_SLAVE_ADDRESS_MASK_DISABLE 0x7f00 
+const Uint8 setup_id[]          = SETUP_ID;
+const Uint8 mfr_model[]			= MFR_MODEL;
+const Uint8 mfr_revision[]		= MFR_REVISION;
+const Uint8 mfr_date[]			= MFR_DATE;
+const Uint8 mfr_location[]		= MFR_LOCATION;
+const Uint8 mfr_serial[]		= MFR_SERIAL;
+const Uint8 mfr_ic_device[]		= MFR_IC_DEVICE;
+const Uint8 mfr_ic_device_rev[]	= MFR_IC_DEVICE_REV;
+const Uint8 mfr_id[]			= MFR_ID;
 
+#pragma DATA_SECTION (device_id_string, "FixedDeviceID");
+const Uint8  device_id_string[] = DEVICE_ID;
+
+#define PMBUS_DATA_LENGTH (32)         // the max number of data bytes in a command
 /*----------------------------------typedef-----------------------------------*/
 
 /*----------------------------------variable----------------------------------*/

@@ -24,6 +24,13 @@
         "cyclone_device.h": "c",
         "device.h": "c",
         "init_dpp.h": "c",
-        "pmbus_common.h": "c"
+        "pmbus_common.h": "c",
+        "device_parm.h": "c",
+        "device_parm_define.h": "c",
+        "global_variables.h": "c",
+        "function_definitions.h": "c",
+        "system_define.h": "c",
+        "pmbus_filter_parm.h": "c",
+        "interrupt.h": "c"
     }
 }

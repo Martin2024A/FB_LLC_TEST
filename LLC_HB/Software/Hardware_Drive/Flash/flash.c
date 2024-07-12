@@ -1,23 +1,20 @@
 
 /*----------------------------------include-----------------------------------*/
 #include "cyclone_device.h"
-#include "pmbus.h"
+#include "system_define.h"
+#include "device_parm_define.h"
+
+#include "pmbus_filter_parm.h"
+#include "pmbus_dcdc_parm.h"
 #include "global_variables.h"
-#include "device.h"
+
+#include "function_definitions.h"
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/
 
 /*----------------------------------variable----------------------------------*/
-extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants_b;
-extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants_b;
-extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants_b;
-extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants_b;
-extern volatile const Uint32 pmbus_checksum;
+
 /*-------------------------------------os-------------------------------------*/
 
 /*----------------------------------function----------------------------------*/
@@ -257,6 +254,7 @@ void restore_default_all(void)
 	}
     	else
 	{
+/*************************************************************
 		// Look in Data Flash B for valid values
 		checksum = calculate_dflash_checksum((Uint8*)&filter0_pmbus_regs_constants_b, (Uint8*)&pmbus_checksum_b);
 		// A zero checksum only occurs when the segment is all zeroes, which is not valid.
@@ -274,6 +272,7 @@ void restore_default_all(void)
 			dcdc_cal_ptr             = &pmbus_dcdc_cal_constants_b[0];
 			dcdc_cal_nonpaged_ptr 	 = &pmbus_dcdc_cal_nonpaged_constants_b;
 		}	
+*********************************************************************/
 	}
 
 

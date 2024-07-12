@@ -1,23 +1,16 @@
 
 /*----------------------------------include-----------------------------------*/
 #include "cyclone_device.h"
+#include "system_define.h"
+#include "function_definitions.h"
 /*-----------------------------------macro------------------------------------*/
-#define GLBEN_BIT_MASK_DPWM0 	(1)
-#define GLBEN_BIT_MASK_DPWM1 	(1 << 1)
-#define GLBEN_BIT_MASK_DPWM2 	(1 << 2)
-#define GLBEN_BIT_MASK_DPWM3 	(1 << 3)
-#define GLBEN_BIT_MASK_FE0 		(1 << 8)
-#define GLBEN_BIT_MASK_FE1 		(1 << 9)
-#define GLBEN_BIT_MASK_FE2 		(1 << 10)
+
 /*----------------------------------typedef-----------------------------------*/
 
 /*----------------------------------variable----------------------------------*/
 
 /*-------------------------------------os-------------------------------------*/
-void init_loop_mux(void);
-void global_enable(void);
-void global_disable(void);
-void init_DTC(void);
+
 /*----------------------------------function----------------------------------*/
 void init_loop_mux(void)
 {
