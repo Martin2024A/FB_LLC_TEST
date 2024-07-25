@@ -7,6 +7,7 @@
 #include "pmbus_common.h"
 #include "global_variables.h"
 #include "function_definitions.h"
+#include <stdlib.h>
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/

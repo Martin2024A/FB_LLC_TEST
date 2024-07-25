@@ -6341,6 +6341,238 @@ void handle_fault_state(void);
 void init_variables(void);
 
 
+/*****************************************************************************/
+/* stdlib.h   v5.2.9                                                         */
+/*                                                                           */
+/* Copyright (c) 1993-2017 Texas Instruments Incorporated                    */
+/* http://www.ti.com/                                                        */
+/*                                                                           */
+/*  Redistribution and  use in source  and binary forms, with  or without    */
+/*  modification,  are permitted provided  that the  following conditions    */
+/*  are met:                                                                 */
+/*                                                                           */
+/*     Redistributions  of source  code must  retain the  above copyright    */
+/*     notice, this list of conditions and the following disclaimer.         */
+/*                                                                           */
+/*     Redistributions in binary form  must reproduce the above copyright    */
+/*     notice, this  list of conditions  and the following  disclaimer in    */
+/*     the  documentation  and/or   other  materials  provided  with  the    */
+/*     distribution.                                                         */
+/*                                                                           */
+/*     Neither the  name of Texas Instruments Incorporated  nor the names    */
+/*     of its  contributors may  be used to  endorse or  promote products    */
+/*     derived  from   this  software  without   specific  prior  written    */
+/*     permission.                                                           */
+/*                                                                           */
+/*  THIS SOFTWARE  IS PROVIDED BY THE COPYRIGHT  HOLDERS AND CONTRIBUTORS    */
+/*  "AS IS"  AND ANY  EXPRESS OR IMPLIED  WARRANTIES, INCLUDING,  BUT NOT    */
+/*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR    */
+/*  A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT    */
+/*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,    */
+/*  SPECIAL,  EXEMPLARY,  OR CONSEQUENTIAL  DAMAGES  (INCLUDING, BUT  NOT    */
+/*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,    */
+/*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY    */
+/*  THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT  LIABILITY, OR TORT    */
+/*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE    */
+/*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.     */
+/*                                                                           */
+/*****************************************************************************/
+
+
+
+#pragma diag_push
+#pragma CHECK_MISRA("-6.3") /* standard types required for standard headers */
+#pragma CHECK_MISRA("-8.5") /* need to define inline function */
+#pragma CHECK_MISRA("-19.1") /* #includes required for implementation */
+
+/*---------------------------------------------------------------------------*/
+/* Attributes are only available in relaxed ANSI mode.                       */
+/*---------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------------*/
+/* A header file conforming to ARM CLIB ABI (GENC-003539), should            */
+/* define _AEABI_PORTABLE when _AEABI_PORTABILITY_LEVEL is defined.          */
+/*---------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------------*/
+/* The macro definition that guards CLIB ABI (GENC-003539) requirements.     */
+/*---------------------------------------------------------------------------*/
+
+
+#pragma diag_push
+#pragma CHECK_MISRA("-5.7") /* keep names intact */
+
+typedef struct { int quot, rem; } div_t;
+
+typedef struct { int quot, rem; } ldiv_t;
+
+typedef struct { long long quot, rem; } lldiv_t;
+
+#pragma diag_pop
+
+
+
+typedef unsigned size_t;
+
+typedef unsigned short wchar_t;
+
+
+
+/*****************************************************************************/
+/* linkage.h   v5.2.9                                                        */
+/*                                                                           */
+/* Copyright (c) 1998-2017 Texas Instruments Incorporated                    */
+/* http://www.ti.com/                                                        */
+/*                                                                           */
+/*  Redistribution and  use in source  and binary forms, with  or without    */
+/*  modification,  are permitted provided  that the  following conditions    */
+/*  are met:                                                                 */
+/*                                                                           */
+/*     Redistributions  of source  code must  retain the  above copyright    */
+/*     notice, this list of conditions and the following disclaimer.         */
+/*                                                                           */
+/*     Redistributions in binary form  must reproduce the above copyright    */
+/*     notice, this  list of conditions  and the following  disclaimer in    */
+/*     the  documentation  and/or   other  materials  provided  with  the    */
+/*     distribution.                                                         */
+/*                                                                           */
+/*     Neither the  name of Texas Instruments Incorporated  nor the names    */
+/*     of its  contributors may  be used to  endorse or  promote products    */
+/*     derived  from   this  software  without   specific  prior  written    */
+/*     permission.                                                           */
+/*                                                                           */
+/*  THIS SOFTWARE  IS PROVIDED BY THE COPYRIGHT  HOLDERS AND CONTRIBUTORS    */
+/*  "AS IS"  AND ANY  EXPRESS OR IMPLIED  WARRANTIES, INCLUDING,  BUT NOT    */
+/*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR    */
+/*  A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT    */
+/*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,    */
+/*  SPECIAL,  EXEMPLARY,  OR CONSEQUENTIAL  DAMAGES  (INCLUDING, BUT  NOT    */
+/*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,    */
+/*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY    */
+/*  THEORY OF  LIABILITY, WHETHER IN CONTRACT, STRICT  LIABILITY, OR TORT    */
+/*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE    */
+/*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.     */
+/*                                                                           */
+/*****************************************************************************/
+
+
+#pragma diag_push
+#pragma CHECK_MISRA("-19.4") /* macros required for implementation */
+
+/* No modifiers are needed to access code or data */
+
+
+/*--------------------------------------------------------------------------*/
+/* Define _IDECL ==> how inline functions are declared                      */
+/*--------------------------------------------------------------------------*/
+
+#pragma diag_pop
+
+
+/*---------------------------------------------------------------*/
+/* NOTE - Normally, abs, labs, and fabs are expanded inline, so  */
+/*        no formal definition is really required. However, ANSI */
+/*        requires that they exist as separate functions, so     */
+/*        they are supplied in the library.  The prototype is    */
+/*        here mainly for documentation.                         */
+/*---------------------------------------------------------------*/
+#pragma diag_push
+#pragma CHECK_MISRA("-16.4") /* false positives due to builtin declarations */
+      int       abs(int _val); 
+      long      labs(long _val);
+      long long llabs(long long _val);
+#pragma diag_pop
+
+     int       atoi(const char *_st);
+     long      atol(const char *_st);
+     long long atoll(const char *_st);
+     int       ltoa(long val, char *buffer);
+          static __inline double    atof(const char *_st);
+
+     long      strtol(const char *_st, char **_endptr, int _base);
+     unsigned long strtoul(const char *_st, char **_endptr,
+    					  int _base);
+     long long strtoll(const char *_st, char **_endptr, int _base);
+     unsigned long long strtoull(const char *_st, char **_endptr,
+					     int _base);
+     float     strtof(const char *_st, char **_endptr);
+     double    strtod(const char *_st, char **_endptr);
+     long double strtold(const char *_st, char **_endptr);
+    
+     int    rand(void);
+     void   srand(unsigned _seed);
+    
+     void  *calloc(size_t _num, size_t _size)
+               __attribute__((malloc));
+     void  *malloc(size_t _size)
+               __attribute__((malloc));
+     void  *realloc(void *_ptr, size_t _size)
+               __attribute__((malloc));
+     void   free(void *_ptr);
+     void  *memalign(size_t _aln, size_t _size)
+               __attribute__((malloc));
+    
+     void   abort(void); 
+
+    typedef void (*__TI_atexit_fn)(void);
+     int    atexit(__TI_atexit_fn _func);
+
+    typedef int (*__TI_compar_fn)(const void *_a,const void *_b);
+     void  *bsearch(const void *_key, const void *_base,
+                                size_t _nmemb, size_t _size, 
+                                __TI_compar_fn compar);
+     void   qsort(void *_base, size_t _nmemb, size_t _size, 
+                              __TI_compar_fn compar);
+
+     void   exit(int _status);
+    
+     div_t  div(int _numer, int _denom);
+     ldiv_t ldiv(long _numer, long _denom);
+     lldiv_t lldiv(long long _numer, long long _denom);
+
+     char  *getenv(const char *_string);
+     int    system(const char *_name);
+
+     int    mblen(const char *_s, size_t _n);
+     size_t mbstowcs(wchar_t *_dest, const char *_src, size_t _n);
+     int    mbtowc(wchar_t *_dest, const char *_src, size_t _n);
+
+     size_t wcstombs(char *_dest, const wchar_t *_src, size_t _n);
+     int    wctomb(char *_s, wchar_t _wc);
+
+
+
+
+
+static __inline double atof(const char *_st) 
+{
+  return strtod(_st, (char **)0); 
+}
+
+
+
+
+#pragma diag_pop
+
+
+#pragma diag_push
+
+/* using declarations must occur outside header guard to support including both
+   C and C++-wrapped version of header; see _CPP_STYLE_HEADER check */
+/* this code is for C++ mode only and thus also not relevant for MISRA */
+#pragma CHECK_MISRA("-19.15")
+
+
+#pragma diag_pop
+
+#pragma diag_push
+
+/* C2000-specific additions to header implemented with #include */
+#pragma CHECK_MISRA("-19.1")
+#pragma CHECK_MISRA("-19.15")
+
+
+#pragma diag_pop
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/
