@@ -106,7 +106,7 @@ EXTERN SUPPLY_STATE supply_state;//Supply state enum for state machine
 EXTERN Uint32 start_up_delay_over;
 EXTERN Uint32 count;
 EXTERN Uint32 count_end;
-
+EXTERN int ramp_complete;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
 EXTERN Uint32 delay_counter;
 
 EXTERN Uint32 max_period;

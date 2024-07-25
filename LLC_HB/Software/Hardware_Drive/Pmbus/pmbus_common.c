@@ -2,6 +2,8 @@
 /*----------------------------------include-----------------------------------*/
 #include "device_parm_define.h"
 #include "pmbus_common.h"
+#include "system_define.h"
+#include "interrupt.h"
 /*-----------------------------------macro------------------------------------*/
 const Uint8 setup_id[]          = SETUP_ID;
 const Uint8 mfr_model[]			= MFR_MODEL;
@@ -35,13 +37,6 @@ void init_pmbus(int32 pmbus_address)
 }
 
 /*----------------------------------device_id----------------------------------*/
-Uint8 pmbus_read_write_device_id(Uint8 pmbus_read)
-{
-	if(pmbus_read)
-		return pmbus_read_device_id();
-	else
-		return pmbus_invalid_write();
-}
 inline Uint8 pmbus_read_device_id(void)
 {
 	Uint32  string_len;
@@ -56,6 +51,13 @@ Uint8 pmbus_invalid_write(void)
 	return 0;
 }
 
+Uint8 pmbus_read_write_device_id(Uint8 pmbus_read)
+{
+	if(pmbus_read)
+		return pmbus_read_device_id();
+	else
+		return pmbus_invalid_write();
+}
 
 inline Uint8 pmbus_read_mfr_id(void)
 {

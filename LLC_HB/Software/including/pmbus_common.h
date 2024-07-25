@@ -51,16 +51,16 @@ Uint8 pmbus_read_write_message(Uint8 pmbus_read);
 //=============================================================================
 //              pmbus read write device and software information
 //=============================================================================
-Uint8 pmbus_read_device_id(void);
-Uint8 pmbus_invalid_write(void);
-Uint8 pmbus_read_mfr_id(void);
-Uint8 pmbus_read_setup_id(void);
-Uint8 pmbus_read_mfr_model(void);
-Uint8 pmbus_read_mfr_revision(void);
-Uint8 pmbus_read_mfr_date(void);
-Uint8 pmbus_read_mfr_location(void);
-Uint8 pmbus_read_mfr_serial(void);
-Uint8 pmbus_read_mfr_ic_device(void);
+inline Uint8 pmbus_read_device_id(void);
+inline Uint8 pmbus_invalid_write(void);
+inline Uint8 pmbus_read_mfr_id(void);
+inline Uint8 pmbus_read_setup_id(void);
+inline Uint8 pmbus_read_mfr_model(void);
+inline Uint8 pmbus_read_mfr_revision(void);
+inline Uint8 pmbus_read_mfr_date(void);
+inline Uint8 pmbus_read_mfr_location(void);
+inline Uint8 pmbus_read_mfr_serial(void);
+inline Uint8 pmbus_read_mfr_ic_device(void);
 /*----------------------------------------------------------------------------*/
 Uint8 pmbus_read_write_device_id(Uint8 pmbus_read);
 Uint8 pmbus_read_write_mfr_id(Uint8 pmbus_read);
@@ -81,10 +81,10 @@ int32 pmbus_read_one_byte_handler(Uint8 value);
 int32 pmbus_read_two_byte_handler(Uint16 value);
 Uint8 pmbus_invalid_read(void);
 void send_string(const Uint8 string_to_send[], Uint8 num_bytes);
-Uint8 pmbus_read_debug_buffer(void);
+inline Uint8 pmbus_read_debug_buffer(void);
 Uint8 pmbus_write_gui_constant(void);//Don't be used!
-Uint8 pmbus_write_user_ram_00(void);
-Uint8 pmbus_read_user_ram_00(void);
+inline Uint8 pmbus_write_user_ram_00(void);
+inline Uint8 pmbus_read_user_ram_00(void);
 int pmbus_write_rom_mode(void);
 /*----------------------------------------------------------------------------*/
 Uint8 pmbus_read_write_invalid_command(Uint8 pmbus_read);
@@ -95,10 +95,10 @@ Uint8 pmbus_read_write_rom_mode(Uint8 pmbus_read);
 //=============================================================================
 //                      pmbus read write Register
 //=============================================================================
-Uint8 pmbus_write_parm_info(void);
-Uint8 pmbus_read_parm_info(void);
-Uint8 pmbus_write_parm_value(void);
-Uint8 pmbus_read_parm_value(void);
+inline Uint8 pmbus_write_parm_info(void);
+inline Uint8 pmbus_read_parm_info(void);
+inline Uint8 pmbus_write_parm_value(void);
+inline Uint8 pmbus_read_parm_value(void);
 /*----------------------------------------------------------------------------*/
 Uint8 pmbus_read_write_parm_info(Uint8 pmbus_read);
 Uint8 pmbus_read_write_parm_value(Uint8 pmbus_read);

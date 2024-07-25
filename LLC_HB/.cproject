@@ -37,9 +37,9 @@
 									<listOptionValue builtIn="false" value="UCD3138A"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.INCLUDE_PATH.968401642" name="Add dir to #include search path (--include_path, -I)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.INCLUDE_PATH" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/Software/including}"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/Software/Device/Header}"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/Software/Hardware_Drive/Interrupt}"/>
-									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/Software/Hardware_Drive/Pmbus}"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${CG_TOOL_ROOT}/include"/>
 								</option>
@@ -54,7 +54,7 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PP_DIRECTORY.406397983" name="Preprocessor file directory (default is .) (--pp_directory)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PP_DIRECTORY" value="${workspace_loc:/${ProjName}/Debug/UCD3138A}" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_MODE.365653586" name="Mode" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_MODE" value="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_MODE.manual" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_WITH_COMMENT.798182749" name="Preprocess only; maintain comments (--preproc_with_comment, -ppc)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_WITH_COMMENT" value="true" valueType="boolean"/>
-								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_WITH_COMPILE.1980682049" name="Continue compilation after using -pp&lt;X&gt; options. (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_WITH_COMPILE" value="true" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_WITH_COMPILE.1980682049" name="Continue compilation after using -pp&lt;X&gt; options (--preproc_with_compile, -ppa)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.PREPROC_WITH_COMPILE" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.OPT_LEVEL.255854864" name="Optimization level (--opt_level, -O)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compilerID.OPT_LEVEL.2" valueType="enumerated"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compiler.inputType__C_SRCS.1240021175" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compiler.inputType__CPP_SRCS.291208456" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.TMS470_5.2.compiler.inputType__CPP_SRCS"/>

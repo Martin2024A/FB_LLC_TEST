@@ -20,15 +20,15 @@ void init_loop_mux(void)
     LoopMuxRegs.DPWMMUX.bit.DPWM3_FILTER_SEL = 0;
 
     LoopMuxRegs.FILTERMUX.bit.FILTER0_FE_SEL = 0;//Connect filter0 to front end 0
-    
+    // Get start up ramp triggers from DPWM 3
     LoopMuxRegs.FECTRL0MUX.bit.DPWM3_FRAME_SYNC_EN  = 1;
     //轻载设置_没使用
-    LoopMuxRegs.LLCTRL.bit.LL_FILTER_SEL = 0;
-    LoopMuxRegs.LLCTRL.bit.DPWM_ON_TIME = 0;
-    LoopMuxRegs.LLCTRL.bit.CYCLE_CNT_EN = 0;
-    LoopMuxRegs.LLENTHRESH.bit.CYCLE_CNT_THRESH = 0;
-    LoopMuxRegs.LLCTRL.bit.LL_EN =1;
-    //DAC VALUE
+    // LoopMuxRegs.LLCTRL.bit.LL_FILTER_SEL = 0;
+    // LoopMuxRegs.LLCTRL.bit.DPWM_ON_TIME = 0;
+    // LoopMuxRegs.LLCTRL.bit.CYCLE_CNT_EN = 0;
+    // LoopMuxRegs.LLENTHRESH.bit.CYCLE_CNT_THRESH = 0;
+    // LoopMuxRegs.LLCTRL.bit.LL_EN =1;
+    configure_cc_dac_value();
 }
 
 

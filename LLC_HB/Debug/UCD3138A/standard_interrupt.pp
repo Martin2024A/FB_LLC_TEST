@@ -1,124 +1,9 @@
-//###########################################################################
-//
-// FILE:    standard_interrupt.c
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
 
-//###########################################################################
-//
-// FILE:    system_defines.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+/*----------------------------------include-----------------------------------*/
 
 
 
-
-
-
-
-
-
-
-
-
-//#define TSR (0.42e-6 + DT0SR)              //Maximum SR on time
-
-
-
-
-
-
-
-
-/*
-#define DAC_OCP_PRI (IPRI_OCP / 2.5 * ((1<<7) - 1.0) + 1)			//DAC value required to achieve Ipri_OCP
-#define PMAX (int)(IMAX * VOUT * (float)(1 << 14) * (float)(1 << 12) * 1.08 * 54e-3 / 12.0 / 1.6 / 2.5)	//Firmware CP value
-#define IPMAX (int)(PMAX / 6440)
-#define ICCMAX (int)(25.0 * (float)(1 << 12) * 54e-3 / 2.5)
-*/
-
-// This limitation check is required because the flash access routines in flash.c make the
-// assumption that the size of the segments of the data flash are an integral power of two.
-
-
-// Flash Error codes
-
-
-
-// 912 = 16 * Round(1.065 / (12 * 1.6) * (1 << 10))
-/*
-DAC0 * (1 << 11) * TSAMP / TSS calculates the DAC step required to achieve a
-soft start time of TSS from 0V. Where TSS is in seconds and DAC0 is the 14 bit version. 
-TSAMP is the sample rate of the EADC. For the LLC converter this has been fixed 
-to 500ns independant of the switching frequency.
-
-The factor of 1000 below is to convert the units from mV/us to V/s. DAC_VALUE_SCALER is included
-to convert the voltage to DAC LSBs. The factor VOUT_MODE_EXP is not needed since 
-the original units of the transition rate do not include it.
-*/
-//#define VOUT_TRANSITION_RATE_SCALER (int32)(TSAMP * 1000 * (1 << (11 + VOUT_TRANSITION_EXP)) * DAC_VALUE_SCALER)
-
-//((1 / 12.0 * 1.065 / 2.5 * ((1 << 7) - 1)) << OVP_EXP)
-
-//These two together properly scale the VOUT from the ADC to the Literal value.
-//((12 / 1.065) * 2.5 / 4096) << (16 + VOUT_MODE_EXP - VOUT_ADC_TO_LITERAL_SHIFT)
-//The factor of 16 appears due to the unsigned_short_q_multiply function
-//#define VOUT_ADC_TO_LITERAL_SHIFT 	(3)
-//#define VOUT_ADC_TO_LITERAL_SCALER  (28268) //(28845)
-
-//Status Word aliases
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//#define SHORTCIRCUIT_PROTECTION (1)
-
+/*----------------------------------include-----------------------------------*/
 //###########################################################################
 //
 // FILE:   Cyclone_Device.h
@@ -5602,48 +5487,45 @@ extern volatile struct SYS_REGS SysRegs;
 //===========================================================================
 // End of file
 //===========================================================================
-//###########################################################################
-//
-// FILE:    pmbus_topology.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
 
-
-//-----------------------
-//setup ID description:
-//DCDC PFC | CLA 1           CLA2               CLA 3              CLA 4             |  DCDC rail 1 |   DCDC rail 2
-//-----------------------------------------------------------------------------------------------------------------
-// #   #    rail# loop type   rail# loop type   rail# loop type    rail# loop type      Topology      Topology
-// R   R     O       R         O       R         O      R           O       R              O            O
-// R: means the field is required to have.
-// O: means the field is optional to have
-//
-//DCDC #: required. choose from 0, 1, 2;  # of DCDC rails
-//PFC #:  required. choose from 0, 1;  # of PFC
-//rail #: optional. choose from 1, 2 if the associated CLA loop type is either C or V.
-//loop type: required. choose from C, V, N. C: current loop. V: voltage loop. N: N/A.
-//           defines each CLA's loop type.
-//Topology:  optional.DCDC rail topology. choose from: TTIF, PSHFB, ZVSPWM, LLC, HSFB
-//-----------------------------------------------------------------------------------------
+/*------------------------------Device macro----------------------------------*/
 
 
 
 
 
 
+extern const Uint8 setup_id[];
+extern const Uint8 mfr_model[];
+extern const Uint8 mfr_revision[];
+extern const Uint8 mfr_date[];
+extern const Uint8 mfr_location[];
+extern const Uint8 mfr_serial[];
+extern const Uint8 mfr_ic_device[];
+extern const Uint8 mfr_ic_device_rev[];
+extern const Uint8 mfr_id[];
 
+extern const Uint8  device_id_string[];
+//=============================================================================
+// Start of MFR message 
+//=============================================================================
+
+/*--------------------------------Flash macro---------------------------------*/
+//=============================================================================
+// variables for PARM_INFO and PARM_VAR
+//=============================================================================
+
+//  Memory limits used by the PARM_INFO and PARM_VALUE commands.
+
+// Allow access to peripherals, but not core ARM regs.
+
+// Allow read-only access to Data Flash
+
+// Allow read-only access to Constants in Program Flash
+
+// Allow read-only access to Program in Program Flash
+
+ //Cyclone 2 extra addresses
 
 
 
@@ -5653,106 +5535,204 @@ extern volatile struct SYS_REGS SysRegs;
 
 
 
-  // ----------------------Intra-Mux
-  // ----------------------Edge-Gen
-  // ----------------------PWM modes
 
 
 
 
-/******************************
- * Start of power parameter
- *****************************/
 
-typedef struct
-{
- Uint16 vout_cal_offset;
- Uint16 iout_cal_gain;
- Uint16 iout_cal_offset;
- Uint16 temperature_cal_offset;
- Uint16 temperature_cal_gain;
- Uint16 vout_cal_monitor;
+
+//==========================================================================================
+// Memory allocation constants
+//==========================================================================================
+
+/*----------------------------------typedef-----------------------------------*/
+/*----------------------------------variable----------------------------------*/
+
+/*-------------------------------------os-------------------------------------*/
+
+/*----------------------------------function----------------------------------*/
+
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+
+/*-----------------------------------macro------------------------------------*/
+//=============================================================================
+//                       frequency and time parameter
+//=============================================================================
+
+
+
+//=============================================================================
+//                       Limit parameters
+//=============================================================================
+//how to get it?
+
+
+//=============================================================================
+//                     GPIO Mask bits
+//=============================================================================
+
+
+//=============================================================================
+//                     Dpwm
+//=============================================================================
+// ----------------------Intra-Mux
+// ----------------------Edge-Gen
+// ----------------------PWM modes
+//=============================================================================
+//                     DecRegs Mask bits
+//=============================================================================
+
+//=============================================================================
+//                     pmbus_write_filter_select states
+//=============================================================================
+
+//=============================================================================
+//                     Flash Error codes
+//=============================================================================
+
+
+/*----------------------------------pmbus----------------------------------*/
+
+
+
+
+//=============================================================================
+//                     Fault mask
+//=============================================================================
+
+
+
+
+//=============================================================================
+//                     Fault and Warn
+//=============================================================================
+
+
+
+
+
+
+
+
+
+
+//=============================================================================
+//                     SCALER
+//=============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*-----------------------------------macro------------------------------------*/
+/*----------------------------------typedef-----------------------------------*/
+//=============================================================================
+// Start of power parameter
+//=============================================================================
+typedef struct{
+    Uint16 vout_cal_offset;
+    Uint16 iout_cal_gain;
+    Uint16 iout_cal_offset;
+    Uint16 temperature_cal_offset;
+    Uint16 temperature_cal_gain;
+    Uint16 vout_cal_monitor;
 }PMBUS_DCDC_CAL;//must be even number of int16
 
-//first rail
-
-//second rail default value
-
-typedef struct
-{
- Uint16 vin_scale;
- Uint16 vin_offset;
+typedef struct{
+    Uint16 vin_scale;
+    Uint16 vin_offset;
 }PMBUS_DCDC_CAL_NONPAGED; //must be even number of int16
 
-typedef struct
-{
- Uint16 vout_cmd;
- Uint16 vout_ov_fault_limit;
- Uint16 vout_ov_warn_limit;
- Uint16 vout_uv_fault_limit;
- Uint16 vout_uv_warn_limit;
- Uint16 iout_oc_fault_limit;
- Uint16 iout_oc_warn_limit;
- Uint16 temp_ot_fault_limit;
- Uint16 temp_ot_warn_limit;
- Uint16 vin_ov_fault_limit;
- Uint16 vin_ov_warn_limit;
- Uint16 vin_uv_fault_limit;
- Uint16 vin_uv_warn_limit;
- Uint16 iin_oc_fault_limit;
- Uint16 iin_oc_warn_limit;
- Uint16 pgood_on_limit;
- Uint16 pgood_off_limit;
- Uint16 vin_on_limit;
- Uint16 vin_off_limit;
- Uint32 ton_rise;
- Uint32 vout_transition_rate;
- Uint16 dead_time_1;
- Uint16 dead_time_2;
- Uint16 dead_time_3;
- Uint16 dead_time_4;
- Uint16 sample_rate;
- Uint16 min_period;
- Uint16 max_period;
- Uint16 tsrmax;
- Uint32 ll_turn_on_thresh;
- Uint32 ll_turn_off_thresh;
- Uint8  ll_en;
- Uint16 cpcc_pmax;
- Uint16 cpcc_imax;
- Uint16	cpcc_ton;
- Uint8	cpcc_enable;
- Uint8  cpcc_time_out_en;
- Uint8	ishare_enable;
- Uint8  iout_oc_fault_response;
- Uint8  vout_uv_fault_response;
- Uint8 rsvd;
- Uint16 frequency_switch;
-}PMBUS_DCDC_CONFIG; //must be even number of int16
-
-//#define TURN_ON_THRESHOLD	(23000) ZCS feature commented
-//#define TURN_OFF_THRESHOLD  (23000) ZCS feature commented
-
-//first rail default value
-
-//second rail default value
-
-typedef struct
-{
- Uint16 ot_limit_DCDC_1;
- Uint16 ot_limit_DCDC_2;
- Uint16 ot_limit_DCDC_3;
- Uint16 ot_limit_DCDC_4;
- int16  deadband_config[8];
- Uint16 vin_ov_fault_limit;
- Uint16 vin_uv_fault_limit;
- Uint16 vin_uv_warn_limit;
- char  mfr_date[14];
- char  rom_password[(4)];
+typedef struct{
+    Uint16 ot_limit_DCDC_1;
+    Uint16 ot_limit_DCDC_2;
+    Uint16 ot_limit_DCDC_3;
+    Uint16 ot_limit_DCDC_4;
+    int16  deadband_config[8];
+    Uint16 vin_ov_fault_limit;
+    Uint16 vin_uv_fault_limit;
+    Uint16 vin_uv_warn_limit;
+    char  mfr_date[14];
+    char  rom_password[(4)];
 }PMBUS_DCDC_CONFIG_NONPAGED; //must be even number int16
 
+typedef struct{
+    Uint16 vout_cmd;
+    Uint16 vout_ov_fault_limit;
+    Uint16 vout_ov_warn_limit;
+    Uint16 vout_uv_fault_limit;
+    Uint16 vout_uv_warn_limit;
+    Uint16 iout_oc_fault_limit;
+    Uint16 iout_oc_warn_limit;
+    Uint16 temp_ot_fault_limit;
+    Uint16 temp_ot_warn_limit;
+    Uint16 vin_ov_fault_limit;
+    Uint16 vin_ov_warn_limit;
+    Uint16 vin_uv_fault_limit;
+    Uint16 vin_uv_warn_limit;
+    Uint16 iin_oc_fault_limit;
+    Uint16 iin_oc_warn_limit;
+    Uint16 pgood_on_limit;
+    Uint16 pgood_off_limit;
+    Uint16 vin_on_limit;
+    Uint16 vin_off_limit;
+    Uint32 ton_rise;
+    Uint32 vout_transition_rate;
+    Uint16 dead_time_1;
+    Uint16 dead_time_2;
+    Uint16 dead_time_3;
+    Uint16 dead_time_4;
+    Uint16 sample_rate;
+    Uint16 min_period;
+    Uint16 max_period;
+    Uint16 tsrmax;
+    Uint32 ll_turn_on_thresh;
+    Uint32 ll_turn_off_thresh;
+    Uint8  ll_en;
+    Uint16 cpcc_pmax;
+    Uint16 cpcc_imax;
+    Uint16	cpcc_ton;
+    Uint8	cpcc_enable;
+    Uint8  cpcc_time_out_en;
+    Uint8	ishare_enable;
+    Uint8  iout_oc_fault_response;
+    Uint8  vout_uv_fault_response;
+    Uint8 rsvd;
+    Uint16 frequency_switch;
+}PMBUS_DCDC_CONFIG; //must be even number of int16
 
-//EXTERN PMBUS_DCDC_READING            pmbus_dcdc_reading[DCDC_PAGE_NUMS];
+/*----------------------------------variable----------------------------------*/
+//constants.c  Flash
+extern volatile const Uint32 pmbus_checksum;
+// extern volatile const Uint32 pmbus_checksum_b;
+extern volatile const PMBUS_DCDC_CONFIG pmbus_dcdc_config_constants[(1)];
+// extern volatile const PMBUS_DCDC_CONFIG pmbus_dcdc_config_constants_b[DCDC_PAGE_NUMS];
+extern volatile const PMBUS_DCDC_CONFIG_NONPAGED pmbus_dcdc_config_nonpaged_constants;
+// extern volatile const PMBUS_DCDC_CONFIG_NONPAGED pmbus_dcdc_config_nonpaged_constants_b;
+extern volatile const PMBUS_DCDC_CAL pmbus_dcdc_cal_constants[(1)];
+// extern volatile const PMBUS_DCDC_CAL pmbus_dcdc_cal_constants_b[DCDC_PAGE_NUMS];
+extern volatile const PMBUS_DCDC_CAL_NONPAGED pmbus_dcdc_cal_nonpaged_constants;
+// extern volatile const PMBUS_DCDC_CAL_NONPAGED pmbus_dcdc_cal_nonpaged_constants_b;
+
+//RAM
 extern PMBUS_DCDC_CONFIG             pmbus_dcdc_config[(1)];
 extern PMBUS_DCDC_CONFIG             pmbus_dcdc_config_translated[(1)];
 extern PMBUS_DCDC_CAL                pmbus_dcdc_cal[(1)];
@@ -5760,43 +5740,57 @@ extern PMBUS_DCDC_CAL                pmbus_dcdc_cal[(1)];
 extern PMBUS_DCDC_CONFIG_NONPAGED    pmbus_dcdc_config_nonpaged;
 extern PMBUS_DCDC_CONFIG_NONPAGED    pmbus_dcdc_config_nonpaged_translated;
 extern PMBUS_DCDC_CAL_NONPAGED       pmbus_dcdc_cal_nonpaged;
-extern Uint16                        dcdc_temperature_1, dcdc_temperature_2, dcdc_temperature_3, dcdc_temperature_4;
 
-/*******************************************
- * End of power parameter
- *******************************************/
+/*-----------------------------------macro------------------------------------*/
+//first rail
 
-/*******************************************
- * Start of filter parameter
- *******************************************/
+
+
+
+//first rail default value
+
+
+/*----------------------------------function----------------------------------*/
+
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*----------------------------------typedef-----------------------------------*/
+//=============================================================================
+// Start of filter parameter
+//=============================================================================
 struct FILTER_MISC_REG_BITS{
     Uint32 rsvd0:28;                // Reserved
 	Uint32 AUTO_GEAR_SHIFT:1;		// AUTO_GEAR_SHIFT - configuration bit to control the automatic gear shifting function
 	Uint32 AFE_GAIN:2;				// AFE_GAIN - AFE gain
     Uint32 NL_MODE:1;          		// NL_MODE - stored in Filter Control Register
-  };
+};
 
-union FILTER_MISC_REG{         // bits   description
+union FILTER_MISC_REG{  
     struct FILTER_MISC_REG_BITS bit;
     Uint32                 all;
-  };
+};
 
 struct FILTER_MISC_GAIN_BITS{
     Uint32 rsvd0:12;    //Reserved
 	Uint32 KCOMP:14;	//KCOMP
     Uint32 CLA_SCALE:3;	//CLA_SCALE
     Uint32 YN_SCALE:3;  //YN_SCALE
-  };
+};
 
-union FILTER_MISC_GAIN{         // bits   description
+union FILTER_MISC_GAIN{  
     struct FILTER_MISC_GAIN_BITS bit;
     Uint32                 all;
-  };
-
-  //=============================================================================
-  // Filter Module Register File
-  //=============================================================================
-typedef struct  {
+};
+//=============================================================================
+// Filter Module Register File
+//=============================================================================
+typedef struct  
+{
     union COEFCONFIG_REG        COEFCONFIG;         // Coefficient Configuration Register
     union FILTERKPCOEF0_REG     FILTERKPCOEF0;      // Filter KP Coefficient 0 Register
     union FILTERKPCOEF1_REG     FILTERKPCOEF1;      // Filter KP Coefficient 1 Register
@@ -5816,385 +5810,223 @@ typedef struct  {
 	union FILTEROCLPLO_REG		FILTEROCLPLO;       // Filter Output Clamp Low Register
 	union FILTER_MISC_REG		FILTER_MISC;        // Miscellaneous bits
 	union FILTER_MISC_GAIN		FILTER_MISC_GAIN;   //
-  }FILTER_PMBUS_REGS;
+}FILTER_PMBUS_REGS;
+/*----------------------------------variable----------------------------------*/
+//constants.c——Flash
+extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants_b;
+extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants_b;
+extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants_b;
+extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants_b;
 
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//RAM
 extern FILTER_PMBUS_REGS filter0_pmbus_regs;
 extern FILTER_PMBUS_REGS filter0_start_up_pmbus_regs;
 extern FILTER_PMBUS_REGS filter0_cp_pmbus_regs;
 extern FILTER_PMBUS_REGS filter1_pmbus_regs;
 extern FILTER_PMBUS_REGS *filter_destination;
 
-/*******************************************
- * End of filter parameter
- *******************************************/
-
+/*----------------------------------function----------------------------------*/
 void copy_coefficients_to_filter(volatile struct FILTER_REGS *dest, const FILTER_PMBUS_REGS *source);
 void copy_coefficients_to_ram(volatile FILTER_PMBUS_REGS *dest, volatile struct FILTER_REGS *source);
-int32 get_pmbus_address(void);
+/*-----------------------------------macro------------------------------------*/
+//=============================================================================
+// FILTER 0 pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_clear_faults(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_store_default_all(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_restore_default_all(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_mode(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_command(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_transition_rate(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_frequency_switch(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_on_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_off_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_ov_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_ov_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_uv_warn_limit(Uint8 pmbus_read);
+//=============================================================================
+// FILTER 0  START_UP pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_vout_uv_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_uv_fault_response(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iout_oc_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_oc_fault_response(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iout_oc_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_ot_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_ot_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_ov_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_ov_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_uv_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_uv_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iin_oc_fault_limit(Uint8 pmbus_read);
+//=============================================================================
+// FILTER 0 CP pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_iin_oc_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_pgood_on_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_pgood_off_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_ton_rise(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_status_byte(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_status_word(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iout(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_mosfet(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_device(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_frequency(Uint8 pmbus_read);
+//=============================================================================
+// FILTER 1  pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_mfr_id(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_model(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_revision(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_location(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_date(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_serial(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_ic_device(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mfr_ic_device_rev(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mode_switching_config(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_light_load_config(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_filter_gains(Uint8 pmbus_read);
+//=============================================================================
+// FILTER struct define
+//=============================================================================
 
-Uint8 pmbus_read_write_filter_select(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_cmd_dcdc_paged(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_cmd_dcdc_nonpaged(Uint8 pmbus_read);
+/*------------------------------------test------------------------------------*/
 
-Uint8 pmbus_read_write_mfr_setup_id(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_deadband_config(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_status_bit_mask(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_cpcc_config(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_ishare_configure(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_pfc_zvs_enable(Uint8 pmbus_read);
+/*----------------------------------include-----------------------------------*/
+/*----------------------------------variable----------------------------------*/
 
-Uint8 pmbus_read_write_pfc_os_enable(Uint8 pmbus_read);
+extern Uint8 pmbus_state;
+extern Uint8 pmbus_buffer[50] ;
+extern Uint8 pmbus_number_of_bytes;
+extern Uint16 pmbus_status_half_word_0_value; //save pmbus status, since cleared on read.
+extern Uint16 pmbus_status_half_word_0_value_ored; //for debug
+extern Uint8 pmbus_buffer_position;
 
-Uint8 pmbus_read_write_llc_sr_enable(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_device_id(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_ide_config(Uint8 pmbus_read);
-
-
-
-
-
-//###########################################################################
-//
-// FILE:    pmbus_common.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
-
-
-
-
-
-
-
-                                    //010 Reserved
-										//This is also used for commands that return blocks of data.
-
-
-
-/**********************************
- * Start of PMBus register bit mask
- **********************************/
-
-
-
-
-
-
-
-
-
-
-
-//=========================================================================================
-// PMBus module definitions
-//=========================================================================================
-	// PMBST Register
-
-// ***KKN***HEM	It would be nice to get rid of these _BYTE0_ and _HALF0_ values.
-// *** 			Requires change to _ALL_ in multiple places in pmbus.c.
-
-
-
-	// PMBCTRL2 Register
-
-
-/**********************************
- * End of PMBus register bit mask
- **********************************/
-
-/**********************************
- * Start of PMBUS driver function
- **********************************/
-void init_pmbus(int32 pmbus_address);
-void pmbus_handler(void);
-
-void pmbus_idle_handler(void);
-void pmbus_read_block_handler(void);
-void pmbus_write_block_handler(void);
-void pmbus_read_wait_for_eom_handler(void);
-Uint8 pmbus_read_write_message(Uint8 pmbus_read);
-/**********************************
- * End of PMBUS driver function
- **********************************/
-
-
-
-extern char	status_cml;	 // STATUS_CML (Communication, Logic, and Memory) for entire board
-
-
-
-
-
-
-
-extern Uint8 gui_constant_pointer;
-extern Uint8 user_ram_00;
-
-
-///////////////////////////////////////////////////////////////
-//variables for PARM_INFO and PARM_VAR
-///////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////
-//variables for PARM_INFO and PARM_VAR
-///////////////////////////////////////////////////////////////
-
-//  Memory limits used by the PARM_INFO and PARM_VALUE commands.
-
-// Allow access to peripherals, but not core ARM regs.
-
-// Allow read-only access to Data Flash
-
-// Allow read-only access to Constants in Program Flash
-
-// Allow read-only access to Program in Program Flash
-
-
- //Cyclone 2 extra addresses
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//==========================================================================================
-// Memory allocation constants
-//==========================================================================================
-// ****VOYAGER#define MFBALR2_HALF0_DATA_FLASH_BASE_ADDRESS 0x8800
-
-
-
-// These error codes are masks based on bits in the CML_STATUS byte.  This allows the
-// pmbus_error_handler() function to do a simple 'OR' instead of a big 'switch' statement.
+extern Uint16   pmbus_status_word;
+extern Uint8    debug_buffer[8];
 
 extern	Uint8	parm_index;
 extern	int16	parm_offset;
 extern	Uint8	parm_count;
 extern	Uint8	parm_size;
 
-extern Uint8 pmbus_buffer[50] ;
-extern Uint8 pmbus_state;
-extern Uint8 pmbus_number_of_bytes;
-extern Uint8 pmbus_buffer_position;
-extern Uint16 pmbus_status_half_word_0_value; //save pmbus status, since cleared on read.
-extern Uint16 pmbus_status_half_word_0_value_ored; //for debug
+extern Uint8 gui_constant_pointer;
+extern Uint8 user_ram_00;
+/*----------------------------------function----------------------------------*/
 
-//Optimize pmbus function
-extern Uint32 pmbus_watchdog_timer;
-extern Uint8  pmbus_pec_valid;
-extern Uint8 pmbus_pec_buffer[10]; //holds bytes recieved at beginning of read message used for pec calculation
-extern Uint8 pmbus_pec_buffer_number_of_bytes; //number of bytes in pec buffer used for pec calculation
-/////////////////////////////////////////////////////////
-//non-paged variables
-//the same for both PFC and DCDC
-//////////////////////////////////////////////////////////
+//=============================================================================
+//              pmbus drive funvcions
+//=============================================================================
+void init_pmbus(int32 pmbus_address);
+void pmbus_handler(void);
 
-extern Uint8  				debug_buffer[8];
-extern Uint8  				page;
-extern Uint8                pmbus_status_temperature;
-extern Uint8                pmbus_status_input;
-extern Uint8                pmbus_status_cml;
-extern Uint8                pmbus_status_fans_1_2;
-extern Uint8                pmbus_status_fans_3_4;
-extern Uint16               pmbus_status_word;
-extern Uint16               second_pmbus_status_word;
-extern Uint8                setup_id_length;
+void pmbus_write_block_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+void pmbus_idle_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+void pmbus_read_block_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+void pmbus_read_wait_for_eom_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+Uint8 pmbus_read_write_message(Uint8 pmbus_read);
 
+//=============================================================================
+//              pmbus read write device and software information
+//=============================================================================
+inline Uint8 pmbus_read_device_id(void);
+inline Uint8 pmbus_invalid_write(void);
+inline Uint8 pmbus_read_mfr_id(void);
+inline Uint8 pmbus_read_setup_id(void);
+inline Uint8 pmbus_read_mfr_model(void);
+inline Uint8 pmbus_read_mfr_revision(void);
+inline Uint8 pmbus_read_mfr_date(void);
+inline Uint8 pmbus_read_mfr_location(void);
+inline Uint8 pmbus_read_mfr_serial(void);
+inline Uint8 pmbus_read_mfr_ic_device(void);
+/*----------------------------------------------------------------------------*/
+Uint8 pmbus_read_write_device_id(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_id(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_setup_id(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_model(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_revision(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_date(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_location(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_serial(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_ic_device(Uint8 pmbus_read);
+Uint8 pmbus_read_write_mfr_ic_device_rev(Uint8 pmbus_read);
+
+//=============================================================================
+//                      pmbus read write
+//=============================================================================
+void watchdog_reset(void);
+int32 pmbus_read_one_byte_handler(Uint8 value);
+int32 pmbus_read_two_byte_handler(Uint16 value);
 Uint8 pmbus_invalid_read(void);
-Uint8 pmbus_invalid_write(void);
+void send_string(const Uint8 string_to_send[], Uint8 num_bytes);
+inline Uint8 pmbus_read_debug_buffer(void);
+Uint8 pmbus_write_gui_constant(void);//Don't be used!
+inline Uint8 pmbus_write_user_ram_00(void);
+inline Uint8 pmbus_read_user_ram_00(void);
+int pmbus_write_rom_mode(void);
+/*----------------------------------------------------------------------------*/
 Uint8 pmbus_read_write_invalid_command(Uint8 pmbus_read);
-Uint8 pmbus_read_write_parm_info(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_parm_value(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_pmbus_revision(Uint8 pmbus_read); //
-Uint8 pmbus_read_write_capability(Uint8 pmbus_read); //
-Uint8 pmbus_read_write_rom_mode(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_debug_buffer(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_user_ram_00(Uint8 pmbus_read);//
+Uint8 pmbus_read_write_debug_buffer(Uint8 pmbus_read);
+Uint8 pmbus_read_write_user_ram_00(Uint8 pmbus_read);
+Uint8 pmbus_read_write_rom_mode(Uint8 pmbus_read);
+
+//=============================================================================
+//                      pmbus read write Register
+//=============================================================================
+inline Uint8 pmbus_write_parm_info(void);
+inline Uint8 pmbus_read_parm_info(void);
+inline Uint8 pmbus_write_parm_value(void);
+inline Uint8 pmbus_read_parm_value(void);
+/*----------------------------------------------------------------------------*/
+Uint8 pmbus_read_write_parm_info(Uint8 pmbus_read);
+Uint8 pmbus_read_write_parm_value(Uint8 pmbus_read);
+Uint8 pmbus_read_write_pmbus_revision(Uint8 pmbus_read);
+Uint8 pmbus_read_write_capability(Uint8 pmbus_read);
+
+/*-----------------------------------macro------------------------------------*/
+
+
+
+
+//=============================================================================
+//                         PMBus states
+//=============================================================================
+
+//=============================================================================
+//                        PMBus return states
+//=============================================================================
+
+// These error codes are masks based on bits in the CML_STATUS byte.  This allows the
+// pmbus_error_handler() function to do a simple 'OR' instead of a big 'switch' statement.
+
+//=============================================================================
+//                       Status Word aliases
+//=============================================================================
+//=============================================================================
+//                        PMBus  bit mask
+//=============================================================================
+
+
+
+
+//=============================================================================
+//                    CMD functions and query
+//=============================================================================
+                                  //010 Reserved
+									//This is also used for commands that return blocks of data.
 
 
 
@@ -6204,46 +6036,43 @@ Uint8 pmbus_read_write_user_ram_00(Uint8 pmbus_read);//
 
 
 
-//###########################################################################
-//
-// FILE:    variables.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
 
 
 
 
+
+
+
+
+
+
+
+//=============================================================================
+// CMD ENABLE
+//=============================================================================
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*-----------------------------------macro------------------------------------*/
+
+/*----------------------------------typedef-----------------------------------*/
 typedef void (*FUNC_PTR)(); 	//used for zeroing instruction word.
 
-extern Uint32 program_area[32];
-
-extern volatile Uint32 zoiw_address; //address to zero out integrity double word
-extern volatile Uint32 zoiw_flash_key; //flash key to zero out integrity double word - tells it which one to zero out.
-
-
-
-typedef struct  
-{
-	Uint32 address;	//Value from adc for device address
-	Uint32 vin_mon; //Value from adc for Vin 
-	Uint32 ishare; 	//Value from adc for Ishare
-	Uint32 vo_sense; //Value from adc for Vout
-	Uint32 ips; 	//Value from adc for primary current sense
-	Uint32 vo_ovp; 	//Value from adc for Vin  
+//ADC data
+typedef struct{
+	Uint32 address;		//Value from adc for device address
+	Uint32 vin_mon; 	//Value from adc for Vin 
+	Uint32 ishare; 		//Value from adc for Ishare
+	Uint32 vo_sense; 	//Value from adc for Vout
+	Uint32 ips; 		//Value from adc for primary current sense
+	Uint32 vo_ovp; 		//Value from adc for Vin  
 	Uint32 pri_temp;	//Value from adc for SR MOSFET temperature
-	Uint32 io_sense; //Value from adc for Iout
+	Uint32 io_sense; 	//Value from adc for Iout
 	Uint32 device_temp;	//Value from adc for internal device temperature
 	Uint32 ips_hr;
 	Uint32 address_hr;
@@ -6251,21 +6080,7 @@ typedef struct
 	Uint32 adc_scale_factor;
 } ADC_VALUES_STRUCT;
 
-struct PFC_OUT_STRUCT
-{
-	unsigned char pfc_status0;
-    unsigned char pfc_status1;
-    unsigned int  pfc_vac;
-    unsigned int  pfc_iac;
-    unsigned int  pfc_pin;
-	unsigned int  pfc_pout;
-    unsigned int  pfc_vdc_bus;
-    unsigned int  pfc_sw_frequency;
-    unsigned char pfc_temperature;
-};
-
-typedef struct
-{
+typedef struct{
 	Uint16 burst_mode_i_turn_on;
 	Uint16 burst_mode_i_turn_off;
 	int16 burst_mode_v_hys;
@@ -6288,8 +6103,8 @@ typedef struct
 	Uint8 cbc_max;
 } FIQ_DATA;
 
-typedef enum
-{
+//Interrupt state
+typedef enum{
 	STATE_IDLE,
 	STATE_CHECK_RAMP_UP,
 	STATE_WAIT_DRIVEON,
@@ -6306,16 +6121,87 @@ typedef enum
 	NONE
 } SUPPLY_STATE;
 
-extern FIQ_DATA fiq_data; 
+struct PFC_OUT_STRUCT{
+	unsigned char pfc_status0;
+    unsigned char pfc_status1;
+    unsigned int  pfc_vac;
+    unsigned int  pfc_iac;
+    unsigned int  pfc_pin;
+	unsigned int  pfc_pout;
+    unsigned int  pfc_vdc_bus;
+    unsigned int  pfc_sw_frequency;
+    unsigned char pfc_temperature;
+};
 
-extern Uint32 xn_bins[64]; 				//xn histogram bins
-extern int loop_counter;				//Counter for tracking the number of samples to collect
-extern int number_of_samples;			//Total number of samples to collect
-extern int start_monitor;				//RAM variable to start xn data collection
-extern int ramp_complete;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
+struct qnote{
+  int16 mantissa;
+  int16 exponent;
+};
+
+/*----------------------------------variable----------------------------------*/
 extern ADC_VALUES_STRUCT adc_values; 	//ADC Readings
 extern ADC_VALUES_STRUCT adc_values_avg;//ADC Readings Averaged
-extern SUPPLY_STATE supply_state,supply_state_when_fault;  		//Supply state enum for state machine
+extern FIQ_DATA fiq_data; 
+extern SUPPLY_STATE supply_state;//Supply state enum for state machine
+
+//=============================================================================
+//                     start interrupt
+//=============================================================================
+extern Uint32 start_up_delay_over;
+extern Uint32 count;
+extern Uint32 count_end;
+extern int ramp_complete;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
+extern Uint32 delay_counter;
+
+extern Uint32 max_period;
+extern Uint32 min_period;
+extern Uint32 updated_period_target;
+extern Uint32 temperory_period;
+extern Uint32 default_period;
+extern Uint32 period_change_enable;
+extern Uint32 min_mode_switching;
+extern Uint32 default_mode_switching;
+extern Uint32 delay_counter;
+
+//=============================================================================
+//                   fault handler
+//=============================================================================
+extern volatile Uint32 FAULTMUXINTSTAT_value;
+
+extern int32 shut_down_fault_detected;
+extern Uint32 firmware_error_flag;
+extern Uint32 uv_latch_flag;
+extern Uint32 ov_latch_flag;
+extern Uint32 oc_latch_flag;
+extern Uint32 oc_fault_limit;
+extern Uint32 restart_counter;
+extern Uint32 retry_enable;
+extern Uint32 oc_counter;
+
+//=============================================================================
+//                   pmbus handler
+//=============================================================================
+extern Uint16 period;
+
+extern Uint8 filter_select;
+extern Uint8 filter_activate;
+extern Uint64 p_out;
+
+extern Uint8 erase_segment_counter;	// Number of DFlash segment remaining to be erased
+extern Uint8 erase_segment_number;		// DFlash segment number being erased
+extern Uint8 flash_write_status;	// Global status while attempting to write to Data Flash.
+
+
+extern struct qnote temp_qnote1;
+extern struct qnote temp_qnote_scale1;
+extern struct qnote adc12_vin_scaler;
+extern int16 temp_qnote_value1;
+
+extern int32 temp_debug_buffer;
+
+//=============================================================================
+//                              uart and pfc
+//=============================================================================
 
 extern Uint8 uart_text_rx_buf[(10)*2 + 2]; //UART receive buffer in text mode
 extern Uint8 uart_text_tx_buf[(10)*2 + 2]; //UART transmit buffer in text mode
@@ -6336,592 +6222,218 @@ extern Uint8 pfc_zvs_enable;//for APEC demo
 extern Uint8 pfc_os_enable;//for APEC demo
 extern Uint8 llc_sr_enable;//for APEC demo
 extern Uint8 previous_llc_sr_command;
+/*----------------------------------variable----------------------------------*/
 
-extern Uint8 erase_segment_counter;	// Number of DFlash segment remaining to be erased
-extern Uint8 erase_segment_number;		// DFlash segment number being erased
-extern Uint8 flash_write_status;	// Global status while attempting to write to Data Flash.
+/*----------------------------------function----------------------------------*/
 
-extern Uint16 period;
-
-
-
-struct qnote
-{
-  int16 mantissa;
-  int16 exponent;
-};
-
-extern struct qnote temp_qnote1;
-extern struct qnote temp_qnote_scale1;
-extern struct qnote adc12_vin_scaler;
-extern int16 temp_qnote_value1;
-extern Uint32 rogue_errors;
-
-extern int32 current_share_int_state; 
-extern int32 current_share_control_effort;
-extern int16 current_share_kp;
-extern int16 current_share_ki;
-extern int32 error_zero;
-extern int32 local_error;
-extern int32 ishare_center_threshold;
-extern int32 ishare_threshold;
-extern int32 ishare_threshold_ms;
-extern int32 ishare_center_threshold_ms;
-extern int32 ishare_threshold_master_enable;
-extern int32 ishare_threshold_slave_enable;
-extern int32 eadc_dac_target;
-extern int32 eadc_dac_max;
-extern int32 eadc_dac_min;
-extern int32 master_state;
-extern int32 master_time_count;
-extern int32 master_time_limit;
-extern int8  enable_turn_on;
-
-extern Uint32 pnom_value;
-extern Uint32 cpcc_count;
-extern int16  fault_and_warning_delay_count;
-
-extern Uint32 cpcc_ton_fault_time_limit;
-extern Uint32 cs_recover_time;
-extern Uint32 cs_recover_time_threshold;
-extern Uint32 filter_recover_time_threshold;
-extern Uint32 filter_recover_time;
-extern volatile Uint32 FAULTMUXINTSTAT_value;
-extern union CPSTAT_REG cpstat_local;
-
-extern Uint32 restart_counter;
-
-extern Uint64 p_out;
-extern Uint32 v_out;
-extern Uint32 i_out;
-extern Uint32 vref;
-extern Uint32 vdac;
-extern int32  error_offset;
-extern Uint8 cs_int_exp;
-extern Uint8 filter_select;
-extern Uint8 filter_activate;
-
-extern int16 slope_burst_mode_exp;
-extern int16 slope_ioff_mode_exp;
-extern int32 turn_on;
-extern int32 turn_off;
-extern Uint8 table_index;
-
-extern Uint8 burst_mode_enable_flag;
-extern int32 ioff_value;
-
-extern Uint32 start_up_delay_over;
-extern Uint32 count;
-extern Uint32 count_end;
-extern Uint32 sr_on;
-
-extern int32 HWBMTHRESH_SU; //ZCS feature
-extern int32 HWBMTHRESH_REG; //ZCS feature
-extern int32 HWBMTHRESH_CCCP; //ZCS feature
-extern int32 DCOMP2_CNT_THRESH; //ZCS feature
-extern int32 DCOMP2_THRESH; //ZCS feature
-
-
-
-extern Uint32 uart_auto_cal_state,result,baud_div_value;
-extern Uint32 result_temp,counter;
-extern Uint32 r1,r2,r3,r4,r5,r6,r7,r8;
-extern Uint32 ttemp;
-extern Uint32 count1;
-extern int32 filter_ramp_done;
-extern int32 filter_ramp_value;
-
-extern int32 shut_down_fault_detected;
-extern Uint32 temperature_reading;
-extern Uint32 firmware_error_flag;
-extern Uint32 uv_latch_flag;
-extern Uint32 ov_latch_flag;
-extern Uint32 oc_latch_flag;
-extern Uint32 oc_fault_limit;
-extern Uint32 restart_counter;
-extern Uint32 retry_enable;
-extern Uint32 oc_counter;
-
-extern Uint32 max_period;
-extern Uint32 min_period;
-extern Uint32 updated_period_target;
-extern Uint32 temperory_period;
-extern Uint32 default_period;
-extern Uint32 period_change_enable;
-extern Uint32 min_mode_switching;
-extern Uint32 default_mode_switching;
-extern Uint32 delay_counter;
-
-
-
-extern int32 temp_debug_buffer;
-
-
-
-//###########################################################################
-//
-// FILE:    function_definitions.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+/*------------------------------------test------------------------------------*/
 
 
 
 
-void clear_program_flash(void);
-void clear_program_flash_0(void);
-void clear_program_flash_1(void);
-void clear_program_flash_2(void);
-void clear_program_flash_3(void);
-void clear_program_flashes(void);
-void zero_out_integrity_word_0(void);
-void zero_out_integrity_word_1(void);
-void zero_out_integrity_word_2(void);
-void zero_out_integrity_word_3(void);
-void zero_out_integrity_double_word(void);
-void zero_out_integrity_word(void);
-void UART_auto_cal(void);
 
+/*----------------------------------include-----------------------------------*/
 
-void init_DTC(void);
-void char_out(char data);
+/*-----------------------------------macro------------------------------------*/
+
+/*----------------------------------typedef-----------------------------------*/
+
+/*----------------------------------variable----------------------------------*/
+
+/*-------------------------------------os-------------------------------------*/
+
+/*----------------------------------function----------------------------------*/
+//=============================================================================
+//                                    DPP
+//=============================================================================
+/*------------------------------------dpwm-----------------------------------*/
+void init_dpwms(void);
 void init_dpwm0(void);
 void init_dpwm1(void);
 void init_dpwm2(void);
 void init_dpwm3(void);
-void init_fault_mux(void);
-void init_front_end0(void);
-void configure_cc_dac_value(void);
-void init_front_end2(void);
-void init_loop_mux(void);
-void init_uart0(void);
-void init_uart1(void);
-void init_watchdog(void);
-void global_disable(void);
-void start_up_reset(void);
-void init_filter0_states(void);
-void handle_regulation_state(void);
-void zero_out_integrity_word(void);
-void watchdog_reset(void);
-void init_interrupt(void);
-void init_gpio(void);
-void configure_burst_mode(void);
+void configure_dpwm_timing(PMBUS_DCDC_CONFIG *dpwm_timings);
 void init_sample_trigger(void);
+/*------------------------------------filter---------------------------------*/
 void init_filter0(void);
-void init_filter1(void);
-void init_sec_ocp(void);
-void init_ovp(void);
-void configure_ovp(void);
-void init_pri_ocp(void);
-void init_adc12(void);
-void xn_histogram(void);
-void poll_adc(void);
-void clear_faults(void);
-void uart_transmit_data(void);
-void translate_raw_to_text(void);
-void uart_process_rx_data(void);
-char translate_nybble_out(char byte,char * pchar2 );
-char translate_nybble_in(char nyb);
-void translate_text_to_raw(void);
-void uart_receive_data(void);
-void configure_constant_power(void);
-void init_filter1_states(void);
-void gpio_sr_off(void);
-void send_string(const Uint8 string_to_send[], Uint8 num_bytes);
-Uint8 start_erase_task(const void* dest_ptr, Uint16 byte_count);
-Uint32 calculate_dflash_checksum(Uint8 *start_addr, Uint8 *end_addr);
-inline Uint8 calc_flash_segments(const void* dest_ptr, Uint16 byte_count, Uint8* first_segment);
-void clear_program_flash(void);
-void write_program_flash_word(int * address, int data);
-void look_for_interrupted_dflash_erase(void);
-Uint8 update_data_flash(void* dest_ptr, const void* src_ptr, Uint16 byte_count);
-void erase_task(void);
-void erase_one_section(int first_segment, int byte_count);
+void init_filter0_states(void);
 void copy_coefficients_to_filter(volatile struct FILTER_REGS *dest, const FILTER_PMBUS_REGS *source);
-void copy_coefficients_to_ram(volatile FILTER_PMBUS_REGS *dest, volatile struct FILTER_REGS *source);
-void configure_vout_ramp_rate(void);
-void configure_ton_rise(void);
-void handle_faults(void);
-void handle_warnings(void);
-void handle_pgood(void);
-void transition_to_idle_state(void);
-void control_sr_on_off(void);
-void cccp_dac_adjust(void);
-
-void configure_iout_ocp(void);
-
-struct qnote qnote_scale_int32 (struct qnote x, int32 y);
-struct qnote qnote_scale (struct qnote x, int16 y);
-struct qnote linear11_to_qnote (int16 linear11);
-
-void configure_dpwm_timing(void);
-
-struct qnote qnote_subtract(struct qnote x, struct qnote y);
-int16 qnote_to_linear11 (struct qnote x);
-
-struct qnote qnote_add(struct qnote x, struct qnote y);
-
-void configure_ipri_cycle_by_cycle(Uint16 fault_limit);
-
-void enable_current_sharing(void);
-void disable_current_sharing(void);
-void handle_current_sharing_average(void);
-void handle_current_sharing_master_slave(void);
-
-void set_vout(void);
-void init_cpcc(void);
-
-void configure_iin_ocp(void);
-
-void init_variables(void);
-void init_ipri_cycle_by_cycle(void);
-void init_front_end1(void);
-
-void handle_ramp_up_state(void);
-void handle_idle_state(void);
-void handle_vout_transition_state(void);
-void handle_fault_state(void);
-void handle_standard_interrupt_global_tasks(void);
-void handle_cpcc_state(void);
-void handle_light_load_state(void);
-void handle_ramp_down_state(void);
-
+/*---------------------------------front end---------------------------------*/
+void init_front_end0(void);
+/*------------------------------------gpio-----------------------------------*/
+void init_gpio(void);
+void gpio_sr_on(void);
+void gpio_sr_off(void);
 void gpio_dpwm_on(void);
 void gpio_dpwm_off(void);
+/*----------------------------------loop mux---------------------------------*/
+void init_loop_mux(void);
 void global_enable(void);
-void gpio_sr_on(void);
+void global_disable(void);
+void init_DTC(void);
 
-void stop_filter_states(void);
-void start_filter_states(void);
+//=============================================================================
+//                                    ADC & Fault
+//=============================================================================
+void init_adc12(void);
+void poll_adc(void);
 
+void init_uvp(void);
+void init_ovp(void);
+void init_sec_ocp(void);
+void init_ipri_cycle_by_cycle(void);
+void init_fault(void);
+
+//=============================================================================
+//                                    Flash
+//=============================================================================
+void look_for_interrupted_dflash_erase(void);
+Uint8 update_data_flash(void* dest_ptr, const void* src_ptr, Uint16 byte_count);
+Uint8 start_erase_task(const void* dest_ptr, Uint16 byte_count);
+void erase_task(void);
+Uint32 calculate_dflash_checksum(Uint8 *start_addr, Uint8 *end_addr);
+inline Uint8 calc_flash_segments(const void* dest_ptr, Uint16 byte_count, Uint8* first_segment);
+void erase_one_section(int first_segment, int byte_count);
 void restore_default_all(void);
-void configure_filter_parameters(void);
 
-void init_dpwms(void);
-
-Uint32 qnote_linear11_multiply_fit(struct qnote x, int16 linear11, Uint32 max_value);
-Uint32 qnote_linear16_multiply_fit(struct qnote x, Uint16 linear16_mantissa, int8 vout_mode, Uint32 max_value);
-
-void burst_mode_enable(void);
-void burst_mode_disable(void);
-
+//=============================================================================
+//                                    fault handler
+//=============================================================================
+void handle_warnings(void);
+void handle_pgood(void);
+void handle_faults(void) ;
+//=============================================================================
+//                         configration   funvtions
+//=============================================================================
+void configure_vout_timing(void);
+void configure_iout_ocp(void);
+void control_sr_on_off(void);
 void configure_vin_on_off_thresholds(void);
 void configure_fault_levels(void);
 void configure_warning_levels(void);
 void configure_pgood_levels(void);
-void configure_cs_limits(void);
-void configure_vout_timing(void);
 void configure_vout_cmd(void);
-void rom_back_door(void);
-void configure_dpwm_timing_deadtime_update(void);
 void configure_uvp(void);
-void init_uvp(void);
-void init_fault_dpwms(void);
+void configure_ovp(void);
+void configure_cc_dac_value(void);
+//=============================================================================
+//                         scale   funvtions
+//=============================================================================
+struct qnote linear11_to_qnote (int16 linear11);
+int16 qnote_to_linear11 (struct qnote x);
+struct qnote qnote_scale_int32 (struct qnote x, int32 y);
+Uint32 qnote_linear11_multiply_fit(struct qnote x, int16 linear11, Uint32 max_value);
+Uint32 qnote_linear16_multiply_fit(struct qnote x, Uint16 linear16_mantissa, int8 vout_mode, Uint32 max_value);
 
-void configure_frequency_switch(void);
-
-void configure_new_compensation(volatile FILTER_PMBUS_REGS *source);
-void handle_hiccup_state(void);
-void cpcc_adjustment(void);
-
-void init_filter2(void);
-
-void init_dcomp(void);
-
-inline void burst_mode_handler(void);
-inline void cc_handler(void);
-//flash.c
-void load_filter_from_flash(Uint8 loop_index, Uint8 bank_index);
-void load_filter_to_cla_gains_in_ram(Uint8 loop_index, Uint8 bank_index);
-
-
-
-//interrupts.c
-void undefined_instruction_exception(void);
-void software_interrupt(Uint32 arg1, Uint32 arg2, Uint32 arg3, Uint8 swi_number);
-void abort_prefetch_exception(void);
-void abort_data_fetch_exception(void);
-void fast_interrupt(void);
-
-
-//main.c
-void main();
-void c_int00(void);
-
-
-//standard_interrupt.c
-void average_adc_readings(void);
-void standard_interrupt(void);
-
-int32 pmbus_read_two_byte_handler(Uint16 value);
-int32 pmbus_read_one_byte_handler(Uint8 value);
-
-
-//###########################################################################
-//
-// FILE:    software_interrupt.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+//=============================================================================
+//                         standard interrupt
+//=============================================================================
+void handle_standard_interrupt_global_tasks(void);
+void handle_idle_state(void);
+void handle_softstart(void);
+void handle_ramp_up_state(void);
+void transition_to_idle_state(void);
+void clear_faults(void);
+void handle_delay_rampup_state(void);
+void handle_regulation_state(void);
+void handle_vout_transition_state(void);
+void handle_fault_state(void);
+void init_variables(void);
 
 
 
-#pragma SWI_ALIAS (swi_single_entry, 0)
-void swi_single_entry(Uint32 arg1, Uint32 arg2, Uint32 arg3, Uint8 swi_number);
-//software_interrupts.h
+/*-----------------------------------macro------------------------------------*/
 
-void erase_data_flash_segment(Uint8 segment);
+/*----------------------------------typedef-----------------------------------*/
 
+/*----------------------------------variable----------------------------------*/
 
-void erase_dflash_segment_no_delay(Uint8 segment);
+/*-------------------------------------os-------------------------------------*/
 
-
-void write_data_flash_word(Uint32 address,unsigned long data);
-
-
-void enable_fast_interrupt(void);
-
-
-void disable_fast_interrupt(void);
-
-
-void enable_interrupt(void);
-
-
-void disable_interrupt(void);
-
-
-void write_firqpr(unsigned long value);
-
-
-void write_reqmask(unsigned long value);
-
-
-void clear_integrity_word(void);
-
-
-void write_data_flash_block();
-
-
-void erase_pflash(void);
-
-
-
-
-
-void poll_adc(void)
+/*----------------------------------function----------------------------------*/
+#pragma INTERRUPT(standard_interrupt,IRQ)
+void standard_interrupt(void)
 {
-	if(AdcRegs.ADCSTAT.bit.ADC_INT == 1)
-		//If the conversion is complete
+	handle_standard_interrupt_global_tasks();
+	handle_faults();
+
+	switch (supply_state)
 	{
+	case STATE_IDLE:
+		handle_idle_state();
+		break;
 
-		//Collect raw ADC values
-		adc_values.vo_sense 		= AdcRegs.ADCRESULT[0].bit.RESULT;
-		adc_values.io_sense 		= AdcRegs.ADCRESULT[3].bit.RESULT;
-		adc_values.pri_temp 			= AdcRegs.ADCRESULT[2].bit.RESULT;    //Primary side temperature
-		adc_values.vin_mon 			= AdcRegs.ADCRESULT[1].bit.RESULT;
-//		adc_values.ishare 			= AdcRegs.ADCRESULT[4].bit.RESULT;  //CBC
-		adc_values.device_temp		= AdcRegs.ADCRESULT[5].bit.RESULT;
-        adc_values.sec_temp      = AdcRegs.ADCRESULT[6].bit.RESULT;
-        adc_values.ips           = AdcRegs.ADCRESULT[4].bit.RESULT;  //CBC
+	case STATE_RAMP_UP:
+		handle_ramp_up_state();
+		break;
 
-		//Collect averaged ADC values
-		adc_values_avg.vo_sense 	= AdcRegs.ADCAVGRESULT[0].bit.RESULT;
-		adc_values_avg.io_sense	 	= AdcRegs.ADCAVGRESULT[3].bit.RESULT;
-		adc_values_avg.pri_temp 		= AdcRegs.ADCAVGRESULT[2].bit.RESULT;
-		adc_values_avg.vin_mon  	= AdcRegs.ADCAVGRESULT[1].bit.RESULT;
-//		adc_values_avg.ishare   	= AdcRegs.ADCAVGRESULT[4].bit.RESULT;  //CBC
-		adc_values_avg.device_temp	= AdcRegs.ADCAVGRESULT[5].bit.RESULT;
+	case STATE_CHECK_RAMP_UP:
+	    handle_delay_rampup_state();
+	    break;
 
+	case STATE_REGULATED:
+		handle_regulation_state();
+		break;
+	case STATE_VOUT_TRANSITION:
+		handle_vout_transition_state();
+		break;
+
+	// case STATE_HICCUP:
+	// 	handle_hiccup_state();
+	// 	break;
+	case STATE_FAULT:
+		handle_fault_state();
+		break;
 	}
-	//Start a conversion
-	AdcRegs.ADCCTRL.bit.SW_START = 1;  
-	//Clear trigger, so we don't restart
-	AdcRegs.ADCCTRL.bit.SW_START = 0;  
+	Dpwm0Regs.DPWMCTRL1.bit.GPIO_A_VAL =1;   //test
+
+	//clear interrupt flag by a read/write to register.
+	TimerRegs.T16PWM2CMPCTRL.all = 3;
+	//Clear the GPIO to signify the end of the interrupt
+//	MiscAnalogRegs.GLBIOVAL.bit.DPWM2A_IO_VALUE = 0;
 }
-
-void average_adc_readings(void)
-{
-	//These variables contain additional resolution to improve the 
-	//firmware based averaging filter performance.
-	//The pole point of this IIR filter is configurable by the global variable
-	//"scf."
-
-	//Calculate the high resolution average.
-
-}
-
-void clear_faults(void)
-{
-	global_disable();
-	global_enable();
-	//This is necessary to make sure all interrupt status values are 
-	//cleared.
-	FAULTMUXINTSTAT_value =	FaultMuxRegs.FAULTMUXINTSTAT.all;
-}
-
-void control_sr_on_off(void)
-{
-    if (llc_sr_enable ^ previous_llc_sr_command)
-    {
-        if (llc_sr_enable)
-        {
-            //Turn on SR
-            gpio_sr_on();
-        }
-        else
-        {
-            //Turn off SR
-            gpio_sr_off();
-        }
-        previous_llc_sr_command = llc_sr_enable;
-    }
-}
-
-void set_vout(void)
-{
-    FeCtrl0Regs.EADCDAC.bit.DAC_VALUE = pmbus_dcdc_config_translated[0].vout_cmd;
-}
-
-void period_change(void)
-{
-
-        temperory_period = Filter0Regs.FILTERYNCLPHI.all;
-
-
-        if(temperory_period > updated_period_target)
-
-        {
-            temperory_period = temperory_period -8;
-            if ((temperory_period <  max_period) && (temperory_period >  min_period))
-            {
-                Filter0Regs.FILTERYNCLPHI.all = temperory_period;
-            }
-        }
-        else if(temperory_period < updated_period_target)
-        {
-            temperory_period = temperory_period + 8;
-            if ((temperory_period <  max_period) && (temperory_period >  min_period))
-            {
-                Filter0Regs.FILTERYNCLPHI.all = temperory_period;
-            }
-        }
-        else
-        {
-            ;
-        }
-
-
-}
-
 void handle_standard_interrupt_global_tasks(void)
 {
-    //Collect ADC data
-    poll_adc();
-    //Average ADC readings;
-    average_adc_readings();
-    //Receive UART data
-    uart_receive_data();
-    //call pgood handler
-    handle_pgood();
+	poll_adc();
+	handle_pgood();
 }
 
-void transition_to_idle_state(void)
+void handle_idle_state(void)
 {
+	if (!start_up_delay_over)
+	{
+	    if (count == count_end)
+		{
+			start_up_delay_over = 1;
+		}
+		else
+		{
+			count++;
+		}
+	}
 
-    gpio_dpwm_off();
+	if ((1) && start_up_delay_over && (!firmware_error_flag))
+	{
+	    configure_dpwm_timing(&pmbus_dcdc_config[0]);
+	    if((adc_values . vin_mon > pmbus_dcdc_config_translated[0]. vin_on_limit))
+	    {
+	        count =0;
 
-    FaultMuxRegs.DPWM1FLTABDET.bit.ACOMP_C_EN = 0;
-    FaultMuxRegs.DPWM2FLTABDET.bit.ACOMP_C_EN = 0;
-    FaultMuxRegs.DPWM3FLTABDET.bit.ACOMP_C_EN = 0;
-    FaultMuxRegs.DPWM0FLTABDET.bit.ACOMP_C_EN = 0;
+	        Filter0Regs.FILTERCTRL.bit.USE_CPU_SAMPLE =1;
+	        Filter0Regs.CPUXN.bit.CPU_SAMPLE =0;
 
+	        handle_softstart(); //Closed loop to start up
 
-    FaultMuxRegs.ACOMPCTRL2.bit.ACOMP_E_THRESH = 35;
+	        supply_state = STATE_RAMP_UP;
 
-    Dpwm0Regs.DPWMCTRL0.bit.PWM_EN = 0;
-    Dpwm0Regs.DPWMCTRL0.bit.PWM_EN = 1;
-    Dpwm1Regs.DPWMCTRL0.bit.PWM_EN = 0;
-    Dpwm1Regs.DPWMCTRL0.bit.PWM_EN = 1;
-    Dpwm2Regs.DPWMCTRL0.bit.PWM_EN = 0;
-    Dpwm2Regs.DPWMCTRL0.bit.PWM_EN = 1;
-    Dpwm3Regs.DPWMCTRL0.bit.PWM_EN = 0;
-    Dpwm3Regs.DPWMCTRL0.bit.PWM_EN = 1;
-
-    supply_state = STATE_IDLE;
-
-
-//	burst_mode_disable(); //commented out by ZCS feature
-//	burst_mode_enable(); // added by ZCS feature to initialize for hardware based burst mode during a start up ramp
-	//Disable DPWMs
-    Dpwm0Regs.DPWMINT.bit.PRD_INT_EN = 0;
-    configure_dpwm_timing();
-
-	//Stall filter states so that no integrator wind up occurs while off.
-//	stop_filter_states();
-	//Reset soft start ramp
-//	start_up_reset();
-	//Initialize filter states.
-	init_filter0_states();
-//	init_filter1_states();
-
-	//Disable current sharing
-//	disable_current_sharing();
-
-	//Clear faults
-//	FaultMuxRegs.DCOMPCTRL2.bit.CNT_CLR = 1;  //ZCS feature to clear DCOMP2 ZCS detect. This must occur before DPWM2 is enabled and disabled by clear_faults()
-//	FaultMuxRegs.DCOMPCTRL2.bit.CNT_CLR = 0;  //ZCS feature to clear DCOMP2 ZCS detect. This must occur before DPWM2 is enabled and disabled by clear_faults()
-	clear_faults();
-	//Reset the PMBus status word to the idle state values.
-	pmbus_status_word = (0x1) | (0x40) | (0x800);
-	//Reset the fault status flags.
-	fiq_data.fault_status = 0;
-
-
-	ramp_complete = 0;
-	start_up_delay_over =0;
-	count =0;
-	filter_ramp_done = 0;
-	filter_ramp_value = 0;
-	FaultMuxRegs.ACOMPCTRL1.bit.ACOMP_C_INT_EN = 0;
-	uv_latch_flag =0;
-	ov_latch_flag =0;
-	oc_latch_flag =0;
-	retry_enable =1;
-	restart_counter =0;
-	oc_counter =0;
-	period_change_enable =0;
-	delay_counter =0;
-
-
+	        gpio_dpwm_on();
+	    }
+	}
 }
 
 void handle_softstart(void)
 {
-    FeCtrl0Regs.EADCDAC.bit.DAC_VALUE = 0;   //Set the DAC for Error ~ 0
-
+	FeCtrl0Regs.EADCDAC.bit.DAC_VALUE = 0;   //Set the DAC for Error ~ 0
     FeCtrl0Regs.RAMPDACEND.all = 16300; //pmbus_dcdc_config_translated[0].vout_cmd;//Set the DAC end for the desired output voltage
 
     configure_vout_timing();
@@ -6947,58 +6459,11 @@ void handle_softstart(void)
 
 
     Filter0Regs.FILTERCTRL.bit.USE_CPU_SAMPLE = 0;
-
 }
-
-
-
-void handle_idle_state(void)
-{
-
-
-	if (!start_up_delay_over)
-	{
-
-
-	    if (count == count_end)
-		{
-			start_up_delay_over = 1;
-		}
-		else
-		{
-			count++;
-		}
-	}
-	if ((1) && start_up_delay_over && (!firmware_error_flag))
-	{
-
-
-	    configure_dpwm_timing();
-	    if((adc_values . vin_mon > pmbus_dcdc_config_translated[0]. vin_on_limit))
-	    {
-	        count =0;
-
-
-	        Filter0Regs.FILTERCTRL.bit.USE_CPU_SAMPLE =1;
-	        Filter0Regs.CPUXN.bit.CPU_SAMPLE =0;
-
-
-	        handle_softstart(); //Closed loop to start up
-
-	        supply_state = STATE_RAMP_UP;
-
-	        gpio_dpwm_on();
-
-
-	    }
-	}
-}
-
 
 void handle_ramp_up_state(void)
 {
-    Uint32 DAC_temp;
-    Uint32 interrupt_temp;
+	Uint32 DAC_temp;
     //Check for and handle any faults
     if ((!(1)) || (adc_values . vin_mon < pmbus_dcdc_config_translated[0]. vin_off_limit))
     {
@@ -7025,9 +6490,62 @@ void handle_ramp_up_state(void)
         min_mode_switching = default_mode_switching * 0.8;   //mode switching
 
     }
-
 }
 
+void transition_to_idle_state(void)
+{
+    gpio_dpwm_off();
+
+    FaultMuxRegs.DPWM1FLTABDET.bit.ACOMP_C_EN = 0;
+    FaultMuxRegs.DPWM2FLTABDET.bit.ACOMP_C_EN = 0;
+    FaultMuxRegs.DPWM3FLTABDET.bit.ACOMP_C_EN = 0;
+    FaultMuxRegs.DPWM0FLTABDET.bit.ACOMP_C_EN = 0;
+    FaultMuxRegs.ACOMPCTRL2.bit.ACOMP_E_THRESH = 35;
+
+    Dpwm0Regs.DPWMCTRL0.bit.PWM_EN = 0;
+    Dpwm0Regs.DPWMCTRL0.bit.PWM_EN = 1;
+    Dpwm1Regs.DPWMCTRL0.bit.PWM_EN = 0;
+    Dpwm1Regs.DPWMCTRL0.bit.PWM_EN = 1;
+    Dpwm2Regs.DPWMCTRL0.bit.PWM_EN = 0;
+    Dpwm2Regs.DPWMCTRL0.bit.PWM_EN = 1;
+    Dpwm3Regs.DPWMCTRL0.bit.PWM_EN = 0;
+    Dpwm3Regs.DPWMCTRL0.bit.PWM_EN = 1;
+
+    supply_state = STATE_IDLE;
+
+	//Disable DPWMs
+    Dpwm0Regs.DPWMINT.bit.PRD_INT_EN = 0;
+    configure_dpwm_timing(&pmbus_dcdc_config[0]);
+
+	init_filter0_states();
+
+	clear_faults();
+	//Reset the PMBus status word to the idle state values.
+	pmbus_status_word = (0x1) | (0x40) | (0x800);
+	//Reset the fault status flags.
+	fiq_data.fault_status = 0;
+	start_up_delay_over =0;
+	ramp_complete = 0;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
+	count =0;
+	FaultMuxRegs.ACOMPCTRL1.bit.ACOMP_C_INT_EN = 0;
+	uv_latch_flag =0;
+	ov_latch_flag =0;
+	oc_latch_flag =0;
+	retry_enable =1;
+	restart_counter =0;
+	oc_counter =0;
+	period_change_enable =0;
+	delay_counter =0;
+}
+
+void clear_faults(void)
+{
+	global_disable();
+	global_enable();
+	//This is necessary to make sure all interrupt status values are 
+	//cleared.
+	FAULTMUXINTSTAT_value =	FaultMuxRegs.FAULTMUXINTSTAT.all;
+}
 
 void handle_delay_rampup_state(void)
 {
@@ -7078,24 +6596,12 @@ void handle_delay_rampup_state(void)
         }
     }
 }
+
 void handle_regulation_state(void)
 {	
-
     updated_period_target = pmbus_dcdc_config_translated[0].frequency_switch * (418);
-
-
 	//Control the state of the SR's
 	control_sr_on_off();
-
-
-//	if(OT_FAULT_PRI || OT_FAULT_SEC)
-//	if((adc_values.pri_temp > 3300)|| (adc_values.sec_temp > 3300))  //3200 for primary side @90C
-//	{
-//	    gpio_dpwm_off();
-//	    supply_state = STATE_FAULT;
-
-//	}
-
 	//is large enough to operate.
 	if ((!(1)) || (adc_values . vin_mon < pmbus_dcdc_config_translated[0]. vin_off_limit))
 //	if (!PSON)
@@ -7104,19 +6610,15 @@ void handle_regulation_state(void)
 	}
 	else 
 	{
-
 		//Check for and handle any faults
 	    handle_faults();
 		//Check for and handle and warnings
 		handle_warnings();
 		if(period_change_enable == 1)
 		{
-		    period_change();
+		    // period_change();
 		}
-
-
 		//to add UCD7138 deadtime control and SR control
-
 	}
 }
 
@@ -7124,8 +6626,6 @@ void handle_vout_transition_state(void)
 {
 	//Read the ramp complete status bit. It is clear on read.
 	// to call filter ramp up here
-
-
 	//If not transition to the idle state.
 	if ((!(1)) || (adc_values . vin_mon < pmbus_dcdc_config_translated[0]. vin_off_limit))
 	{
@@ -7136,13 +6636,6 @@ void handle_vout_transition_state(void)
 
 		supply_state = STATE_REGULATED;
 	}
-}
-
-
-
-void handle_hiccup_state(void)
-{
-	transition_to_idle_state();
 }
 
 void handle_fault_state(void)
@@ -7181,53 +6674,71 @@ void handle_fault_state(void)
 
 
 }
-#pragma INTERRUPT(standard_interrupt,IRQ)
-void standard_interrupt(void)
+
+void init_variables(void)
 {
-	//Set a GPIO to signify the beginning of the interrupt
-//	MiscAnalogRegs.GLBIOVAL.bit.DPWM2A_IO_VALUE = 1;
-//	FeCtrl2Regs.EADCDAC.bit.DAC_VALUE = DCOMP2_THRESH;
-	//Perform general tasks.
+	//Initialization for PFC UART commands
+	pfc_phase_2_enable = (1);
+	pfc_zvs_enable = (0);
+	pfc_os_enable = (1);
 
+	//Initialization for LLC SR operation.
+	llc_sr_enable = (1);
+//    llc_sr_enable = DISABLE;
+	previous_llc_sr_command = (0);
+	//Fault status indicators
+	fiq_data.fault_status = 0;
 
-    handle_standard_interrupt_global_tasks();
-    handle_faults();
+	//Initialzie Debug Buffer
+	debug_buffer[0]=1;
+	debug_buffer[1]=2;
+	debug_buffer[2]=3;
+	debug_buffer[3]=4;
+	debug_buffer[4]=5;
+	debug_buffer[5]=6;
+	debug_buffer[6]=7;
+	debug_buffer[7]=8;
 
-	switch (supply_state)
-	{
-	case STATE_IDLE:
-		handle_idle_state();
-		break;
+	//Resolution selection parameter for ADC firmware averaging.
+	adc_values_avg.adc_scale_factor = 5;
 
-	case STATE_RAMP_UP:
-		handle_ramp_up_state();
-		break;
+	//Configure the input voltage at which the power converter will allow turn on
+	//and the voltage level that it will turn off.
+	configure_vin_on_off_thresholds();
+	//Configure the fault levels.
+	configure_fault_levels();
+	//Configure the warning levels.
+	configure_warning_levels();
+	//Configure the PGOOD levels.
+	configure_pgood_levels();
 
-	case STATE_CHECK_RAMP_UP:
-	    handle_delay_rampup_state();
-	    break;
+	//Calculate translated values of the vout timing.
+	configure_vout_timing();
+	//Calculate a translated value of the vout_cmd.
+	configure_vout_cmd();
 
-	case STATE_REGULATED:
-		handle_regulation_state();
-		break;
-	case STATE_VOUT_TRANSITION:
-		handle_vout_transition_state();
-		break;
+	adc12_vin_scaler.mantissa = (25469);
+	adc12_vin_scaler.exponent = (-9);
 
-	case STATE_HICCUP:
-		handle_hiccup_state();
-		break;
-	case STATE_FAULT:
-		handle_fault_state();
-		break;
-	}
+	fiq_data.cbc_voltage_loop_integrator_jam_value = 2000000;
+	fiq_data.cbc_current_loop_integrator_jam_value = 1000000;
+	fiq_data.cc_detected = 0;
+	fiq_data.cbc_detected = 0;
 
-
-
-   Dpwm0Regs.DPWMCTRL1.bit.GPIO_A_VAL =1;   //test
-
-	//clear interrupt flag by a read/write to register.
-	TimerRegs.T16PWM2CMPCTRL.all = 3;
-	//Clear the GPIO to signify the end of the interrupt
-//	MiscAnalogRegs.GLBIOVAL.bit.DPWM2A_IO_VALUE = 0;
+	filter_select = 1;
+	filter_activate = 0;
+	filter_destination = &filter0_pmbus_regs;
+	fiq_data.burst_mode_en = 0;
+	fiq_data.burst_mode_i_turn_off = 170;
+	fiq_data.burst_mode_i_turn_on = 130;
+	fiq_data.burst_mode_int_jam_value = 2210000;
+	fiq_data.burst_mode_v_hys = 4;
+	fiq_data.cbc_counter = 0;
+	fiq_data.cbc_max = 1;
+	start_up_delay_over = 0;
+	count = 0;
+	count_end = 1000;
+	oc_fault_limit =250;
 }
+
+/*------------------------------------test------------------------------------*/

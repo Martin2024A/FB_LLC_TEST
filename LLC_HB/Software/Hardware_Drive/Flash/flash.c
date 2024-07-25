@@ -9,6 +9,7 @@
 #include "global_variables.h"
 
 #include "function_definitions.h"
+#include "interrupt.h"
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/

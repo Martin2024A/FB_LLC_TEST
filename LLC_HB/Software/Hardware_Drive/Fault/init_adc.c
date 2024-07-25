@@ -15,7 +15,6 @@
 void init_adc12(void)
 {
     AdcRegs.ADCCTRL.bit.SAMPLING_SEL = 6;// 267*1000 sample points per second
-
     AdcRegs.ADCCTRL.bit.MAX_CONV = 7;//8 conversion selection 
     AdcRegs.ADCCTRL.bit.SINGLE_SWEEP = 1;//Single conversion
 

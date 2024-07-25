@@ -11,6 +11,8 @@ extern "C"{
 /*-----------------------------------macro------------------------------------*/
 #define min(a,b)  (((a)>(b)) ? (b):(a))
 #define max(a,b)  (((a)>(b)) ? (a):(b))
+#define ENABLE (1)
+#define DISABLE (0)
 //=============================================================================
 //                       frequency and time parameter
 //=============================================================================
@@ -217,6 +219,22 @@ extern "C"{
 #define SWITCHING_PERIOD_YN_CLAMP  (0x197B70)
 #define PID_PERIOD_FACTOR   (418)
 
+#define MAX_VALUE_FIT_5_BITS  (0x0001F)
+#define MAX_VALUE_FIT_6_BITS  (0x0003F)
+#define MAX_VALUE_FIT_7_BITS  (0x0007F)
+#define MAX_VALUE_FIT_8_BITS  (0x000FF)
+#define MAX_VALUE_FIT_9_BITS  (0x001FF)
+#define MAX_VALUE_FIT_10_BITS (0x003FF)
+#define MAX_VALUE_FIT_11_BITS (0x007FF)
+#define MAX_VALUE_FIT_12_BITS (0x00FFF)
+#define MAX_VALUE_FIT_13_BITS (0x01FFF)
+#define MAX_VALUE_FIT_14_BITS (0x03FFF)
+#define MAX_VALUE_FIT_15_BITS (0x07FFF)
+#define MAX_VALUE_FIT_16_BITS (0x0FFFF)
+#define MAX_VALUE_FIT_17_BITS (0x1FFFF)
+#define MAX_VALUE_FIT_18_BITS (0x3FFFF)
+#define MAX_VALUE_FIT_19_BITS (0x7FFFF)
+#define MAX_VALUE_FIT_20_BITS (0xFFFFF)
 
 #ifdef __cplusplus
 }

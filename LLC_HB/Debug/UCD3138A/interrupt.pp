@@ -5482,6 +5482,233 @@ extern volatile struct SYS_REGS SysRegs;
 // End of file
 //===========================================================================
 
+
+
+/*----------------------------------include-----------------------------------*/
+/*-----------------------------------macro------------------------------------*/
+
+/*----------------------------------typedef-----------------------------------*/
+
+/*----------------------------------variable----------------------------------*/
+
+/*-------------------------------------os-------------------------------------*/
+
+/*----------------------------------function----------------------------------*/
+#pragma SWI_ALIAS (swi_single_entry, 0)
+void swi_single_entry(Uint32 arg1, Uint32 arg2, Uint32 arg3, Uint8 swi_number);
+
+void clear_program_flash(void);
+void zero_out_integrity_word(void);
+
+void init_interrupt(void);
+
+void erase_data_flash_segment_case0(Uint8 segment);
+void erase_data_flash_segment_no_delay_case1(Uint8 segment);
+void write_data_flash_word_case3(Uint32 address,unsigned long data);
+void enable_fast_interrupt_case4(void);
+void disable_fast_interrupt_case5(void);
+void enable_interrupt_case6(void);
+void disable_interrupt_case7(void);
+void write_firqpr_case8(unsigned long value);
+void write_reqmask_case9(unsigned long value);
+void set_supervisor_mode_case10(void);
+void set_user_mode_case11(void);
+void clear_integrity_word_case12(void);
+void write_data_flash_block_case13(Uint32 arg1, Uint32  arg2, Uint32 arg3);
+void erase_pflash_case14(void);
+
+void erase_data_flash_segment(Uint8 segment);
+void erase_dflash_segment_no_delay(Uint8 segment);
+void write_data_flash_word(Uint32 address,unsigned long data);
+void enable_fast_interrupt(void);
+void disable_fast_interrupt(void);
+void enable_interrupt(void);
+void disable_interrupt(void);
+void write_firqpr(unsigned long value);
+void write_reqmask(unsigned long value);
+void clear_integrity_word(void);
+void write_data_flash_block();
+void erase_pflash(void);
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*-----------------------------------macro------------------------------------*/
+
+/*----------------------------------typedef-----------------------------------*/
+typedef void (*FUNC_PTR)(); 	//used for zeroing instruction word.
+
+//ADC data
+typedef struct{
+	Uint32 address;		//Value from adc for device address
+	Uint32 vin_mon; 	//Value from adc for Vin 
+	Uint32 ishare; 		//Value from adc for Ishare
+	Uint32 vo_sense; 	//Value from adc for Vout
+	Uint32 ips; 		//Value from adc for primary current sense
+	Uint32 vo_ovp; 		//Value from adc for Vin  
+	Uint32 pri_temp;	//Value from adc for SR MOSFET temperature
+	Uint32 io_sense; 	//Value from adc for Iout
+	Uint32 device_temp;	//Value from adc for internal device temperature
+	Uint32 ips_hr;
+	Uint32 address_hr;
+	Uint32 sec_temp;
+	Uint32 adc_scale_factor;
+} ADC_VALUES_STRUCT;
+
+typedef struct{
+	Uint16 burst_mode_i_turn_on;
+	Uint16 burst_mode_i_turn_off;
+	int16 burst_mode_v_hys;
+	Uint32 burst_mode_int_jam_value;
+	Uint8 burst_mode_en;  //ZCS feature
+	Uint8 burst_on;   //ZCS feature
+	int32 vloop_filter;
+	int32 iloop_filter;
+	Uint8 cbc_enabled;
+	Uint8 cc_detected;
+	Uint8 cbc_detected;
+	Uint32 cbc_current_loop_integrator_jam_value;
+	Uint32 cbc_voltage_loop_integrator_jam_value;
+	Uint32 dpwm_status;
+	Uint32 fault_status;
+	Uint32 fault_status_raw;
+	Uint8 ll_en;
+	Uint8 cpcc_en;
+	Uint8 cbc_counter;
+	Uint8 cbc_max;
+} FIQ_DATA;
+
+//Interrupt state
+typedef enum{
+	STATE_IDLE,
+	STATE_CHECK_RAMP_UP,
+	STATE_WAIT_DRIVEON,
+	STATE_HIGH_CURRENT_DURING_RAMP_UP,
+	STATE_BOUNCE_TO_RAMP_UP_AFTER_WAITING,
+	STATE_RAMP_UP,		
+	STATE_RAMP_DOWN,	
+	STATE_REGULATED,	
+	STATE_LIGHT_LOAD,	
+	STATE_CPCC,	
+	STATE_FAULT,
+	STATE_HICCUP,
+	STATE_VOUT_TRANSITION,
+	NONE
+} SUPPLY_STATE;
+
+struct PFC_OUT_STRUCT{
+	unsigned char pfc_status0;
+    unsigned char pfc_status1;
+    unsigned int  pfc_vac;
+    unsigned int  pfc_iac;
+    unsigned int  pfc_pin;
+	unsigned int  pfc_pout;
+    unsigned int  pfc_vdc_bus;
+    unsigned int  pfc_sw_frequency;
+    unsigned char pfc_temperature;
+};
+
+struct qnote{
+  int16 mantissa;
+  int16 exponent;
+};
+
+/*----------------------------------variable----------------------------------*/
+extern ADC_VALUES_STRUCT adc_values; 	//ADC Readings
+extern ADC_VALUES_STRUCT adc_values_avg;//ADC Readings Averaged
+extern FIQ_DATA fiq_data; 
+extern SUPPLY_STATE supply_state;//Supply state enum for state machine
+
+//=============================================================================
+//                     start interrupt
+//=============================================================================
+extern Uint32 start_up_delay_over;
+extern Uint32 count;
+extern Uint32 count_end;
+extern int ramp_complete;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
+extern Uint32 delay_counter;
+
+extern Uint32 max_period;
+extern Uint32 min_period;
+extern Uint32 updated_period_target;
+extern Uint32 temperory_period;
+extern Uint32 default_period;
+extern Uint32 period_change_enable;
+extern Uint32 min_mode_switching;
+extern Uint32 default_mode_switching;
+extern Uint32 delay_counter;
+
+//=============================================================================
+//                   fault handler
+//=============================================================================
+extern volatile Uint32 FAULTMUXINTSTAT_value;
+
+extern int32 shut_down_fault_detected;
+extern Uint32 firmware_error_flag;
+extern Uint32 uv_latch_flag;
+extern Uint32 ov_latch_flag;
+extern Uint32 oc_latch_flag;
+extern Uint32 oc_fault_limit;
+extern Uint32 restart_counter;
+extern Uint32 retry_enable;
+extern Uint32 oc_counter;
+
+//=============================================================================
+//                   pmbus handler
+//=============================================================================
+extern Uint16 period;
+
+extern Uint8 filter_select;
+extern Uint8 filter_activate;
+extern Uint64 p_out;
+
+extern Uint8 erase_segment_counter;	// Number of DFlash segment remaining to be erased
+extern Uint8 erase_segment_number;		// DFlash segment number being erased
+extern Uint8 flash_write_status;	// Global status while attempting to write to Data Flash.
+
+
+extern struct qnote temp_qnote1;
+extern struct qnote temp_qnote_scale1;
+extern struct qnote adc12_vin_scaler;
+extern int16 temp_qnote_value1;
+
+extern int32 temp_debug_buffer;
+
+//=============================================================================
+//                              uart and pfc
+//=============================================================================
+
+extern Uint8 uart_text_rx_buf[(10)*2 + 2]; //UART receive buffer in text mode
+extern Uint8 uart_text_tx_buf[(10)*2 + 2]; //UART transmit buffer in text mode
+extern Uint8 uart_rx_buf[(10)]; //UART receive buffer
+extern Uint8 uart_tx_buf[(10)]; //UART transmit buffer
+extern Uint8 uart_rx_data_rdy; //flag, received a new data packet
+extern Uint8 uart_tx_data_rdy; //flag, a new data packet is ready for transmit
+extern Uint8 uart_rx_buf_ptr; //point to the buffer which will store the coming byte
+extern Uint8 uart_tx_buf_ptr; //point to buffer whose data is going to be sent out 
+extern Uint16 uart_rx_timeout; //count IRQ, UART receiver will start over when timeout
+extern Uint16 uart_tx_timeout; //count IRQ, UART needs to wait for a certain period before send the next data packet
+
+extern struct PFC_OUT_STRUCT pfc_out_struct;
+
+extern Uint8 pfc_command;//for APEC demo
+extern Uint8 pfc_phase_2_enable;//for APEC demo
+extern Uint8 pfc_zvs_enable;//for APEC demo
+extern Uint8 pfc_os_enable;//for APEC demo
+extern Uint8 llc_sr_enable;//for APEC demo
+extern Uint8 previous_llc_sr_command;
+/*----------------------------------variable----------------------------------*/
+
+/*----------------------------------function----------------------------------*/
+
+/*------------------------------------test------------------------------------*/
+
+
+
 #pragma INTERRUPT(undefined_instruction_exception,UDEF)
 void undefined_instruction_exception(void)
 {
@@ -5502,12 +5729,28 @@ void fast_interrupt(void)
 {
 }
 
-#pragma INTERRUPT(standard_interrupt,IRQ)
-void standard_interrupt(void)
+void init_interrupt(void)
 {
+    //Threshold to send the pwm low. Approx 10KHz. by spec.64ns clock period
+	TimerRegs.T16PWM2CMP0DAT.all = 1587;
+	//Threshold to send the pwm high
+	TimerRegs.T16PWM2CMP1DAT.all = 0xFFFF;
+	//Enables compare 0 (reset) interrupt
+	TimerRegs.T16PWM2CMPCTRL.all = 2;
+	//PWM counter is running & enables PWM counter reset by compare action on compare 0
+	TimerRegs.T16PWM2CNTCTRL.all = 0x00C;
+	//Disable interrupts
+	disable_interrupt();
+	disable_fast_interrupt();
+	//This is necessary to make sure all interrupt status values are
+	//cleared. Added here by ZCS feature
+	FAULTMUXINTSTAT_value =	FaultMuxRegs.FAULTMUXINTSTAT.all;
+	//Configure IRQ
+	write_reqmask((0x00008000) | (0x20000000) | (0x02000000));
+	//Configure FIQ
+	write_firqpr((0x20000000) | (0x02000000));
+	//Enable interrupts
+	enable_fast_interrupt();
+	enable_interrupt();
 }
 
-#pragma INTERRUPT(software_interrupt,SWI)
-void software_interrupt(Uint32 arg1, Uint32 arg2, Uint32 arg3, Uint8 swi_number)
-{
-}

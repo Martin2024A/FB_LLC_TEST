@@ -8,6 +8,9 @@ extern "C"{
 
 /*----------------------------------include-----------------------------------*/
 #include "pmbus_dcdc_parm.h"
+#include "pmbus_filter_parm.h"
+#include "global_variables.h"
+
 /*-----------------------------------macro------------------------------------*/
 
 /*----------------------------------typedef-----------------------------------*/
@@ -31,6 +34,7 @@ void init_sample_trigger(void);
 /*------------------------------------filter---------------------------------*/
 void init_filter0(void);
 void init_filter0_states(void);
+void copy_coefficients_to_filter(volatile struct FILTER_REGS *dest, const FILTER_PMBUS_REGS *source);
 /*---------------------------------front end---------------------------------*/
 void init_front_end0(void);
 /*------------------------------------gpio-----------------------------------*/
@@ -55,6 +59,7 @@ void init_uvp(void);
 void init_ovp(void);
 void init_sec_ocp(void);
 void init_ipri_cycle_by_cycle(void);
+void init_fault(void);
 
 //=============================================================================
 //                                    Flash
@@ -67,7 +72,50 @@ Uint32 calculate_dflash_checksum(Uint8 *start_addr, Uint8 *end_addr);
 inline Uint8 calc_flash_segments(const void* dest_ptr, Uint16 byte_count, Uint8* first_segment);
 void erase_one_section(int first_segment, int byte_count);
 void restore_default_all(void);
-/*------------------------------------test------------------------------------*/
+
+//=============================================================================
+//                                    fault handler
+//=============================================================================
+void handle_warnings(void);
+void handle_pgood(void);
+void handle_faults(void) ;
+//=============================================================================
+//                         configration   funvtions
+//=============================================================================
+void configure_vout_timing(void);
+void configure_iout_ocp(void);
+void control_sr_on_off(void);
+void configure_vin_on_off_thresholds(void);
+void configure_fault_levels(void);
+void configure_warning_levels(void);
+void configure_pgood_levels(void);
+void configure_vout_cmd(void);
+void configure_uvp(void);
+void configure_ovp(void);
+void configure_cc_dac_value(void);
+//=============================================================================
+//                         scale   funvtions
+//=============================================================================
+struct qnote linear11_to_qnote (int16 linear11);
+int16 qnote_to_linear11 (struct qnote x);
+struct qnote qnote_scale_int32 (struct qnote x, int32 y);
+Uint32 qnote_linear11_multiply_fit(struct qnote x, int16 linear11, Uint32 max_value);
+Uint32 qnote_linear16_multiply_fit(struct qnote x, Uint16 linear16_mantissa, int8 vout_mode, Uint32 max_value);
+
+//=============================================================================
+//                         standard interrupt
+//=============================================================================
+void handle_standard_interrupt_global_tasks(void);
+void handle_idle_state(void);
+void handle_softstart(void);
+void handle_ramp_up_state(void);
+void transition_to_idle_state(void);
+void clear_faults(void);
+void handle_delay_rampup_state(void);
+void handle_regulation_state(void);
+void handle_vout_transition_state(void);
+void handle_fault_state(void);
+void init_variables(void);
 
 #ifdef __cplusplus
 }

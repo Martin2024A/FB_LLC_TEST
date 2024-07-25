@@ -1,20 +1,5 @@
-//###########################################################################
-//
-// FILE:	cyclone_global_variables_defs.c
-//
-// TITLE:	Cyclone Global Variables and Data Section Pragmas.
-//
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  | Description of changes
-// ======|=============|======|==============================================
-//  1.00 | 12 Aug 2009 | CMF  | Started with UCD9240 version.
-//       |             |      | Updated for 1.0 Memory map document.
-//       |             |      |
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+
+/*----------------------------------include-----------------------------------*/
 //###########################################################################
 //
 // FILE:   Cyclone_Device.h
@@ -5498,13 +5483,8 @@ extern volatile struct SYS_REGS SysRegs;
 //===========================================================================
 // End of file
 //===========================================================================
-//#include "main.h"
-
-
-//---------------------------------------------------------------------------
+/*-----------------------------------macro------------------------------------*/
 // Define Global Peripheral Variables:
-//
-
 //----------------------------------------
 #pragma DATA_SECTION(AdcRegs,"AdcRegsFile");
 volatile struct ADC_REGS AdcRegs;
@@ -5527,13 +5507,6 @@ volatile struct DPWM_REGS Dpwm2Regs;
 //-------------------------------------------------------------------------------
 #pragma DATA_SECTION(Dpwm3Regs,"Dpwm3RegsFile");
 volatile struct DPWM_REGS Dpwm3Regs;
-//-------------------------------------------------------------------------------
-//#ifdef __cplusplus 
-//#pragma DATA_SECTION("ErrlogRegsFile")
-//#else
-//#pragma DATA_SECTION(ErrlogRegs,"ErrlogRegsFile");
-//#endif
-//volatile struct ERRLOG_REGS ErrlogRegs;
 //-------------------------------------------------------------------------------
 #pragma DATA_SECTION(FaultMuxRegs,"FaultMuxRegsFile");
 volatile struct FAULT_MUX_REGS FaultMuxRegs;
@@ -5582,17 +5555,12 @@ volatile struct UART_REGS Uart0Regs;
 //-------------------------------------------------------------------------------
 #pragma DATA_SECTION(Uart1Regs,"Uart1RegsFile");
 volatile struct UART_REGS Uart1Regs;
+/*----------------------------------typedef-----------------------------------*/
 
+/*----------------------------------variable----------------------------------*/
 
-//===========================================================================
-// End of file.
-//===========================================================================
+/*-------------------------------------os-------------------------------------*/
 
+/*----------------------------------function----------------------------------*/
 
-
-
-
-
-
-
-
+/*------------------------------------test------------------------------------*/

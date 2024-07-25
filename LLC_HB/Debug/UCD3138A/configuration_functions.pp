@@ -1,124 +1,9 @@
-//###########################################################################
-//
-// FILE:    configuration_functions.c
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
 
-//###########################################################################
-//
-// FILE:    system_defines.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+/*----------------------------------include-----------------------------------*/
 
 
 
-
-
-
-
-
-
-
-
-
-//#define TSR (0.42e-6 + DT0SR)              //Maximum SR on time
-
-
-
-
-
-
-
-
-/*
-#define DAC_OCP_PRI (IPRI_OCP / 2.5 * ((1<<7) - 1.0) + 1)			//DAC value required to achieve Ipri_OCP
-#define PMAX (int)(IMAX * VOUT * (float)(1 << 14) * (float)(1 << 12) * 1.08 * 54e-3 / 12.0 / 1.6 / 2.5)	//Firmware CP value
-#define IPMAX (int)(PMAX / 6440)
-#define ICCMAX (int)(25.0 * (float)(1 << 12) * 54e-3 / 2.5)
-*/
-
-// This limitation check is required because the flash access routines in flash.c make the
-// assumption that the size of the segments of the data flash are an integral power of two.
-
-
-// Flash Error codes
-
-
-
-// 912 = 16 * Round(1.065 / (12 * 1.6) * (1 << 10))
-/*
-DAC0 * (1 << 11) * TSAMP / TSS calculates the DAC step required to achieve a
-soft start time of TSS from 0V. Where TSS is in seconds and DAC0 is the 14 bit version. 
-TSAMP is the sample rate of the EADC. For the LLC converter this has been fixed 
-to 500ns independant of the switching frequency.
-
-The factor of 1000 below is to convert the units from mV/us to V/s. DAC_VALUE_SCALER is included
-to convert the voltage to DAC LSBs. The factor VOUT_MODE_EXP is not needed since 
-the original units of the transition rate do not include it.
-*/
-//#define VOUT_TRANSITION_RATE_SCALER (int32)(TSAMP * 1000 * (1 << (11 + VOUT_TRANSITION_EXP)) * DAC_VALUE_SCALER)
-
-//((1 / 12.0 * 1.065 / 2.5 * ((1 << 7) - 1)) << OVP_EXP)
-
-//These two together properly scale the VOUT from the ADC to the Literal value.
-//((12 / 1.065) * 2.5 / 4096) << (16 + VOUT_MODE_EXP - VOUT_ADC_TO_LITERAL_SHIFT)
-//The factor of 16 appears due to the unsigned_short_q_multiply function
-//#define VOUT_ADC_TO_LITERAL_SHIFT 	(3)
-//#define VOUT_ADC_TO_LITERAL_SCALER  (28268) //(28845)
-
-//Status Word aliases
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//#define SHORTCIRCUIT_PROTECTION (1)
-
+/*----------------------------------include-----------------------------------*/
 //###########################################################################
 //
 // FILE:   Cyclone_Device.h
@@ -5602,103 +5487,33 @@ extern volatile struct SYS_REGS SysRegs;
 //===========================================================================
 // End of file
 //===========================================================================
-//###########################################################################
-//
-// FILE:    pmbus_common.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+
+/*------------------------------Device macro----------------------------------*/
 
 
 
 
 
 
+extern const Uint8 setup_id[];
+extern const Uint8 mfr_model[];
+extern const Uint8 mfr_revision[];
+extern const Uint8 mfr_date[];
+extern const Uint8 mfr_location[];
+extern const Uint8 mfr_serial[];
+extern const Uint8 mfr_ic_device[];
+extern const Uint8 mfr_ic_device_rev[];
+extern const Uint8 mfr_id[];
 
-                                    //010 Reserved
-										//This is also used for commands that return blocks of data.
+extern const Uint8  device_id_string[];
+//=============================================================================
+// Start of MFR message 
+//=============================================================================
 
-
-
-/**********************************
- * Start of PMBus register bit mask
- **********************************/
-
-
-
-
-
-
-
-
-
-
-
-//=========================================================================================
-// PMBus module definitions
-//=========================================================================================
-	// PMBST Register
-
-// ***KKN***HEM	It would be nice to get rid of these _BYTE0_ and _HALF0_ values.
-// *** 			Requires change to _ALL_ in multiple places in pmbus.c.
-
-
-
-	// PMBCTRL2 Register
-
-
-/**********************************
- * End of PMBus register bit mask
- **********************************/
-
-/**********************************
- * Start of PMBUS driver function
- **********************************/
-void init_pmbus(int32 pmbus_address);
-void pmbus_handler(void);
-
-void pmbus_idle_handler(void);
-void pmbus_read_block_handler(void);
-void pmbus_write_block_handler(void);
-void pmbus_read_wait_for_eom_handler(void);
-Uint8 pmbus_read_write_message(Uint8 pmbus_read);
-/**********************************
- * End of PMBUS driver function
- **********************************/
-
-
-
-extern char	status_cml;	 // STATUS_CML (Communication, Logic, and Memory) for entire board
-
-
-
-
-
-
-
-extern Uint8 gui_constant_pointer;
-extern Uint8 user_ram_00;
-
-
-///////////////////////////////////////////////////////////////
-//variables for PARM_INFO and PARM_VAR
-///////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////
-//variables for PARM_INFO and PARM_VAR
-///////////////////////////////////////////////////////////////
+/*--------------------------------Flash macro---------------------------------*/
+//=============================================================================
+// variables for PARM_INFO and PARM_VAR
+//=============================================================================
 
 //  Memory limits used by the PARM_INFO and PARM_VALUE commands.
 
@@ -5710,11 +5525,7 @@ extern Uint8 user_ram_00;
 
 // Allow read-only access to Program in Program Flash
 
-
  //Cyclone 2 extra addresses
-
-
-
 
 
 
@@ -5733,100 +5544,87 @@ extern Uint8 user_ram_00;
 //==========================================================================================
 // Memory allocation constants
 //==========================================================================================
-// ****VOYAGER#define MFBALR2_HALF0_DATA_FLASH_BASE_ADDRESS 0x8800
 
+/*----------------------------------typedef-----------------------------------*/
+/*----------------------------------variable----------------------------------*/
 
+/*-------------------------------------os-------------------------------------*/
 
-// These error codes are masks based on bits in the CML_STATUS byte.  This allows the
-// pmbus_error_handler() function to do a simple 'OR' instead of a big 'switch' statement.
+/*----------------------------------function----------------------------------*/
 
-extern	Uint8	parm_index;
-extern	int16	parm_offset;
-extern	Uint8	parm_count;
-extern	Uint8	parm_size;
-
-extern Uint8 pmbus_buffer[50] ;
-extern Uint8 pmbus_state;
-extern Uint8 pmbus_number_of_bytes;
-extern Uint8 pmbus_buffer_position;
-extern Uint16 pmbus_status_half_word_0_value; //save pmbus status, since cleared on read.
-extern Uint16 pmbus_status_half_word_0_value_ored; //for debug
-
-//Optimize pmbus function
-extern Uint32 pmbus_watchdog_timer;
-extern Uint8  pmbus_pec_valid;
-extern Uint8 pmbus_pec_buffer[10]; //holds bytes recieved at beginning of read message used for pec calculation
-extern Uint8 pmbus_pec_buffer_number_of_bytes; //number of bytes in pec buffer used for pec calculation
-/////////////////////////////////////////////////////////
-//non-paged variables
-//the same for both PFC and DCDC
-//////////////////////////////////////////////////////////
-
-extern Uint8  				debug_buffer[8];
-extern Uint8  				page;
-extern Uint8                pmbus_status_temperature;
-extern Uint8                pmbus_status_input;
-extern Uint8                pmbus_status_cml;
-extern Uint8                pmbus_status_fans_1_2;
-extern Uint8                pmbus_status_fans_3_4;
-extern Uint16               pmbus_status_word;
-extern Uint16               second_pmbus_status_word;
-extern Uint8                setup_id_length;
-
-Uint8 pmbus_invalid_read(void);
-Uint8 pmbus_invalid_write(void);
-Uint8 pmbus_read_write_invalid_command(Uint8 pmbus_read);
-Uint8 pmbus_read_write_parm_info(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_parm_value(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_pmbus_revision(Uint8 pmbus_read); //
-Uint8 pmbus_read_write_capability(Uint8 pmbus_read); //
-Uint8 pmbus_read_write_rom_mode(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_debug_buffer(Uint8 pmbus_read);//
-Uint8 pmbus_read_write_user_ram_00(Uint8 pmbus_read);//
+/*------------------------------------test------------------------------------*/
 
 
 
 
 
+/*----------------------------------include-----------------------------------*/
+
+/*-----------------------------------macro------------------------------------*/
+//=============================================================================
+//                       frequency and time parameter
+//=============================================================================
+
+
+
+//=============================================================================
+//                       Limit parameters
+//=============================================================================
+//how to get it?
+
+
+//=============================================================================
+//                     GPIO Mask bits
+//=============================================================================
+
+
+//=============================================================================
+//                     Dpwm
+//=============================================================================
+// ----------------------Intra-Mux
+// ----------------------Edge-Gen
+// ----------------------PWM modes
+//=============================================================================
+//                     DecRegs Mask bits
+//=============================================================================
+
+//=============================================================================
+//                     pmbus_write_filter_select states
+//=============================================================================
+
+//=============================================================================
+//                     Flash Error codes
+//=============================================================================
+
+
+/*----------------------------------pmbus----------------------------------*/
 
 
 
 
-//###########################################################################
-//
-// FILE:    pmbus_topology.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+//=============================================================================
+//                     Fault mask
+//=============================================================================
 
 
-//-----------------------
-//setup ID description:
-//DCDC PFC | CLA 1           CLA2               CLA 3              CLA 4             |  DCDC rail 1 |   DCDC rail 2
-//-----------------------------------------------------------------------------------------------------------------
-// #   #    rail# loop type   rail# loop type   rail# loop type    rail# loop type      Topology      Topology
-// R   R     O       R         O       R         O      R           O       R              O            O
-// R: means the field is required to have.
-// O: means the field is optional to have
-//
-//DCDC #: required. choose from 0, 1, 2;  # of DCDC rails
-//PFC #:  required. choose from 0, 1;  # of PFC
-//rail #: optional. choose from 1, 2 if the associated CLA loop type is either C or V.
-//loop type: required. choose from C, V, N. C: current loop. V: voltage loop. N: N/A.
-//           defines each CLA's loop type.
-//Topology:  optional.DCDC rail topology. choose from: TTIF, PSHFB, ZVSPWM, LLC, HSFB
-//-----------------------------------------------------------------------------------------
+
+
+//=============================================================================
+//                     Fault and Warn
+//=============================================================================
+
+
+
+
+
+
+
+
+
+
+//=============================================================================
+//                     SCALER
+//=============================================================================
 
 
 
@@ -5843,106 +5641,98 @@ Uint8 pmbus_read_write_user_ram_00(Uint8 pmbus_read);//
 
 
 
-  // ----------------------Intra-Mux
-  // ----------------------Edge-Gen
-  // ----------------------PWM modes
-
-
-
-
-/******************************
- * Start of power parameter
- *****************************/
-
-typedef struct
-{
- Uint16 vout_cal_offset;
- Uint16 iout_cal_gain;
- Uint16 iout_cal_offset;
- Uint16 temperature_cal_offset;
- Uint16 temperature_cal_gain;
- Uint16 vout_cal_monitor;
+/*----------------------------------include-----------------------------------*/
+/*-----------------------------------macro------------------------------------*/
+/*----------------------------------typedef-----------------------------------*/
+//=============================================================================
+// Start of power parameter
+//=============================================================================
+typedef struct{
+    Uint16 vout_cal_offset;
+    Uint16 iout_cal_gain;
+    Uint16 iout_cal_offset;
+    Uint16 temperature_cal_offset;
+    Uint16 temperature_cal_gain;
+    Uint16 vout_cal_monitor;
 }PMBUS_DCDC_CAL;//must be even number of int16
 
-//first rail
-
-//second rail default value
-
-typedef struct
-{
- Uint16 vin_scale;
- Uint16 vin_offset;
+typedef struct{
+    Uint16 vin_scale;
+    Uint16 vin_offset;
 }PMBUS_DCDC_CAL_NONPAGED; //must be even number of int16
 
-typedef struct
-{
- Uint16 vout_cmd;
- Uint16 vout_ov_fault_limit;
- Uint16 vout_ov_warn_limit;
- Uint16 vout_uv_fault_limit;
- Uint16 vout_uv_warn_limit;
- Uint16 iout_oc_fault_limit;
- Uint16 iout_oc_warn_limit;
- Uint16 temp_ot_fault_limit;
- Uint16 temp_ot_warn_limit;
- Uint16 vin_ov_fault_limit;
- Uint16 vin_ov_warn_limit;
- Uint16 vin_uv_fault_limit;
- Uint16 vin_uv_warn_limit;
- Uint16 iin_oc_fault_limit;
- Uint16 iin_oc_warn_limit;
- Uint16 pgood_on_limit;
- Uint16 pgood_off_limit;
- Uint16 vin_on_limit;
- Uint16 vin_off_limit;
- Uint32 ton_rise;
- Uint32 vout_transition_rate;
- Uint16 dead_time_1;
- Uint16 dead_time_2;
- Uint16 dead_time_3;
- Uint16 dead_time_4;
- Uint16 sample_rate;
- Uint16 min_period;
- Uint16 max_period;
- Uint16 tsrmax;
- Uint32 ll_turn_on_thresh;
- Uint32 ll_turn_off_thresh;
- Uint8  ll_en;
- Uint16 cpcc_pmax;
- Uint16 cpcc_imax;
- Uint16	cpcc_ton;
- Uint8	cpcc_enable;
- Uint8  cpcc_time_out_en;
- Uint8	ishare_enable;
- Uint8  iout_oc_fault_response;
- Uint8  vout_uv_fault_response;
- Uint8 rsvd;
- Uint16 frequency_switch;
-}PMBUS_DCDC_CONFIG; //must be even number of int16
-
-//#define TURN_ON_THRESHOLD	(23000) ZCS feature commented
-//#define TURN_OFF_THRESHOLD  (23000) ZCS feature commented
-
-//first rail default value
-
-//second rail default value
-
-typedef struct
-{
- Uint16 ot_limit_DCDC_1;
- Uint16 ot_limit_DCDC_2;
- Uint16 ot_limit_DCDC_3;
- Uint16 ot_limit_DCDC_4;
- int16  deadband_config[8];
- Uint16 vin_ov_fault_limit;
- Uint16 vin_uv_fault_limit;
- Uint16 vin_uv_warn_limit;
- char  mfr_date[14];
- char  rom_password[(4)];
+typedef struct{
+    Uint16 ot_limit_DCDC_1;
+    Uint16 ot_limit_DCDC_2;
+    Uint16 ot_limit_DCDC_3;
+    Uint16 ot_limit_DCDC_4;
+    int16  deadband_config[8];
+    Uint16 vin_ov_fault_limit;
+    Uint16 vin_uv_fault_limit;
+    Uint16 vin_uv_warn_limit;
+    char  mfr_date[14];
+    char  rom_password[(4)];
 }PMBUS_DCDC_CONFIG_NONPAGED; //must be even number int16
 
+typedef struct{
+    Uint16 vout_cmd;
+    Uint16 vout_ov_fault_limit;
+    Uint16 vout_ov_warn_limit;
+    Uint16 vout_uv_fault_limit;
+    Uint16 vout_uv_warn_limit;
+    Uint16 iout_oc_fault_limit;
+    Uint16 iout_oc_warn_limit;
+    Uint16 temp_ot_fault_limit;
+    Uint16 temp_ot_warn_limit;
+    Uint16 vin_ov_fault_limit;
+    Uint16 vin_ov_warn_limit;
+    Uint16 vin_uv_fault_limit;
+    Uint16 vin_uv_warn_limit;
+    Uint16 iin_oc_fault_limit;
+    Uint16 iin_oc_warn_limit;
+    Uint16 pgood_on_limit;
+    Uint16 pgood_off_limit;
+    Uint16 vin_on_limit;
+    Uint16 vin_off_limit;
+    Uint32 ton_rise;
+    Uint32 vout_transition_rate;
+    Uint16 dead_time_1;
+    Uint16 dead_time_2;
+    Uint16 dead_time_3;
+    Uint16 dead_time_4;
+    Uint16 sample_rate;
+    Uint16 min_period;
+    Uint16 max_period;
+    Uint16 tsrmax;
+    Uint32 ll_turn_on_thresh;
+    Uint32 ll_turn_off_thresh;
+    Uint8  ll_en;
+    Uint16 cpcc_pmax;
+    Uint16 cpcc_imax;
+    Uint16	cpcc_ton;
+    Uint8	cpcc_enable;
+    Uint8  cpcc_time_out_en;
+    Uint8	ishare_enable;
+    Uint8  iout_oc_fault_response;
+    Uint8  vout_uv_fault_response;
+    Uint8 rsvd;
+    Uint16 frequency_switch;
+}PMBUS_DCDC_CONFIG; //must be even number of int16
 
-//EXTERN PMBUS_DCDC_READING            pmbus_dcdc_reading[DCDC_PAGE_NUMS];
+/*----------------------------------variable----------------------------------*/
+//constants.c  Flash
+extern volatile const Uint32 pmbus_checksum;
+// extern volatile const Uint32 pmbus_checksum_b;
+extern volatile const PMBUS_DCDC_CONFIG pmbus_dcdc_config_constants[(1)];
+// extern volatile const PMBUS_DCDC_CONFIG pmbus_dcdc_config_constants_b[DCDC_PAGE_NUMS];
+extern volatile const PMBUS_DCDC_CONFIG_NONPAGED pmbus_dcdc_config_nonpaged_constants;
+// extern volatile const PMBUS_DCDC_CONFIG_NONPAGED pmbus_dcdc_config_nonpaged_constants_b;
+extern volatile const PMBUS_DCDC_CAL pmbus_dcdc_cal_constants[(1)];
+// extern volatile const PMBUS_DCDC_CAL pmbus_dcdc_cal_constants_b[DCDC_PAGE_NUMS];
+extern volatile const PMBUS_DCDC_CAL_NONPAGED pmbus_dcdc_cal_nonpaged_constants;
+// extern volatile const PMBUS_DCDC_CAL_NONPAGED pmbus_dcdc_cal_nonpaged_constants_b;
+
+//RAM
 extern PMBUS_DCDC_CONFIG             pmbus_dcdc_config[(1)];
 extern PMBUS_DCDC_CONFIG             pmbus_dcdc_config_translated[(1)];
 extern PMBUS_DCDC_CAL                pmbus_dcdc_cal[(1)];
@@ -5950,43 +5740,57 @@ extern PMBUS_DCDC_CAL                pmbus_dcdc_cal[(1)];
 extern PMBUS_DCDC_CONFIG_NONPAGED    pmbus_dcdc_config_nonpaged;
 extern PMBUS_DCDC_CONFIG_NONPAGED    pmbus_dcdc_config_nonpaged_translated;
 extern PMBUS_DCDC_CAL_NONPAGED       pmbus_dcdc_cal_nonpaged;
-extern Uint16                        dcdc_temperature_1, dcdc_temperature_2, dcdc_temperature_3, dcdc_temperature_4;
 
-/*******************************************
- * End of power parameter
- *******************************************/
+/*-----------------------------------macro------------------------------------*/
+//first rail
 
-/*******************************************
- * Start of filter parameter
- *******************************************/
+
+
+
+//first rail default value
+
+
+/*----------------------------------function----------------------------------*/
+
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*----------------------------------typedef-----------------------------------*/
+//=============================================================================
+// Start of filter parameter
+//=============================================================================
 struct FILTER_MISC_REG_BITS{
     Uint32 rsvd0:28;                // Reserved
 	Uint32 AUTO_GEAR_SHIFT:1;		// AUTO_GEAR_SHIFT - configuration bit to control the automatic gear shifting function
 	Uint32 AFE_GAIN:2;				// AFE_GAIN - AFE gain
     Uint32 NL_MODE:1;          		// NL_MODE - stored in Filter Control Register
-  };
+};
 
-union FILTER_MISC_REG{         // bits   description
+union FILTER_MISC_REG{  
     struct FILTER_MISC_REG_BITS bit;
     Uint32                 all;
-  };
+};
 
 struct FILTER_MISC_GAIN_BITS{
     Uint32 rsvd0:12;    //Reserved
 	Uint32 KCOMP:14;	//KCOMP
     Uint32 CLA_SCALE:3;	//CLA_SCALE
     Uint32 YN_SCALE:3;  //YN_SCALE
-  };
+};
 
-union FILTER_MISC_GAIN{         // bits   description
+union FILTER_MISC_GAIN{  
     struct FILTER_MISC_GAIN_BITS bit;
     Uint32                 all;
-  };
-
-  //=============================================================================
-  // Filter Module Register File
-  //=============================================================================
-typedef struct  {
+};
+//=============================================================================
+// Filter Module Register File
+//=============================================================================
+typedef struct  
+{
     union COEFCONFIG_REG        COEFCONFIG;         // Coefficient Configuration Register
     union FILTERKPCOEF0_REG     FILTERKPCOEF0;      // Filter KP Coefficient 0 Register
     union FILTERKPCOEF1_REG     FILTERKPCOEF1;      // Filter KP Coefficient 1 Register
@@ -6006,299 +5810,269 @@ typedef struct  {
 	union FILTEROCLPLO_REG		FILTEROCLPLO;       // Filter Output Clamp Low Register
 	union FILTER_MISC_REG		FILTER_MISC;        // Miscellaneous bits
 	union FILTER_MISC_GAIN		FILTER_MISC_GAIN;   //
-  }FILTER_PMBUS_REGS;
+}FILTER_PMBUS_REGS;
+/*----------------------------------variable----------------------------------*/
+//constants.c——Flash
+extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants_b;
+extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants_b;
+extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants_b;
+extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants;
+// extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants_b;
 
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-//FILTER 0 pmbus controlled coefficients
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//RAM
 extern FILTER_PMBUS_REGS filter0_pmbus_regs;
 extern FILTER_PMBUS_REGS filter0_start_up_pmbus_regs;
 extern FILTER_PMBUS_REGS filter0_cp_pmbus_regs;
 extern FILTER_PMBUS_REGS filter1_pmbus_regs;
 extern FILTER_PMBUS_REGS *filter_destination;
 
-/*******************************************
- * End of filter parameter
- *******************************************/
-
+/*----------------------------------function----------------------------------*/
 void copy_coefficients_to_filter(volatile struct FILTER_REGS *dest, const FILTER_PMBUS_REGS *source);
 void copy_coefficients_to_ram(volatile FILTER_PMBUS_REGS *dest, volatile struct FILTER_REGS *source);
-int32 get_pmbus_address(void);
+/*-----------------------------------macro------------------------------------*/
+//=============================================================================
+// FILTER 0 pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_clear_faults(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_store_default_all(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_restore_default_all(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_mode(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_command(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_transition_rate(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_frequency_switch(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_on_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_off_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_ov_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_ov_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_uv_warn_limit(Uint8 pmbus_read);
+//=============================================================================
+// FILTER 0  START_UP pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_vout_uv_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout_uv_fault_response(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iout_oc_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_oc_fault_response(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iout_oc_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_ot_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_ot_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_ov_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_ov_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_uv_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin_uv_fault_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iin_oc_fault_limit(Uint8 pmbus_read);
+//=============================================================================
+// FILTER 0 CP pmbus controlled coefficients
+//=============================================================================
 
-Uint8 pmbus_read_write_iin_oc_warn_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_pgood_on_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_pgood_off_limit(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_ton_rise(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_status_byte(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_status_word(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vin(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_vout(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_iout(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_mosfet(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_temp_device(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_frequency(Uint8 pmbus_read);
+//=============================================================================
+// FILTER 1  pmbus controlled coefficients
+//=============================================================================
 
+
+
+
+
+
+
+
+
+
+
+//=============================================================================
+// FILTER struct define
+//=============================================================================
+
+
+
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*----------------------------------variable----------------------------------*/
+
+extern Uint8 pmbus_state;
+extern Uint8 pmbus_buffer[50] ;
+extern Uint8 pmbus_number_of_bytes;
+extern Uint16 pmbus_status_half_word_0_value; //save pmbus status, since cleared on read.
+extern Uint16 pmbus_status_half_word_0_value_ored; //for debug
+extern Uint8 pmbus_buffer_position;
+
+extern Uint16   pmbus_status_word;
+extern Uint8    debug_buffer[8];
+
+extern	Uint8	parm_index;
+extern	int16	parm_offset;
+extern	Uint8	parm_count;
+extern	Uint8	parm_size;
+
+extern Uint8 gui_constant_pointer;
+extern Uint8 user_ram_00;
+/*----------------------------------function----------------------------------*/
+
+//=============================================================================
+//              pmbus drive funvcions
+//=============================================================================
+void init_pmbus(int32 pmbus_address);
+void pmbus_handler(void);
+
+void pmbus_write_block_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+void pmbus_idle_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+void pmbus_read_block_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+void pmbus_read_wait_for_eom_handler(Uint16 *pmbus_status_debug, Uint8 *pbuffer, Uint8 *pnumber_of_bytes);
+Uint8 pmbus_read_write_message(Uint8 pmbus_read);
+
+//=============================================================================
+//              pmbus read write device and software information
+//=============================================================================
+inline Uint8 pmbus_read_device_id(void);
+inline Uint8 pmbus_invalid_write(void);
+inline Uint8 pmbus_read_mfr_id(void);
+inline Uint8 pmbus_read_setup_id(void);
+inline Uint8 pmbus_read_mfr_model(void);
+inline Uint8 pmbus_read_mfr_revision(void);
+inline Uint8 pmbus_read_mfr_date(void);
+inline Uint8 pmbus_read_mfr_location(void);
+inline Uint8 pmbus_read_mfr_serial(void);
+inline Uint8 pmbus_read_mfr_ic_device(void);
+/*----------------------------------------------------------------------------*/
+Uint8 pmbus_read_write_device_id(Uint8 pmbus_read);
 Uint8 pmbus_read_write_mfr_id(Uint8 pmbus_read);
-
+Uint8 pmbus_read_write_mfr_setup_id(Uint8 pmbus_read);
 Uint8 pmbus_read_write_mfr_model(Uint8 pmbus_read);
-
 Uint8 pmbus_read_write_mfr_revision(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_mfr_location(Uint8 pmbus_read);
-
 Uint8 pmbus_read_write_mfr_date(Uint8 pmbus_read);
-
+Uint8 pmbus_read_write_mfr_location(Uint8 pmbus_read);
 Uint8 pmbus_read_write_mfr_serial(Uint8 pmbus_read);
-
 Uint8 pmbus_read_write_mfr_ic_device(Uint8 pmbus_read);
-
 Uint8 pmbus_read_write_mfr_ic_device_rev(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_mode_switching_config(Uint8 pmbus_read);
+//=============================================================================
+//                      pmbus read write
+//=============================================================================
+void watchdog_reset(void);
+int32 pmbus_read_one_byte_handler(Uint8 value);
+int32 pmbus_read_two_byte_handler(Uint16 value);
+Uint8 pmbus_invalid_read(void);
+void send_string(const Uint8 string_to_send[], Uint8 num_bytes);
+inline Uint8 pmbus_read_debug_buffer(void);
+Uint8 pmbus_write_gui_constant(void);//Don't be used!
+inline Uint8 pmbus_write_user_ram_00(void);
+inline Uint8 pmbus_read_user_ram_00(void);
+int pmbus_write_rom_mode(void);
+/*----------------------------------------------------------------------------*/
+Uint8 pmbus_read_write_invalid_command(Uint8 pmbus_read);
+Uint8 pmbus_read_write_debug_buffer(Uint8 pmbus_read);
+Uint8 pmbus_read_write_user_ram_00(Uint8 pmbus_read);
+Uint8 pmbus_read_write_rom_mode(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_light_load_config(Uint8 pmbus_read);
+//=============================================================================
+//                      pmbus read write Register
+//=============================================================================
+inline Uint8 pmbus_write_parm_info(void);
+inline Uint8 pmbus_read_parm_info(void);
+inline Uint8 pmbus_write_parm_value(void);
+inline Uint8 pmbus_read_parm_value(void);
+/*----------------------------------------------------------------------------*/
+Uint8 pmbus_read_write_parm_info(Uint8 pmbus_read);
+Uint8 pmbus_read_write_parm_value(Uint8 pmbus_read);
+Uint8 pmbus_read_write_pmbus_revision(Uint8 pmbus_read);
+Uint8 pmbus_read_write_capability(Uint8 pmbus_read);
 
-Uint8 pmbus_read_write_filter_gains(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_filter_select(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_cmd_dcdc_paged(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_cmd_dcdc_nonpaged(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_mfr_setup_id(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_deadband_config(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_status_bit_mask(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_cpcc_config(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_ishare_configure(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_pfc_zvs_enable(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_pfc_os_enable(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_llc_sr_enable(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_device_id(Uint8 pmbus_read);
-
-Uint8 pmbus_read_write_ide_config(Uint8 pmbus_read);
-
-
-
-
-
-//###########################################################################
-//
-// FILE:    pmbus_constants.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
-
-
-//extern const Uint8 setup_id[];
-//extern const Uint8 mfr_id[];
-//extern const Uint8 mfr_model[];
-//extern const Uint8 mfr_revision[];
-//extern const Uint8 mfr_date[];
-//extern const Uint8 mfr_location[];
-//extern const Uint8 mfr_serial[];
-//extern const Uint8 mfr_ic_device[];
-//extern const Uint8 mfr_ic_device_rev[];
-
-extern int eadc_dac_offset_dflash;
-extern int second_eadc_dac_offset_dflash;
-extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter0_pmbus_regs_constants_b;
-extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter0_start_up_pmbus_regs_constants_b;
-extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter0_cp_pmbus_regs_constants_b;
-extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants;
-extern volatile const FILTER_PMBUS_REGS filter1_pmbus_regs_constants_b;
-extern volatile const Uint32 pmbus_checksum;
-extern volatile const Uint32 pmbus_checksum_b;
-extern volatile const PMBUS_DCDC_CONFIG pmbus_dcdc_config_constants[(1)];
-extern volatile const PMBUS_DCDC_CONFIG pmbus_dcdc_config_constants_b[(1)];
-extern volatile const PMBUS_DCDC_CONFIG_NONPAGED pmbus_dcdc_config_nonpaged_constants;
-extern volatile const PMBUS_DCDC_CONFIG_NONPAGED pmbus_dcdc_config_nonpaged_constants_b;
-extern volatile const PMBUS_DCDC_CAL pmbus_dcdc_cal_constants[(1)];
-extern volatile const PMBUS_DCDC_CAL pmbus_dcdc_cal_constants_b[(1)];
-extern volatile const PMBUS_DCDC_CAL_NONPAGED pmbus_dcdc_cal_nonpaged_constants;
-extern volatile const PMBUS_DCDC_CAL_NONPAGED pmbus_dcdc_cal_nonpaged_constants_b;
-
-extern const Uint8 cmd_dcdc_paged[32];
-extern const Uint8 cmd_dcdc_nonpaged[32];
-
-
-
-//###########################################################################
-//
-// FILE:    variables.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+/*-----------------------------------macro------------------------------------*/
 
 
 
 
+//=============================================================================
+//                         PMBus states
+//=============================================================================
+
+//=============================================================================
+//                        PMBus return states
+//=============================================================================
+
+// These error codes are masks based on bits in the CML_STATUS byte.  This allows the
+// pmbus_error_handler() function to do a simple 'OR' instead of a big 'switch' statement.
+
+//=============================================================================
+//                       Status Word aliases
+//=============================================================================
+//=============================================================================
+//                        PMBus  bit mask
+//=============================================================================
+
+
+
+
+//=============================================================================
+//                    CMD functions and query
+//=============================================================================
+                                  //010 Reserved
+									//This is also used for commands that return blocks of data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=============================================================================
+// CMD ENABLE
+//=============================================================================
+/*------------------------------------test------------------------------------*/
+
+
+
+
+
+
+/*----------------------------------include-----------------------------------*/
+/*-----------------------------------macro------------------------------------*/
+
+/*----------------------------------typedef-----------------------------------*/
 typedef void (*FUNC_PTR)(); 	//used for zeroing instruction word.
 
-extern Uint32 program_area[32];
-
-extern volatile Uint32 zoiw_address; //address to zero out integrity double word
-extern volatile Uint32 zoiw_flash_key; //flash key to zero out integrity double word - tells it which one to zero out.
-
-
-
-typedef struct  
-{
-	Uint32 address;	//Value from adc for device address
-	Uint32 vin_mon; //Value from adc for Vin 
-	Uint32 ishare; 	//Value from adc for Ishare
-	Uint32 vo_sense; //Value from adc for Vout
-	Uint32 ips; 	//Value from adc for primary current sense
-	Uint32 vo_ovp; 	//Value from adc for Vin  
+//ADC data
+typedef struct{
+	Uint32 address;		//Value from adc for device address
+	Uint32 vin_mon; 	//Value from adc for Vin 
+	Uint32 ishare; 		//Value from adc for Ishare
+	Uint32 vo_sense; 	//Value from adc for Vout
+	Uint32 ips; 		//Value from adc for primary current sense
+	Uint32 vo_ovp; 		//Value from adc for Vin  
 	Uint32 pri_temp;	//Value from adc for SR MOSFET temperature
-	Uint32 io_sense; //Value from adc for Iout
+	Uint32 io_sense; 	//Value from adc for Iout
 	Uint32 device_temp;	//Value from adc for internal device temperature
 	Uint32 ips_hr;
 	Uint32 address_hr;
@@ -6306,21 +6080,7 @@ typedef struct
 	Uint32 adc_scale_factor;
 } ADC_VALUES_STRUCT;
 
-struct PFC_OUT_STRUCT
-{
-	unsigned char pfc_status0;
-    unsigned char pfc_status1;
-    unsigned int  pfc_vac;
-    unsigned int  pfc_iac;
-    unsigned int  pfc_pin;
-	unsigned int  pfc_pout;
-    unsigned int  pfc_vdc_bus;
-    unsigned int  pfc_sw_frequency;
-    unsigned char pfc_temperature;
-};
-
-typedef struct
-{
+typedef struct{
 	Uint16 burst_mode_i_turn_on;
 	Uint16 burst_mode_i_turn_off;
 	int16 burst_mode_v_hys;
@@ -6343,8 +6103,8 @@ typedef struct
 	Uint8 cbc_max;
 } FIQ_DATA;
 
-typedef enum
-{
+//Interrupt state
+typedef enum{
 	STATE_IDLE,
 	STATE_CHECK_RAMP_UP,
 	STATE_WAIT_DRIVEON,
@@ -6361,16 +6121,87 @@ typedef enum
 	NONE
 } SUPPLY_STATE;
 
-extern FIQ_DATA fiq_data; 
+struct PFC_OUT_STRUCT{
+	unsigned char pfc_status0;
+    unsigned char pfc_status1;
+    unsigned int  pfc_vac;
+    unsigned int  pfc_iac;
+    unsigned int  pfc_pin;
+	unsigned int  pfc_pout;
+    unsigned int  pfc_vdc_bus;
+    unsigned int  pfc_sw_frequency;
+    unsigned char pfc_temperature;
+};
 
-extern Uint32 xn_bins[64]; 				//xn histogram bins
-extern int loop_counter;				//Counter for tracking the number of samples to collect
-extern int number_of_samples;			//Total number of samples to collect
-extern int start_monitor;				//RAM variable to start xn data collection
-extern int ramp_complete;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
+struct qnote{
+  int16 mantissa;
+  int16 exponent;
+};
+
+/*----------------------------------variable----------------------------------*/
 extern ADC_VALUES_STRUCT adc_values; 	//ADC Readings
 extern ADC_VALUES_STRUCT adc_values_avg;//ADC Readings Averaged
-extern SUPPLY_STATE supply_state,supply_state_when_fault;  		//Supply state enum for state machine
+extern FIQ_DATA fiq_data; 
+extern SUPPLY_STATE supply_state;//Supply state enum for state machine
+
+//=============================================================================
+//                     start interrupt
+//=============================================================================
+extern Uint32 start_up_delay_over;
+extern Uint32 count;
+extern Uint32 count_end;
+extern int ramp_complete;				//Value stored in FeCtrl0Regs.RAMPSTAT.bit.RAMP_COMP_INT_STATUS
+extern Uint32 delay_counter;
+
+extern Uint32 max_period;
+extern Uint32 min_period;
+extern Uint32 updated_period_target;
+extern Uint32 temperory_period;
+extern Uint32 default_period;
+extern Uint32 period_change_enable;
+extern Uint32 min_mode_switching;
+extern Uint32 default_mode_switching;
+extern Uint32 delay_counter;
+
+//=============================================================================
+//                   fault handler
+//=============================================================================
+extern volatile Uint32 FAULTMUXINTSTAT_value;
+
+extern int32 shut_down_fault_detected;
+extern Uint32 firmware_error_flag;
+extern Uint32 uv_latch_flag;
+extern Uint32 ov_latch_flag;
+extern Uint32 oc_latch_flag;
+extern Uint32 oc_fault_limit;
+extern Uint32 restart_counter;
+extern Uint32 retry_enable;
+extern Uint32 oc_counter;
+
+//=============================================================================
+//                   pmbus handler
+//=============================================================================
+extern Uint16 period;
+
+extern Uint8 filter_select;
+extern Uint8 filter_activate;
+extern Uint64 p_out;
+
+extern Uint8 erase_segment_counter;	// Number of DFlash segment remaining to be erased
+extern Uint8 erase_segment_number;		// DFlash segment number being erased
+extern Uint8 flash_write_status;	// Global status while attempting to write to Data Flash.
+
+
+extern struct qnote temp_qnote1;
+extern struct qnote temp_qnote_scale1;
+extern struct qnote adc12_vin_scaler;
+extern int16 temp_qnote_value1;
+
+extern int32 temp_debug_buffer;
+
+//=============================================================================
+//                              uart and pfc
+//=============================================================================
 
 extern Uint8 uart_text_rx_buf[(10)*2 + 2]; //UART receive buffer in text mode
 extern Uint8 uart_text_tx_buf[(10)*2 + 2]; //UART transmit buffer in text mode
@@ -6391,462 +6222,134 @@ extern Uint8 pfc_zvs_enable;//for APEC demo
 extern Uint8 pfc_os_enable;//for APEC demo
 extern Uint8 llc_sr_enable;//for APEC demo
 extern Uint8 previous_llc_sr_command;
+/*----------------------------------variable----------------------------------*/
 
-extern Uint8 erase_segment_counter;	// Number of DFlash segment remaining to be erased
-extern Uint8 erase_segment_number;		// DFlash segment number being erased
-extern Uint8 flash_write_status;	// Global status while attempting to write to Data Flash.
+/*----------------------------------function----------------------------------*/
 
-extern Uint16 period;
-
-
-
-struct qnote
-{
-  int16 mantissa;
-  int16 exponent;
-};
-
-extern struct qnote temp_qnote1;
-extern struct qnote temp_qnote_scale1;
-extern struct qnote adc12_vin_scaler;
-extern int16 temp_qnote_value1;
-extern Uint32 rogue_errors;
-
-extern int32 current_share_int_state; 
-extern int32 current_share_control_effort;
-extern int16 current_share_kp;
-extern int16 current_share_ki;
-extern int32 error_zero;
-extern int32 local_error;
-extern int32 ishare_center_threshold;
-extern int32 ishare_threshold;
-extern int32 ishare_threshold_ms;
-extern int32 ishare_center_threshold_ms;
-extern int32 ishare_threshold_master_enable;
-extern int32 ishare_threshold_slave_enable;
-extern int32 eadc_dac_target;
-extern int32 eadc_dac_max;
-extern int32 eadc_dac_min;
-extern int32 master_state;
-extern int32 master_time_count;
-extern int32 master_time_limit;
-extern int8  enable_turn_on;
-
-extern Uint32 pnom_value;
-extern Uint32 cpcc_count;
-extern int16  fault_and_warning_delay_count;
-
-extern Uint32 cpcc_ton_fault_time_limit;
-extern Uint32 cs_recover_time;
-extern Uint32 cs_recover_time_threshold;
-extern Uint32 filter_recover_time_threshold;
-extern Uint32 filter_recover_time;
-extern volatile Uint32 FAULTMUXINTSTAT_value;
-extern union CPSTAT_REG cpstat_local;
-
-extern Uint32 restart_counter;
-
-extern Uint64 p_out;
-extern Uint32 v_out;
-extern Uint32 i_out;
-extern Uint32 vref;
-extern Uint32 vdac;
-extern int32  error_offset;
-extern Uint8 cs_int_exp;
-extern Uint8 filter_select;
-extern Uint8 filter_activate;
-
-extern int16 slope_burst_mode_exp;
-extern int16 slope_ioff_mode_exp;
-extern int32 turn_on;
-extern int32 turn_off;
-extern Uint8 table_index;
-
-extern Uint8 burst_mode_enable_flag;
-extern int32 ioff_value;
-
-extern Uint32 start_up_delay_over;
-extern Uint32 count;
-extern Uint32 count_end;
-extern Uint32 sr_on;
-
-extern int32 HWBMTHRESH_SU; //ZCS feature
-extern int32 HWBMTHRESH_REG; //ZCS feature
-extern int32 HWBMTHRESH_CCCP; //ZCS feature
-extern int32 DCOMP2_CNT_THRESH; //ZCS feature
-extern int32 DCOMP2_THRESH; //ZCS feature
-
-
-
-extern Uint32 uart_auto_cal_state,result,baud_div_value;
-extern Uint32 result_temp,counter;
-extern Uint32 r1,r2,r3,r4,r5,r6,r7,r8;
-extern Uint32 ttemp;
-extern Uint32 count1;
-extern int32 filter_ramp_done;
-extern int32 filter_ramp_value;
-
-extern int32 shut_down_fault_detected;
-extern Uint32 temperature_reading;
-extern Uint32 firmware_error_flag;
-extern Uint32 uv_latch_flag;
-extern Uint32 ov_latch_flag;
-extern Uint32 oc_latch_flag;
-extern Uint32 oc_fault_limit;
-extern Uint32 restart_counter;
-extern Uint32 retry_enable;
-extern Uint32 oc_counter;
-
-extern Uint32 max_period;
-extern Uint32 min_period;
-extern Uint32 updated_period_target;
-extern Uint32 temperory_period;
-extern Uint32 default_period;
-extern Uint32 period_change_enable;
-extern Uint32 min_mode_switching;
-extern Uint32 default_mode_switching;
-extern Uint32 delay_counter;
-
-
-
-extern int32 temp_debug_buffer;
-
-
-
-//###########################################################################
-//
-// FILE:    function_definitions.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
+/*------------------------------------test------------------------------------*/
 
 
 
 
-void clear_program_flash(void);
-void clear_program_flash_0(void);
-void clear_program_flash_1(void);
-void clear_program_flash_2(void);
-void clear_program_flash_3(void);
-void clear_program_flashes(void);
-void zero_out_integrity_word_0(void);
-void zero_out_integrity_word_1(void);
-void zero_out_integrity_word_2(void);
-void zero_out_integrity_word_3(void);
-void zero_out_integrity_double_word(void);
-void zero_out_integrity_word(void);
-void UART_auto_cal(void);
 
+/*----------------------------------include-----------------------------------*/
 
-void init_DTC(void);
-void char_out(char data);
+/*-----------------------------------macro------------------------------------*/
+
+/*----------------------------------typedef-----------------------------------*/
+
+/*----------------------------------variable----------------------------------*/
+
+/*-------------------------------------os-------------------------------------*/
+
+/*----------------------------------function----------------------------------*/
+//=============================================================================
+//                                    DPP
+//=============================================================================
+/*------------------------------------dpwm-----------------------------------*/
+void init_dpwms(void);
 void init_dpwm0(void);
 void init_dpwm1(void);
 void init_dpwm2(void);
 void init_dpwm3(void);
-void init_fault_mux(void);
-void init_front_end0(void);
-void configure_cc_dac_value(void);
-void init_front_end2(void);
-void init_loop_mux(void);
-void init_uart0(void);
-void init_uart1(void);
-void init_watchdog(void);
-void global_disable(void);
-void start_up_reset(void);
-void init_filter0_states(void);
-void handle_regulation_state(void);
-void zero_out_integrity_word(void);
-void watchdog_reset(void);
-void init_interrupt(void);
-void init_gpio(void);
-void configure_burst_mode(void);
+void configure_dpwm_timing(PMBUS_DCDC_CONFIG *dpwm_timings);
 void init_sample_trigger(void);
+/*------------------------------------filter---------------------------------*/
 void init_filter0(void);
-void init_filter1(void);
-void init_sec_ocp(void);
-void init_ovp(void);
-void configure_ovp(void);
-void init_pri_ocp(void);
-void init_adc12(void);
-void xn_histogram(void);
-void poll_adc(void);
-void clear_faults(void);
-void uart_transmit_data(void);
-void translate_raw_to_text(void);
-void uart_process_rx_data(void);
-char translate_nybble_out(char byte,char * pchar2 );
-char translate_nybble_in(char nyb);
-void translate_text_to_raw(void);
-void uart_receive_data(void);
-void configure_constant_power(void);
-void init_filter1_states(void);
-void gpio_sr_off(void);
-void send_string(const Uint8 string_to_send[], Uint8 num_bytes);
-Uint8 start_erase_task(const void* dest_ptr, Uint16 byte_count);
-Uint32 calculate_dflash_checksum(Uint8 *start_addr, Uint8 *end_addr);
-inline Uint8 calc_flash_segments(const void* dest_ptr, Uint16 byte_count, Uint8* first_segment);
-void clear_program_flash(void);
-void write_program_flash_word(int * address, int data);
-void look_for_interrupted_dflash_erase(void);
-Uint8 update_data_flash(void* dest_ptr, const void* src_ptr, Uint16 byte_count);
-void erase_task(void);
-void erase_one_section(int first_segment, int byte_count);
+void init_filter0_states(void);
 void copy_coefficients_to_filter(volatile struct FILTER_REGS *dest, const FILTER_PMBUS_REGS *source);
-void copy_coefficients_to_ram(volatile FILTER_PMBUS_REGS *dest, volatile struct FILTER_REGS *source);
-void configure_vout_ramp_rate(void);
-void configure_ton_rise(void);
-void handle_faults(void);
-void handle_warnings(void);
-void handle_pgood(void);
-void transition_to_idle_state(void);
-void control_sr_on_off(void);
-void cccp_dac_adjust(void);
-
-void configure_iout_ocp(void);
-
-struct qnote qnote_scale_int32 (struct qnote x, int32 y);
-struct qnote qnote_scale (struct qnote x, int16 y);
-struct qnote linear11_to_qnote (int16 linear11);
-
-void configure_dpwm_timing(void);
-
-struct qnote qnote_subtract(struct qnote x, struct qnote y);
-int16 qnote_to_linear11 (struct qnote x);
-
-struct qnote qnote_add(struct qnote x, struct qnote y);
-
-void configure_ipri_cycle_by_cycle(Uint16 fault_limit);
-
-void enable_current_sharing(void);
-void disable_current_sharing(void);
-void handle_current_sharing_average(void);
-void handle_current_sharing_master_slave(void);
-
-void set_vout(void);
-void init_cpcc(void);
-
-void configure_iin_ocp(void);
-
-void init_variables(void);
-void init_ipri_cycle_by_cycle(void);
-void init_front_end1(void);
-
-void handle_ramp_up_state(void);
-void handle_idle_state(void);
-void handle_vout_transition_state(void);
-void handle_fault_state(void);
-void handle_standard_interrupt_global_tasks(void);
-void handle_cpcc_state(void);
-void handle_light_load_state(void);
-void handle_ramp_down_state(void);
-
+/*---------------------------------front end---------------------------------*/
+void init_front_end0(void);
+/*------------------------------------gpio-----------------------------------*/
+void init_gpio(void);
+void gpio_sr_on(void);
+void gpio_sr_off(void);
 void gpio_dpwm_on(void);
 void gpio_dpwm_off(void);
+/*----------------------------------loop mux---------------------------------*/
+void init_loop_mux(void);
 void global_enable(void);
-void gpio_sr_on(void);
+void global_disable(void);
+void init_DTC(void);
 
-void stop_filter_states(void);
-void start_filter_states(void);
+//=============================================================================
+//                                    ADC & Fault
+//=============================================================================
+void init_adc12(void);
+void poll_adc(void);
 
+void init_uvp(void);
+void init_ovp(void);
+void init_sec_ocp(void);
+void init_ipri_cycle_by_cycle(void);
+void init_fault(void);
+
+//=============================================================================
+//                                    Flash
+//=============================================================================
+void look_for_interrupted_dflash_erase(void);
+Uint8 update_data_flash(void* dest_ptr, const void* src_ptr, Uint16 byte_count);
+Uint8 start_erase_task(const void* dest_ptr, Uint16 byte_count);
+void erase_task(void);
+Uint32 calculate_dflash_checksum(Uint8 *start_addr, Uint8 *end_addr);
+inline Uint8 calc_flash_segments(const void* dest_ptr, Uint16 byte_count, Uint8* first_segment);
+void erase_one_section(int first_segment, int byte_count);
 void restore_default_all(void);
-void configure_filter_parameters(void);
 
-void init_dpwms(void);
-
-Uint32 qnote_linear11_multiply_fit(struct qnote x, int16 linear11, Uint32 max_value);
-Uint32 qnote_linear16_multiply_fit(struct qnote x, Uint16 linear16_mantissa, int8 vout_mode, Uint32 max_value);
-
-void burst_mode_enable(void);
-void burst_mode_disable(void);
-
+//=============================================================================
+//                                    fault handler
+//=============================================================================
+void handle_warnings(void);
+void handle_pgood(void);
+void handle_faults(void) ;
+//=============================================================================
+//                         configration   funvtions
+//=============================================================================
+void configure_vout_timing(void);
+void configure_iout_ocp(void);
+void control_sr_on_off(void);
 void configure_vin_on_off_thresholds(void);
 void configure_fault_levels(void);
 void configure_warning_levels(void);
 void configure_pgood_levels(void);
-void configure_cs_limits(void);
-void configure_vout_timing(void);
 void configure_vout_cmd(void);
-void rom_back_door(void);
-void configure_dpwm_timing_deadtime_update(void);
 void configure_uvp(void);
-void init_uvp(void);
-void init_fault_dpwms(void);
+void configure_ovp(void);
+void configure_cc_dac_value(void);
+//=============================================================================
+//                         scale   funvtions
+//=============================================================================
+struct qnote linear11_to_qnote (int16 linear11);
+int16 qnote_to_linear11 (struct qnote x);
+struct qnote qnote_scale_int32 (struct qnote x, int32 y);
+Uint32 qnote_linear11_multiply_fit(struct qnote x, int16 linear11, Uint32 max_value);
+Uint32 qnote_linear16_multiply_fit(struct qnote x, Uint16 linear16_mantissa, int8 vout_mode, Uint32 max_value);
 
-void configure_frequency_switch(void);
-
-void configure_new_compensation(volatile FILTER_PMBUS_REGS *source);
-void handle_hiccup_state(void);
-void cpcc_adjustment(void);
-
-void init_filter2(void);
-
-void init_dcomp(void);
-
-inline void burst_mode_handler(void);
-inline void cc_handler(void);
-//flash.c
-void load_filter_from_flash(Uint8 loop_index, Uint8 bank_index);
-void load_filter_to_cla_gains_in_ram(Uint8 loop_index, Uint8 bank_index);
-
-
-
-//interrupts.c
-void undefined_instruction_exception(void);
-void software_interrupt(Uint32 arg1, Uint32 arg2, Uint32 arg3, Uint8 swi_number);
-void abort_prefetch_exception(void);
-void abort_data_fetch_exception(void);
-void fast_interrupt(void);
+//=============================================================================
+//                         standard interrupt
+//=============================================================================
+void handle_standard_interrupt_global_tasks(void);
+void handle_idle_state(void);
+void handle_softstart(void);
+void handle_ramp_up_state(void);
+void transition_to_idle_state(void);
+void clear_faults(void);
+void handle_delay_rampup_state(void);
+void handle_regulation_state(void);
+void handle_vout_transition_state(void);
+void handle_fault_state(void);
+void init_variables(void);
 
 
-//main.c
-void main();
-void c_int00(void);
+/*-----------------------------------macro------------------------------------*/
 
+/*----------------------------------typedef-----------------------------------*/
 
-//standard_interrupt.c
-void average_adc_readings(void);
-void standard_interrupt(void);
+/*----------------------------------variable----------------------------------*/
 
-int32 pmbus_read_two_byte_handler(Uint16 value);
-int32 pmbus_read_one_byte_handler(Uint8 value);
+/*-------------------------------------os-------------------------------------*/
 
-
-//###########################################################################
-//
-// FILE:    software_interrupt.h
-//
-// TITLE:
-//
-// NOTES:
-//  1)
-//###########################################################################
-//
-//  Ver  | dd mmm yyyy | Who  		| Description of changes
-// ======|=============|============|========================================
-//  00 	   08 28 2015 	 HPCS
-//
-//  Texas Instruments, Inc
-//  Copyright Texas Instruments 2008. All rights reserved.
-//###########################################################################
-
-
-
-#pragma SWI_ALIAS (swi_single_entry, 0)
-void swi_single_entry(Uint32 arg1, Uint32 arg2, Uint32 arg3, Uint8 swi_number);
-//software_interrupts.h
-
-void erase_data_flash_segment(Uint8 segment);
-
-
-void erase_dflash_segment_no_delay(Uint8 segment);
-
-
-void write_data_flash_word(Uint32 address,unsigned long data);
-
-
-void enable_fast_interrupt(void);
-
-
-void disable_fast_interrupt(void);
-
-
-void enable_interrupt(void);
-
-
-void disable_interrupt(void);
-
-
-void write_firqpr(unsigned long value);
-
-
-void write_reqmask(unsigned long value);
-
-
-void clear_integrity_word(void);
-
-
-void write_data_flash_block();
-
-
-void erase_pflash(void);
-
-
-
-
-
-void calculate_frequency_switch(void)
-{
- Uint32 freq;
- Uint32 frequency_metissa;
- Uint32 frequency_exponent;
-
- //This struct represents the floating point number: 1
-// struct qnote constant_1 = {16384 , -14};
-         frequency_metissa = (Uint32)(pmbus_dcdc_config[0].frequency_switch & 0x07FF);
-        frequency_exponent = (Uint32)((pmbus_dcdc_config[0].frequency_switch >> 11) & 0x1F);
-        //frequency_exponent = (Uint32)(frequency_exponent & 0x1F);
-        if ((pmbus_dcdc_config[0].frequency_switch <= 0xFFFF ) && (pmbus_dcdc_config[0].frequency_switch >= 0xF801))
-        {
-            freq = frequency_metissa >> ((0x1F - frequency_exponent) +1);
-//            temp_debug_buffer = freq;
-        }
-        else if(pmbus_dcdc_config[0].frequency_switch < 1024)
-        {
-            freq = frequency_metissa;
-//            temp_debug_buffer = freq;
-        }
-        else
-        {
-            freq = (frequency_metissa << frequency_exponent);
-            temp_debug_buffer = freq;
-        }
-
-//      temp_int = page_copy;
-
- //freq = qnote_linear11_multiply_fit(constant_1, calculate_frequency_switch, 0xFFFFFFFF);
- //       peroid_old[page_copy]= pmbus_dcdc_config_translated[page_copy].frequency_switch;
-        pmbus_dcdc_config_translated[0].frequency_switch = 4000000/freq;
-
-        period_change_enable =1;
-
- //       pmbus_dcdc_config_translated[page_copy].frequency_switch = freq;
-//        dpwm_period_t = pmbus_dcdc_config_translated[page_copy].frequency_switch;
-//        dpwm_period_2t = dpwm_period_t << 1;
-//        FREQ_SCALE_R1 = ((1<<FREQ_SCALE_NUM)/dpwm_period_t);
-}
-
-
-void configure_frequency_switch(void)
-{
-    calculate_frequency_switch();
-
-//    configure_dpwm_timing();
-
-
-}
-
-
-//#define EADC_DAC_TARGET ((int32)(pmbus_dcdc_config[0].vout_cmd * DAC_VALUE_SCALER >> VOUT_MODE_EXP)) //used to be (393 << EADC_DAC_SHIFT)
-//#define EADC_DAC_MAX ((int32)((float)(pmbus_dcdc_config[0].vout_cmd * DAC_VALUE_SCALER >> VOUT_MODE_EXP)* ((float)1.01)))
-//#define EADC_DAC_MIN ((int32)((float)(pmbus_dcdc_config[0].vout_cmd * DAC_VALUE_SCALER >> VOUT_MODE_EXP)* ((float)0.99)))
-void configure_vout_cmd(void)
-{
-	struct qnote dac_value_scaler = {(931), 0};
-	pmbus_dcdc_config_translated[0].vout_cmd = qnote_linear16_multiply_fit(dac_value_scaler, pmbus_dcdc_config[0].vout_cmd,-(9),	(0x03FFF));
-	configure_cs_limits();
-}
+/*----------------------------------function----------------------------------*/
 
 void configure_vout_timing(void)
 {
@@ -6859,8 +6362,8 @@ void configure_vout_timing(void)
 	struct qnote vcmd;
 	Uint32 ramp_step;
 	Uint16 slew_rate;
-	Uint16 ramp_DAC_step;
-	Uint16 slew_sample_rate;
+	// Uint16 ramp_DAC_step;
+	// Uint16 slew_sample_rate;
 
 	vcmd.mantissa = pmbus_dcdc_config[0].vout_cmd;
 	vcmd.exponent = -(9);
@@ -6873,8 +6376,6 @@ void configure_vout_timing(void)
 	slew_rate_qnote.exponent = vcmd.exponent - ton.exponent - (1);
 	slew_rate = qnote_to_linear11(slew_rate_qnote);
 
-
-
 	tran_scaler = qnote_scale_int32(constant_3_73555, pmbus_dcdc_config[0].sample_rate);
 
 	ramp_step = qnote_linear11_multiply_fit(tran_scaler, slew_rate, (0x3FFFF));
@@ -6882,21 +6383,39 @@ void configure_vout_timing(void)
 	pmbus_dcdc_config_translated[0].vout_transition_rate = ramp_step;
 
 }
- 
-void configure_cs_limits(void)
+
+void configure_iout_ocp(void)
 {
-	struct qnote dac_value_scaler_max = {(931) + 9, 0};
-	struct qnote dac_value_scaler_min = {(931) - 9, 0};
-	eadc_dac_target = pmbus_dcdc_config_translated[0].vout_cmd;
-	eadc_dac_max 	= qnote_linear16_multiply_fit(dac_value_scaler_max, pmbus_dcdc_config[0].vout_cmd, -(9), (0x03FFF));
-	eadc_dac_min 	= qnote_linear16_multiply_fit(dac_value_scaler_min, pmbus_dcdc_config[0].vout_cmd, -(9), (0x03FFF));
+	//This struct represents the floating point number: 0.60928
+	//struct qnote constant_0_60928 = {19965 , -15};
+
+	FaultMuxRegs.ACOMPCTRL2.bit.ACOMP_E_THRESH = (Uint8)(pmbus_dcdc_config_translated[0].iout_oc_fault_limit / 238);
+
+
+}
+void control_sr_on_off(void)
+{
+    if (llc_sr_enable ^ previous_llc_sr_command)
+    {
+        if (llc_sr_enable)
+        {
+            //Turn on SR
+            gpio_sr_on();
+        }
+        else
+        {
+            //Turn off SR
+            gpio_sr_off();
+        }
+        previous_llc_sr_command = llc_sr_enable;
+    }
 }
 
-void configure_pgood_levels(void)
+void configure_vin_on_off_thresholds(void)
 {
-	struct qnote adc12_vout_scaler = {(19065), (-7)};
-	pmbus_dcdc_config_translated[0].pgood_on_limit  = qnote_linear16_multiply_fit(adc12_vout_scaler, pmbus_dcdc_config[0].pgood_on_limit, -(9), (0x00FFF));
-	pmbus_dcdc_config_translated[0].pgood_off_limit = qnote_linear16_multiply_fit(adc12_vout_scaler, pmbus_dcdc_config[0].pgood_off_limit, -(9), (0x00FFF));
+	struct qnote adc12_vin_scaler  = {(25469),  (-9)}; 
+	pmbus_dcdc_config_translated[0].vin_on_limit  = qnote_linear11_multiply_fit(adc12_vin_scaler, pmbus_dcdc_config[0].vin_on_limit,  (0x00FFF));
+	pmbus_dcdc_config_translated[0].vin_off_limit = qnote_linear11_multiply_fit(adc12_vin_scaler, pmbus_dcdc_config[0].vin_off_limit, (0x00FFF));
 }
 
 void configure_fault_levels(void)
@@ -6929,39 +6448,20 @@ void configure_warning_levels(void)
 	pmbus_dcdc_config_translated[0].vin_uv_warn_limit  = qnote_linear11_multiply_fit(adc12_vin_scaler, pmbus_dcdc_config[0].vin_uv_warn_limit, (0x00FFF));
 }
 
-void configure_vin_on_off_thresholds(void)
+void configure_pgood_levels(void)
 {
-	struct qnote adc12_vin_scaler  = {(25469),  (-9)}; 
-	pmbus_dcdc_config_translated[0].vin_on_limit  = qnote_linear11_multiply_fit(adc12_vin_scaler, pmbus_dcdc_config[0].vin_on_limit,  (0x00FFF));
-	pmbus_dcdc_config_translated[0].vin_off_limit = qnote_linear11_multiply_fit(adc12_vin_scaler, pmbus_dcdc_config[0].vin_off_limit, (0x00FFF));
+	struct qnote adc12_vout_scaler = {(19065), (-7)};
+	pmbus_dcdc_config_translated[0].pgood_on_limit  = qnote_linear16_multiply_fit(adc12_vout_scaler, pmbus_dcdc_config[0].pgood_on_limit, -(9), (0x00FFF));
+	pmbus_dcdc_config_translated[0].pgood_off_limit = qnote_linear16_multiply_fit(adc12_vout_scaler, pmbus_dcdc_config[0].pgood_off_limit, -(9), (0x00FFF));
 }
 
-void configure_constant_power(void)
+
+void configure_vout_cmd(void)
 {
-	struct qnote pcmd;
-	struct qnote ton;
-	struct qnote pmax_to_adc_scaler = {16781, -1};
-
-	ton  = linear11_to_qnote(pmbus_dcdc_config[0].cpcc_ton);
-	pcmd = linear11_to_qnote(pmbus_dcdc_config[0].cpcc_pmax);
-	p_out = (Uint64)(((int64)pmax_to_adc_scaler.mantissa * 
-		(int64)pcmd.mantissa) >> (-pmax_to_adc_scaler.exponent - pcmd.exponent));
-
-	//Calculate the maximum time to allow operation in CPCC to occur.
-	if (ton.exponent > 0)
-	{
-		cpcc_ton_fault_time_limit = (ton.mantissa * 10) << ton.exponent;
-	}
-	else if (ton.exponent < 0)
-	{
-		cpcc_ton_fault_time_limit = (ton.mantissa * 10) >> ton.exponent;
-	}
-	else
-	{
-		cpcc_ton_fault_time_limit = ton.mantissa * 10;
-	}
-	fiq_data.cpcc_en = pmbus_dcdc_config[0].cpcc_enable;
+	struct qnote dac_value_scaler = {(931), 0};
+	pmbus_dcdc_config_translated[0].vout_cmd = qnote_linear16_multiply_fit(dac_value_scaler, pmbus_dcdc_config[0].vout_cmd,-(9),	(0x03FFF));
 }
+
 
 void configure_uvp(void)
 {
@@ -6984,72 +6484,7 @@ void configure_ovp(void)
 	pmbus_dcdc_config_translated[0].vout_ov_fault_limit = ovp_limit;
 }
 
-void configure_iout_ocp(void)
-{
-	//This struct represents the floating point number: 0.60928
-	//struct qnote constant_0_60928 = {19965 , -15};
 
-	FaultMuxRegs.ACOMPCTRL2.bit.ACOMP_E_THRESH = (Uint8)(pmbus_dcdc_config_translated[0].iout_oc_fault_limit / 238);
-
-
-}
-
-void configure_ipri_cycle_by_cycle(Uint16 fault_limit) 
-{
-	if (fault_limit == (100))
-	{
-		FaultMuxRegs.DPWM0CLIM.bit.ACOMP_D_EN = 0;
-		FaultMuxRegs.DPWM1CLIM.bit.ACOMP_D_EN = 0;
-
-		Dpwm0Regs.DPWMCTRL0.bit.CBC_PWM_AB_EN = 0;
-		Dpwm0Regs.DPWMAUTOMID.bit.CBC_PWM_AB_EN = 0;
-		Dpwm0Regs.DPWMAUTOMAX.bit.CBC_PWM_AB_EN = 0;
-
-		Dpwm1Regs.DPWMCTRL0.bit.CBC_PWM_AB_EN = 0;
-		Dpwm1Regs.DPWMAUTOMID.bit.CBC_PWM_AB_EN = 0;
-		Dpwm1Regs.DPWMAUTOMAX.bit.CBC_PWM_AB_EN = 0;
-
-//		Dpwm2Regs.DPWMCTRL0.bit.CBC_PWM_AB_EN = 0; //ZCS feature to get dpwm2 to match dpwm0 - there is a phasing issue however
-//		Dpwm2Regs.DPWMAUTOMID.bit.CBC_PWM_AB_EN = 0;
-//		Dpwm2Regs.DPWMAUTOMAX.bit.CBC_PWM_AB_EN = 0;
-
-		fiq_data.cbc_enabled = 0;
-	}
-	else
-	{
-		FaultMuxRegs.DPWM0CLIM.bit.ACOMP_D_EN = 1;
-		FaultMuxRegs.DPWM1CLIM.bit.ACOMP_D_EN = 1;
-
-		Dpwm0Regs.DPWMCTRL0.bit.CBC_PWM_AB_EN = 1;
-		Dpwm0Regs.DPWMAUTOMID.bit.CBC_PWM_AB_EN = 1;
-		Dpwm0Regs.DPWMAUTOMAX.bit.CBC_PWM_AB_EN = 1;
-
-		Dpwm1Regs.DPWMCTRL0.bit.CBC_PWM_AB_EN = 1;
-		Dpwm1Regs.DPWMAUTOMID.bit.CBC_PWM_AB_EN = 1;
-		Dpwm1Regs.DPWMAUTOMAX.bit.CBC_PWM_AB_EN = 1;
-
-//		Dpwm2Regs.DPWMCTRL0.bit.CBC_PWM_AB_EN = 1;  //ZCS feature added to get dpwm2 to match dpwm0
-//		Dpwm2Regs.DPWMAUTOMID.bit.CBC_PWM_AB_EN = 1;
-//		Dpwm2Regs.DPWMAUTOMAX.bit.CBC_PWM_AB_EN = 1;
-
-
-		fiq_data.cbc_enabled = 1;
-	}
-
-	//Analog comparator 3(AD04 pin)
-	//Resolution is 312 mV/A, 2500/128 mV/LSB
-	//312*128/2500 LSB/A ~ 16 LSB/A
-	//Maximum current limit ~ 8 A
-	// 4* (62/250)
-
-	//This struct represents the floating point number: 0.248
-	struct qnote constant_0_248 = {32506 , -11};//-17
-
-	FaultMuxRegs.ACOMPCTRL1.bit.ACOMP_D_THRESH =
-		qnote_linear11_multiply_fit(constant_0_248,
-		pmbus_dcdc_config[0].iin_oc_fault_limit,
-		(0x0007F));
-}
 
 void configure_cc_dac_value(void)
 {
@@ -7062,394 +6497,4 @@ void configure_cc_dac_value(void)
 	// Set Processor DAC to MAX_CURRENT value for Error calculation
 	FeCtrl1Regs.EADCDAC.bit.DAC_VALUE = imax_value;
 }
-
-void configure_vout_ramp_rate(void)
-{
-	FeCtrl0Regs.DACSTEP.bit.DAC_STEP = pmbus_dcdc_config_translated[0].vout_transition_rate;
-}
-
-void configure_ton_rise(void)
-{
-	//FeCtrl0Regs.EADCDAC.bit.DAC_VALUE = 0;
-	FeCtrl0Regs.RAMPDACEND.bit.RAMP_DAC_VALUE = pmbus_dcdc_config_translated[0].vout_cmd;
-	FeCtrl0Regs.DACSTEP.bit.DAC_STEP = pmbus_dcdc_config_translated[0].ton_rise;
-}
-
-void start_up_reset(void)
-{
-	FeCtrl0Regs.RAMPCTRL.bit.FIRMWARE_START = 0;
-	FeCtrl0Regs.RAMPCTRL.bit.RAMP_EN = 0;
-	FeCtrl0Regs.EADCDAC.bit.DAC_VALUE = 0;
-	FeCtrl0Regs.RAMPCTRL.bit.RAMP_EN = 1;
-}
-
-// With Phaseshift
-
-void configure_dpwm_timing_deadtime_update(void)
-{
-    Uint32 dead_time_1_local;
-    Uint32 dead_time_2_local;
-    Uint32 dead_time_3_local;
-    Uint32 dead_time_4_local;
-    Uint32 clamp_value;
-    Uint16 period;
-
-    dead_time_1_local = (pmbus_dcdc_config[0].dead_time_1 + 8) >> 4;
-    dead_time_2_local = (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;
-    dead_time_3_local = (pmbus_dcdc_config[0].dead_time_3 + 8) >> 4;
-    dead_time_4_local = (pmbus_dcdc_config[0].dead_time_4 + 8) >> 4;
-
-
-    clamp_value = (((Uint64)dead_time_2_local * ((1 << 23) - 1)) / (pmbus_dcdc_config[0].max_period * 8));
-    period = Dpwm0Regs.DPWMPRD.bit.PRD;
-
-    Dpwm0Regs.DPWMEV1.bit.EVENT1 = dead_time_1_local;
-    Dpwm0Regs.DPWMEV2.bit.EVENT2 = period * 8 + dead_time_1_local * 16 - dead_time_2_local *16;
-    Dpwm0Regs.DPWMEV3.bit.EVENT3 = period * 8 + dead_time_1_local * 16;
-    Dpwm0Regs.DPWMEV4.bit.EVENT4 = period * 16 - dead_time_2_local *16 + dead_time_1_local * 16;
-
-    Dpwm0Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-dead_time_2_local *16);
-    Dpwm0Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-dead_time_2_local *16);
-
-    Dpwm0Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm0Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-
-    Dpwm0Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        dead_time_2_local;
-    Dpwm0Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        dead_time_2_local;
-
-    // DPWM1 configuration
-    Dpwm1Regs.DPWMEV1.bit.EVENT1 = dead_time_3_local;
-    Dpwm1Regs.DPWMEV2.bit.EVENT2 = period * 8 + dead_time_3_local * 16 - dead_time_4_local *16;
-    Dpwm1Regs.DPWMEV3.bit.EVENT3 = period * 8 + dead_time_3_local * 16;
-    Dpwm1Regs.DPWMEV4.bit.EVENT4 = period * 8 - dead_time_4_local *16 + dead_time_3_local * 16;
-
-    Dpwm1Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-dead_time_4_local *16);
-    Dpwm1Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-dead_time_4_local *16);
-
-
-    Dpwm1Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm1Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-
-    Dpwm1Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        dead_time_4_local *16;
-    Dpwm1Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        dead_time_4_local *16;
-
-    Dpwm1Regs.DPWMBLKBBEG.bit.BLANK_B_BEGIN = dead_time_1_local; //PWM2_EV5;
-    Dpwm1Regs.DPWMBLKBEND.all = period * 8 + dead_time_1_local * 16 - dead_time_2_local *16;  //PWM2_EV6;
-
-    //DPWM2 configuration
-
-    Dpwm2Regs.DPWMEV1.bit.EVENT1 = dead_time_1_local;
-    Dpwm2Regs.DPWMEV2.bit.EVENT2 = period * 8 + dead_time_1_local * 16 - dead_time_2_local *16;
-    Dpwm2Regs.DPWMEV3.bit.EVENT3 = period * 8 + dead_time_1_local * 16;
-    Dpwm2Regs.DPWMEV4.bit.EVENT4 = period * 16 - dead_time_2_local *16 + dead_time_1_local * 16;
-
-    Dpwm2Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-dead_time_2_local *16);
-    Dpwm2Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-dead_time_2_local *16);
-
-
-    Dpwm2Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm2Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-
-
-    Dpwm2Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        dead_time_2_local;
-    Dpwm2Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        dead_time_2_local;
-
-    Dpwm2Regs.DPWMBLKBBEG.bit.BLANK_B_BEGIN = dead_time_1_local;                                            //PWM2_EV5;
-    Dpwm2Regs.DPWMBLKBEND.all = period * 8 + dead_time_1_local * 16 - dead_time_2_local *16 ;  //PWM2_EV6;
-
-   //DPWM3 configuration
-
-    Dpwm3Regs.DPWMEV1.bit.EVENT1 = dead_time_1_local;
-    Dpwm3Regs.DPWMEV2.bit.EVENT2 = period * 8 + dead_time_1_local * 16 - dead_time_2_local *16;
-    Dpwm3Regs.DPWMEV3.bit.EVENT3 = period * 8 + dead_time_1_local * 16;
-    Dpwm3Regs.DPWMEV4.bit.EVENT4 = period * 16 - dead_time_2_local *16 + dead_time_1_local * 16;
-
-    Dpwm3Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-dead_time_2_local *16);  //16 bits with signed. Don't apply to resonant mode
-    Dpwm3Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-dead_time_2_local *16);
-
-
-    Dpwm3Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm3Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-
-
-    Dpwm3Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        dead_time_2_local;    //18 bits with 4 right shift
-    Dpwm3Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        dead_time_2_local;
-
-    Dpwm3Regs.DPWMBLKBBEG.all = dead_time_1_local * 16;                                                 //PWM3_EV5;
-    Dpwm3Regs.DPWMBLKBEND.all = period * 8 + dead_time_1_local * 16 - dead_time_2_local *16;  //PWM2_EV6;
-
-    Filter0Regs.FILTERYNCLPLO.all = clamp_value;
-    Filter1Regs.FILTERYNCLPLO.all = clamp_value;
-}
-
-
-void configure_dpwm_timing(void)
-{
-    Uint32 dead_time_1_local;
-    Uint32 dead_time_3_local;
-    Uint32 dead_time_4_local;
-    Uint32 clamp_value;
-
-    dead_time_1_local = (pmbus_dcdc_config[0].dead_time_1 + 8) >> 4;
-    dead_time_3_local = (pmbus_dcdc_config[0].dead_time_3 + 8) >> 4;
-    dead_time_4_local = (pmbus_dcdc_config[0].dead_time_4 + 8) >> 4;
-    clamp_value = (((Uint64)pmbus_dcdc_config[0].dead_time_2 * ((1 << 23) - 1)) / (pmbus_dcdc_config[0].max_period * 8));
-
-//    pmbus_dcdc_config[0].min_period =pmbus_dcdc_config[0].min_period * 0.8;
-
-    LoopMuxRegs.PWMGLBPER.bit.PRD = pmbus_dcdc_config[0].min_period;
-
-    Dpwm0Regs.DPWMEV1.bit.EVENT1 = dead_time_1_local;
-    Dpwm0Regs.DPWMEV2.bit.EVENT2 = pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2;
-    Dpwm0Regs.DPWMEV3.bit.EVENT3 = pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16;
-    Dpwm0Regs.DPWMEV4.bit.EVENT4 = pmbus_dcdc_config[0].min_period * 16 - pmbus_dcdc_config[0].dead_time_2 + dead_time_1_local * 16;
-    Dpwm0Regs.DPWMPRD.bit.PRD = pmbus_dcdc_config[0].min_period;
-    Dpwm0Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-pmbus_dcdc_config[0].dead_time_2);
-    Dpwm0Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-pmbus_dcdc_config[0].dead_time_2);
-    Dpwm0Regs.DPWMRESDUTY.bit.RESONANT_DUTY  =         (pmbus_dcdc_config[0].max_period + 1) >> 1;  // modulate the duty cycle
-    Dpwm0Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm0Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm0Regs.DPWMAUTOSWLOLOWTHRESH.bit.AUTO_SWITCH_LOW_LOWER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm0Regs.DPWMAUTOSWLOUPTHRESH.bit.AUTO_SWITCH_LOW_UPPER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm0Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;
-    Dpwm0Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;
-
-
-
-    Dpwm1Regs.DPWMEV1.bit.EVENT1 = dead_time_3_local;
-    Dpwm1Regs.DPWMEV2.bit.EVENT2 = pmbus_dcdc_config[0].min_period * 8 + dead_time_3_local * 16 - pmbus_dcdc_config[0].dead_time_4;
-    Dpwm1Regs.DPWMEV3.bit.EVENT3 = dead_time_3_local * 16 + pmbus_dcdc_config[0].min_period * 8;
-    Dpwm1Regs.DPWMEV4.bit.EVENT4 = pmbus_dcdc_config[0].min_period * 16 - pmbus_dcdc_config[0].dead_time_4 + dead_time_3_local * 16;
-    Dpwm1Regs.DPWMPRD.bit.PRD = pmbus_dcdc_config[0].min_period;
-    Dpwm1Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-pmbus_dcdc_config[0].dead_time_4);
-    Dpwm1Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-pmbus_dcdc_config[0].dead_time_4);
-    Dpwm1Regs.DPWMRESDUTY.bit.RESONANT_DUTY  =         (pmbus_dcdc_config[0].max_period + 1) >> 1;
-    Dpwm1Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm1Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm1Regs.DPWMAUTOSWLOLOWTHRESH.bit.AUTO_SWITCH_LOW_LOWER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm1Regs.DPWMAUTOSWLOUPTHRESH.bit.AUTO_SWITCH_LOW_UPPER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm1Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        (pmbus_dcdc_config[0].dead_time_4 + 8) >> 4;
-    Dpwm1Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        (pmbus_dcdc_config[0].dead_time_4 + 8) >> 4;
-    //Sean added
-
-
-    Dpwm1Regs.DPWMBLKBBEG.bit.BLANK_B_BEGIN = dead_time_1_local; //PWM2_EV5;
-//  Dpwm1Regs.DPWMBLKBEND.bit.BLANK_B_END = (pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2) >> 4 ;  //PWM2_EV6;
-    Dpwm1Regs.DPWMBLKBEND.all = (pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2);  //PWM2_EV6;
-
-
-    Dpwm2Regs.DPWMEV1.bit.EVENT1 = dead_time_1_local;
-    Dpwm2Regs.DPWMEV2.bit.EVENT2 = pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2;
-    Dpwm2Regs.DPWMEV3.bit.EVENT3 = pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16;
-    Dpwm2Regs.DPWMEV4.bit.EVENT4 = pmbus_dcdc_config[0].min_period * 16 - pmbus_dcdc_config[0].dead_time_2 + dead_time_1_local * 16;
-    Dpwm2Regs.DPWMPRD.bit.PRD = pmbus_dcdc_config[0].min_period;
-    Dpwm2Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-pmbus_dcdc_config[0].dead_time_2);
-    Dpwm2Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-pmbus_dcdc_config[0].dead_time_2);
-    Dpwm2Regs.DPWMRESDUTY.bit.RESONANT_DUTY  =         (pmbus_dcdc_config[0].max_period + 1) >> 1;  // modulate the duty cycle
-    Dpwm2Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm2Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm2Regs.DPWMAUTOSWLOLOWTHRESH.bit.AUTO_SWITCH_LOW_LOWER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm2Regs.DPWMAUTOSWLOUPTHRESH.bit.AUTO_SWITCH_LOW_UPPER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm2Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;
-    Dpwm2Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;
-
-    Dpwm2Regs.DPWMBLKBBEG.bit.BLANK_B_BEGIN = dead_time_1_local; //PWM2_EV5;
-//  Dpwm2Regs.DPWMBLKBEND.bit.BLANK_B_END = (pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2) >> 4 ;  //PWM2_EV6;
-    Dpwm2Regs.DPWMBLKBEND.all = (pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2) ;  //PWM2_EV6;
-
-
-    Dpwm3Regs.DPWMEV1.bit.EVENT1 = dead_time_1_local;
-    Dpwm3Regs.DPWMEV2.bit.EVENT2 = pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2;
-    Dpwm3Regs.DPWMEV3.bit.EVENT3 = pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16;
-    Dpwm3Regs.DPWMEV4.bit.EVENT4 = pmbus_dcdc_config[0].min_period * 16 - pmbus_dcdc_config[0].dead_time_2 + dead_time_1_local * 16;
-    Dpwm3Regs.DPWMPRD.bit.PRD = pmbus_dcdc_config[0].min_period;
-    Dpwm3Regs.DPWMCYCADJA.bit.CYCLE_ADJUST_A = (int16)(-pmbus_dcdc_config[0].dead_time_2);  //16 bits with signed. Don't apply to resonant mode
-    Dpwm3Regs.DPWMCYCADJB.bit.CYCLE_ADJUST_B = (int16)(-pmbus_dcdc_config[0].dead_time_2);
-    Dpwm3Regs.DPWMRESDUTY.bit.RESONANT_DUTY  =         (pmbus_dcdc_config[0].max_period + 1) >> 1;  // modulate the duty cycle
-    Dpwm3Regs.DPWMAUTOSWHILOWTHRESH.bit.AUTO_SWITCH_HIGH_LOWER = pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm3Regs.DPWMAUTOSWHIUPTHRESH.bit.AUTO_SWITCH_HIGH_UPPER =  pmbus_dcdc_config[0].tsrmax + dead_time_4_local;
-    Dpwm3Regs.DPWMAUTOSWLOLOWTHRESH.bit.AUTO_SWITCH_LOW_LOWER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm3Regs.DPWMAUTOSWLOUPTHRESH.bit.AUTO_SWITCH_LOW_UPPER = (pmbus_dcdc_config[0].min_period + 1) >> 1;
-    Dpwm3Regs.DPWMMINDUTYLO.bit.MIN_DUTY_LOW  =        (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;    //18 bits with 4 right shift
-    Dpwm3Regs.DPWMMINDUTYHI.bit.MIN_DUTY_HIGH =        (pmbus_dcdc_config[0].dead_time_2 + 8) >> 4;
-
-    Dpwm3Regs.DPWMBLKBBEG.all = dead_time_1_local * 16; //PWM3_EV5;
-    Dpwm3Regs.DPWMBLKBEND.all = (pmbus_dcdc_config[0].min_period * 8 + dead_time_1_local * 16 - pmbus_dcdc_config[0].dead_time_2);  //PWM2_EV6;
-
-    Filter0Regs.FILTERYNCLPHI.all = ((int32)((pmbus_dcdc_config[0].min_period  << 4)* (418) * 1026)) >> 10;
-
-    Filter0Regs.FILTERYNCLPLO.all = clamp_value;
-    Filter1Regs.FILTERYNCLPLO.all = clamp_value;
-    LoopMuxRegs.FILTERKCOMPA.bit.KCOMP0 = pmbus_dcdc_config[0].max_period;
-
-    filter0_pmbus_regs.FILTER_MISC_GAIN.bit.KCOMP           = pmbus_dcdc_config[0].max_period;
-    filter0_start_up_pmbus_regs.FILTER_MISC_GAIN.bit.KCOMP  = pmbus_dcdc_config[0].max_period;
-    filter0_cp_pmbus_regs.FILTER_MISC_GAIN.bit.KCOMP        = pmbus_dcdc_config[0].max_period;
-    filter1_pmbus_regs.FILTER_MISC_GAIN.bit.KCOMP           = pmbus_dcdc_config[0].max_period;
-
-//    Filter0Regs.FILTERYNCLPLO.all = 0xFFFF;
-//    Filter1Regs.FILTERYNCLPLO.all = 0xFFFF;
-
-    Filter0Regs.FILTERCTRL.bit.PERIOD_MULT_SEL = 1; // Use KCOM
-    Filter0Regs.FILTERCTRL.bit.OUTPUT_MULT_SEL = 3;   // Use Resonant DUTY
-
-
-    Dpwm2Regs.DPWMPHASETRIG.all =  (((int)((1 / (1000e3)) / (250e-12) / 16 + 0.5)) * 8 + 32);  //180 degree phase offset
-
-    // Connect to dpwm2
-    LoopMuxRegs.DPWMMUX.bit.DPWM0_SYNC_SEL = 2;
-    // Connect to dpwm2
-    LoopMuxRegs.DPWMMUX.bit.DPWM1_SYNC_SEL = 2;
-    // Connect to dpwm2
-    LoopMuxRegs.DPWMMUX.bit.DPWM3_SYNC_SEL = 2;
-
-}
-
-void burst_mode_enable(void)
-{
-	LoopMuxRegs.LLCTRL.bit.LL_EN = 1; //pmbus_dcdc_config[0].ll_en; - ZCS feature
-	burst_mode_enable_flag = 1;
-}
-
-void burst_mode_disable(void)
-{
-	LoopMuxRegs.LLCTRL.bit.LL_EN = 0;
-	burst_mode_enable_flag = 0;
-}
-
-void configure_burst_mode(void)
-{
-	LoopMuxRegs.LLCTRL.bit.LL_EN =1;
-//	LoopMuxRegs.LLCTRL.bit.LL_EN = pmbus_dcdc_config[0].ll_en; //- ZCS feature
-		//LoopMuxRegs.LLENTHRESH.bit.TURN_ON_THRESH = pmbus_dcdc_config[0].ll_turn_on_thresh;  //ZCS feature these thresholds are now reset in each STATE
-		//LoopMuxRegs.LLDISTHRESH.bit.TURN_OFF_THRESH = pmbus_dcdc_config[0].ll_turn_off_thresh; //ZCS feature these thresholds are now reset in each STATE
-//		LoopMuxRegs.LLENTHRESH.bit.TURN_ON_THRESH = HWBMTHRESH_SU;
-//		LoopMuxRegs.LLDISTHRESH.bit.TURN_OFF_THRESH = HWBMTHRESH_SU;
-}
-
-void copy_coefficients_to_filter(volatile struct FILTER_REGS *dest, const FILTER_PMBUS_REGS *source)
-{
-	dest->COEFCONFIG.all    	 = source->COEFCONFIG.all;
-	dest->FILTERKPCOEF0.all 	 = source->FILTERKPCOEF0.all;
-	dest->FILTERKPCOEF1.all 	 = source->FILTERKPCOEF1.all;
-	dest->FILTERKICOEF0.all 	 = source->FILTERKICOEF0.all;
-	dest->FILTERKICOEF1.all 	 = source->FILTERKICOEF1.all;
-	dest->FILTERKDCOEF0.all 	 = source->FILTERKDCOEF0.all;
-	dest->FILTERKDCOEF1.all  	 = source->FILTERKDCOEF1.all;
-	dest->FILTERKDALPHA.all 	 = source->FILTERKDALPHA.all;
-	dest->FILTERNL0.all     	 = source->FILTERNL0.all;
-	dest->FILTERNL1.all     	 = source->FILTERNL1.all;
-	dest->FILTERNL2.all     	 = source->FILTERNL2.all;
-	dest->FILTERKICLPHI.all 	 = source->FILTERKICLPHI.all;
-	dest->FILTERKICLPLO.all 	 = source->FILTERKICLPLO.all;
-	dest->FILTERYNCLPHI.all 	 = source->FILTERYNCLPHI.all;
-	dest->FILTERYNCLPLO.all 	 = source->FILTERYNCLPLO.all;
-	dest->FILTEROCLPHI.all		 = source->FILTEROCLPHI.all;
-	dest->FILTEROCLPLO.all		 = source->FILTEROCLPLO.all;
-	dest->FILTERCTRL.bit.NL_MODE = source->FILTER_MISC.bit.NL_MODE;
-
-	if(source == &filter1_pmbus_regs)
-	{
-		FeCtrl1Regs.EADCCTRL.bit.AFE_GAIN = source->FILTER_MISC.bit.AFE_GAIN;
-	}
-	else
-	{
-		FeCtrl0Regs.EADCCTRL.bit.AFE_GAIN = source->FILTER_MISC.bit.AFE_GAIN;
-	}
-}
-
-void copy_coefficients_to_ram(volatile FILTER_PMBUS_REGS *dest, volatile struct FILTER_REGS *source)
-{
-	dest->COEFCONFIG.all 	  	  = source->COEFCONFIG.all;
-	dest->FILTERKPCOEF0.all 	  = source->FILTERKPCOEF0.all;
-	dest->FILTERKPCOEF1.all 	  = source->FILTERKPCOEF1.all;
-	dest->FILTERKICOEF0.all 	  = source->FILTERKICOEF0.all;
-	dest->FILTERKICOEF1.all 	  = source->FILTERKICOEF1.all;
-	dest->FILTERKDCOEF0.all 	  = source->FILTERKDCOEF0.all;
-	dest->FILTERKDCOEF1.all 	  = source->FILTERKDCOEF1.all;
-	dest->FILTERKDALPHA.all 	  = source->FILTERKDALPHA.all;
-	dest->FILTERNL0.all 		  = source->FILTERNL0.all;
-	dest->FILTERNL1.all 	  	  = source->FILTERNL1.all;
-	dest->FILTERNL2.all 		  = source->FILTERNL2.all;
-	dest->FILTERKICLPHI.all 	  = source->FILTERKICLPHI.all;
-	dest->FILTERKICLPLO.all 	  = source->FILTERKICLPLO.all;
-	dest->FILTERYNCLPHI.all 	  = source->FILTERYNCLPHI.all;
-	dest->FILTERYNCLPLO.all 	  = source->FILTERYNCLPLO.all;
-	dest->FILTEROCLPHI.all		  = source->FILTEROCLPHI.all;
-	dest->FILTEROCLPLO.all		  = source->FILTEROCLPLO.all;
-	dest->FILTER_MISC.bit.NL_MODE = source->FILTERCTRL.bit.NL_MODE;
-	
-	if(dest == &filter1_pmbus_regs)
-	{
-		dest->FILTER_MISC.bit.AFE_GAIN = FeCtrl1Regs.EADCCTRL.bit.AFE_GAIN;
-	}
-	else
-	{
-		dest->FILTER_MISC.bit.AFE_GAIN = FeCtrl0Regs.EADCCTRL.bit.AFE_GAIN;
-	}
-}
-
-void configure_new_compensation(volatile FILTER_PMBUS_REGS *source)
-{
-	volatile struct FILTER_REGS *dest;
-	
-	if(source == &filter1_pmbus_regs)
-	{
-		FeCtrl1Regs.EADCCTRL.bit.AFE_GAIN = source->FILTER_MISC.bit.AFE_GAIN;
-		dest = &Filter1Regs;
-	}
-	else
-	{
-		FeCtrl0Regs.EADCCTRL.bit.AFE_GAIN = source->FILTER_MISC.bit.AFE_GAIN;
-		dest = &Filter0Regs;
-	}
-	/*
-	It is assumed that during normal operation:
-	bin 0 always uses KP_COEF_0, KI_COEF_0, KD_COEF_0 and KD_ALPHA_0;
-	bin 1 always uses KP_COEF_1, KI_COEF_1, KD_COEF_1 and KD_ALPHA_1.
-	An exception to this is found in the following code during the transition from
-	the old set of coefficients to the new ones.
-	*/
-
-	//Configure filter to use bin 0 coefficients only
-	dest->COEFCONFIG.all = 0;
-
-	//Configure bin 1 with the new bin 0 coefficients
-	dest->FILTERKPCOEF0.bit.KP_COEF_1  = source->FILTERKPCOEF0.bit.KP_COEF_0;
-	dest->FILTERKICOEF0.bit.KI_COEF_1  = source->FILTERKICOEF0.bit.KI_COEF_0;
-	dest->FILTERKDCOEF0.bit.KD_COEF_1  = source->FILTERKDCOEF0.bit.KD_COEF_0;
-	dest->FILTERKDALPHA.bit.KD_ALPHA_1 = source->FILTERKDALPHA.bit.KD_ALPHA_0;
-
-	//Configure filter to use bin 1 coefficients only
-	dest->COEFCONFIG.all = (0x99999999);
-
-	//Configure bin 0 with the new bin 0 coefficients
-	dest->FILTERKPCOEF0.bit.KP_COEF_0  = source->FILTERKPCOEF0.bit.KP_COEF_0;
-	dest->FILTERKICOEF0.bit.KI_COEF_0  = source->FILTERKICOEF0.bit.KI_COEF_0;
-	dest->FILTERKDCOEF0.bit.KD_COEF_0  = source->FILTERKDCOEF0.bit.KD_COEF_0;
-	dest->FILTERKDALPHA.bit.KD_ALPHA_0 = source->FILTERKDALPHA.bit.KD_ALPHA_0;
-
-	//Configure filter to use bin 0 coefficients only
-	dest->COEFCONFIG.all = 0;
-
-	//Reprogram the remaining filter coefficients
-	dest->FILTERKPCOEF0.all = source->FILTERKPCOEF0.all;
-	dest->FILTERKPCOEF1.all = source->FILTERKPCOEF1.all;
-	dest->FILTERKICOEF0.all = source->FILTERKICOEF0.all;
-	dest->FILTERKICOEF1.all = source->FILTERKICOEF1.all;
-	dest->FILTERKDCOEF0.all = source->FILTERKDCOEF0.all;
-	dest->FILTERKDCOEF1.all = source->FILTERKDCOEF1.all;
-	dest->FILTERKDALPHA.all = source->FILTERKDALPHA.all;
-
-	//Configure filter to use bins as defined
-	dest->COEFCONFIG.all = source->COEFCONFIG.all;
-
-	dest->FILTERCTRL.bit.NL_MODE = source->FILTER_MISC.bit.NL_MODE;
-}
-
-void configure_filter_parameters(void)
-{
-	copy_coefficients_to_filter(&Filter0Regs, &filter0_pmbus_regs);
-	copy_coefficients_to_filter(&Filter1Regs, &filter1_pmbus_regs);
-}
-
+/*------------------------------------test------------------------------------*/
